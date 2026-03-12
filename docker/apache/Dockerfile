@@ -1,4 +1,4 @@
-FROM php:8.2-apache
+FROM php:8.2-fpm
 
 # Instalar dependencias del sistema
 RUN apt-get update && apt-get install -y \
@@ -19,24 +19,18 @@ RUN docker-php-ext-install \
     exif \
     pcntl
 
-# Habilitar mod_rewrite (Laravel lo necesita)
-RUN a2enmod rewrite
-
 # Instalar Composer
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
-# Directorio de trabajo
-WORKDIR /var/www/html
 
 # Instalar Node.js y npm
 RUN curl -fsSL https://deb.nodesource.com/setup_20.x | bash - \
     && apt-get install -y nodejs
 
 # Permisos
-RUN chown -R www-data:www-data /var/www/html \
-    && chmod -R 755 /var/www/html
+RUN chown -R www-data:www-data /var/www \
+    && chmod -R 755 /var/www
 
-WORKDIR /var/www/src
+WORKDIR /var/www
 
-EXPOSE 80
 
