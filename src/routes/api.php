@@ -16,8 +16,8 @@ Route::get('/login', function () {
 // -- RUTAS API CRUD --
 
 // rutas para la autenticación del usuario
-Route::middleware('auth:api')->get('/usuario', [UsuarioController::class, 'listUserAPI'])->name('userAPI.listUser');
-Route::middleware('auth:api')->get('/usuario/{usuario}', [UsuarioController::class, 'listUserByIdAPI'])->name('userAPI.listUserById');
+Route::get('/usuario', [UsuarioController::class, 'listUserAPI'])->name('userAPI.listUser');
+Route::get('/usuario/{usuario}', [UsuarioController::class, 'listUserByIdAPI'])->name('userAPI.listUserById');
 Route::post('/usuario/crear', [UsuarioController::class, 'createUserAPI'])->name('userAPI.createUser');
-Route::middleware('auth:api')->put('/usuario/{usuario}', [UsuarioController::class, 'updateUserAPI'])->name('userAPI.updateUser');
-Route::middleware('auth:api')->delete('/usuario/{usuario}/eliminar', [UsuarioController::class, 'deleteUserAPI'])->name('userAPI.deleteUser');
+Route::put('/usuario/{usuario}', [UsuarioController::class, 'updateUserAPI'])->name('userAPI.updateUser');
+Route::delete('/usuario/{usuario}/eliminar', [UsuarioController::class, 'deleteUserAPI'])->name('userAPI.deleteUser');
