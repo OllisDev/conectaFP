@@ -19,7 +19,6 @@ return new class extends Migration {
             $table->date('fecha_nacimiento');
             $table->boolean('activo')->default(1);
             $table->timestamp('fecha_registro')->useCurrent();
-            $table->rememberToken()->nullable();
             $table->string('api_token', 80)->unique()->nullable();
         });
     }
@@ -29,9 +28,7 @@ return new class extends Migration {
      */
     public function down(): void
     {
-        Schema::table('usuario', function ($table) {
-            $table->dropColumn('remember_token');
-        });
+        Schema::dropIfExists('usuario');
 
     }
 };

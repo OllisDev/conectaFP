@@ -18,6 +18,7 @@ class Usuario extends Authenticatable
         'email',
         'fecha_nacimiento',
         'activo',
-        'fecha_registro'
+        'fecha_registro',
+        'api_token'
     ];
 }

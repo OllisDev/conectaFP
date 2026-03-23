@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AlumnoController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UsuarioController;
@@ -21,3 +22,11 @@ Route::get('/usuario/{usuario}', [UsuarioController::class, 'listUserByIdAPI'])-
 Route::post('/usuario/crear', [UsuarioController::class, 'createUserAPI'])->name('userAPI.createUser');
 Route::put('/usuario/{usuario}', [UsuarioController::class, 'updateUserAPI'])->name('userAPI.updateUser');
 Route::delete('/usuario/{usuario}/eliminar', [UsuarioController::class, 'deleteUserAPI'])->name('userAPI.deleteUser');
+
+// rutas para la autenticación del alumno
+Route::get('/alumno', [AlumnoController::class, 'listStudentAPI'])->name('studentAPI.listStudent');
+Route::get('/alumno/{alumno}', [AlumnoController::class, 'listStudentByIdAPI'])->name('studentAPI.listStudent');
+Route::middleware('auth:api')->post('/alumno/crear', [AlumnoController::class, 'createStudentAPI'])->name('studentAPI.createStudent');
+Route::middleware('auth:api')->put('/alumno/{alumno}', [AlumnoController::class, 'updateStudentAPI'])->name('studentAPI.updateStudent');
+Route::middleware('auth:api')->delete('/alumno/{alumno}', [AlumnoController::class, 'deleteStudentAPI'])->name('studentAPI.deleteStudent');
+

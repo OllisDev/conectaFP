@@ -2,25 +2,24 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Usuario;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Str;
+use App\Models\Alumno;
+use Illuminate\Support\Facades\Auth;
 
-class UsuarioController extends Controller
+class AlumnoController extends Controller
 {
-    public function listUserAPI()
+    public function listStudentAPI()
     {
         try {
-            $usuarios = Usuario::select('id', 'nombre', 'apellidos', 'contrasena', 'email', 'fecha_nacimiento', 'activo', 'fecha_registro')->get();
+            $alumnos = Alumno::select('id', 'id_usuario', 'grado', 'curso', 'cv_url', 'disponibilidad', 'eliminado')->get();
 
-            if ($usuarios) {
+            if ($alumnos) {
                 $response = [
                     'response' => 200,
                     'success' => true,
                     'status' => 'ok',
-                    'message' => 'Usuario',
-                    'usuarios' => $usuarios
+                    'message' => 'Alumno',
+                    'alumnos' => $alumnos
                 ];
                 return response()->json($response, 200);
             } else {
@@ -28,43 +27,9 @@ class UsuarioController extends Controller
                     'response' => 404,
                     'success' => false,
                     'status' => 'error',
-                    'message' => 'No existe ningún usuario.'
+                    'message' => 'No existe ningún alumno.'
                 ];
                 return response()->json($response, 404);
-            }
-        } catch (\Illuminate\Validation\ValidationException $e) {
-            $response = [
-                'response' => 422,
-                'success' => false,
-                'status' => 'error',
-                'message' => 'Error de validación: ' . $e->getMessage()
-            ];
-            return response()->json($response, 422);
-        }
-
-    }
-
-    public function listUserByIdAPI($id)
-    {
-        try {
-            $usuario = Usuario::select('id', 'nombre', 'apellidos', 'contrasena', 'email', 'fecha_nacimiento', 'activo', 'fecha_registro')->where('id', $id)->first();
-
-            if (!$usuario) {
-                $response = [
-                    'response' => 404,
-                    'success' => false,
-                    'status' => 'error',
-                    'message' => 'El usuario no existe.'
-                ];
-                return response()->json($response, 404);
-            } else {
-                $response = [
-                    'response' => 200,
-                    'success' => true,
-                    'status' => 'ok',
-                    'usuario' => $usuario
-                ];
-                return response()->json($response, 200);
             }
 
         } catch (\Illuminate\Validation\ValidationException $e) {
@@ -78,41 +43,63 @@ class UsuarioController extends Controller
         }
     }
 
-    public function createUserAPI(Request $request)
+    public function listStudentByIdAPI($id)
+    {
+        try {
+            $alumno = Alumno::select('id', 'id_usuario', 'grado', 'curso', 'cv_url', 'disponibilidad', 'eliminado')->where('id', $id)->first();
+
+            if (!$alumno) {
+                $response = [
+                    'response' => 404,
+                    'success' => false,
+                    'status' => 'error',
+                    'message' => 'El alumno no existe.'
+                ];
+                return response()->json($response, 404);
+            } else {
+                $response = [
+                    'response' => 200,
+                    'success' => true,
+                    'status' => 'ok',
+                    'usuario' => $alumno
+                ];
+                return response()->json($response, 200);
+            }
+
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            $response = [
+                'response' => 422,
+                'success' => false,
+                'status' => 'error',
+                'message' => 'Error de validación: ' . $e->getMessage()
+            ];
+            return response()->json($response, 422);
+        }
+    }
+
+    public function createStudentAPI(Request $request)
     {
         try {
             $data = $request->validate([
-                'nombre' => 'required|string|max:50',
-                'apellidos' => 'required|string|max:100',
-                'contrasena' => 'required|string|max:255',
-                'email' => 'required|string|max:100',
-                'fecha_nacimiento' => 'required|date',
-                'activo' => 'boolean'
+                'grado' => 'required|string|max:100',
+                'curso' => 'required|string|max:20',
+                'cv_url' => 'required|string|max:255',
+                'disponibilidad' => 'required|boolean'
             ]);
 
-            $data['contrasena'] = Hash::make($data['contrasena']);
-            $data['api_token'] = Str::random(60);
+            $data['id_usuario'] = Auth::id();
+            $alumno = Alumno::create($data);
 
-            $usuario = Usuario::create($data);
-
-
-            if ($usuario) {
+            if ($alumno) {
                 $response = [
                     'response' => 201,
                     'success' => true,
                     'status' => 'ok',
-                    'message' => 'Usuario creado correctamente.',
-                    'token' => $usuario->api_token
+                    'message' => 'Se ha creado un alumno correctamente.'
                 ];
                 return response()->json($response, 201);
-            } else {
-                $response = [
-                    'response' => 400,
-                    'success' => false,
-                    'status' => 'error',
-                    'message' => 'Formato incorrecto.'
-                ];
             }
+
         } catch (\Illuminate\Validation\ValidationException $e) {
             $response = [
                 'response' => 422,
@@ -124,42 +111,38 @@ class UsuarioController extends Controller
         }
     }
 
-    public function updateUserAPI(Request $request, $id)
+    public function updateStudentAPI(Request $request, $id)
     {
         try {
+            $student = Alumno::find($id);
 
-            $usuario = Usuario::find($id);
-
-            if (!$usuario) {
+            if (!$student) {
                 $response = [
                     'response' => 404,
                     'success' => false,
                     'status' => 'error',
-                    'message' => 'El usuario no existe.'
+                    'message' => 'El alumno no existe.'
                 ];
                 return response()->json($response, 404);
             }
 
             $data = $request->validate([
-                'nombre' => 'required|string|max:50',
-                'apellidos' => 'required|string|max:100',
-                'contrasena' => 'required|string|max:255',
-                'email' => 'required|string|max:100',
-                'fecha_nacimiento' => 'required|date',
-                'activo' => 'boolean'
+                'grado' => 'required|string|max:100',
+                'curso' => 'required|string|max:20',
+                'cv_url' => 'required|string|max:255',
+                'disponibilidad' => 'required|boolean'
             ]);
 
-            $data['contrasena'] = Hash::make($data['contrasena']);
-
-            $usuario->update($data);
+            $data['id_usuario'] = Auth::id();
+            $student->update($data);
 
             $response = [
                 'response' => 200,
-                'success' => true,
-                'status' => 'ok',
-                'message' => 'El usuario se ha actualizado correctamente.'
+                'success' => false,
+                'status' => 'error',
+                'message' => 'El alumno se ha actualizado correctamente.'
             ];
-            return response($response, 200);
+            return response()->json($response, 200);
 
         } catch (\Illuminate\Validation\ValidationException $e) {
             $response = [
@@ -172,28 +155,28 @@ class UsuarioController extends Controller
         }
     }
 
-    public function deleteUserAPI($id)
+    public function deleteStudentAPI($id)
     {
         try {
-            $usuario = Usuario::where('id', $id)->first();
+            $student = Alumno::where('id', $id)->where('id_usuario', Auth::id())->first();
 
-            if (!$usuario) {
+            if (!$student) {
                 $response = [
                     'response' => 404,
                     'success' => false,
                     'status' => 'error',
-                    'message' => 'No existe el usuario.'
+                    'message' => 'No existe el alumno.'
                 ];
                 return response()->json($response, 404);
             }
 
-            $usuario->delete();
+            $student->delete();
 
             $response = [
                 'response' => 200,
                 'success' => true,
                 'status' => 'ok',
-                'message' => 'El usuario ha sido eliminado correctamente.'
+                'message' => 'El alumno ha sido eliminado correctamente.'
             ];
             return response()->json($response, 200);
 

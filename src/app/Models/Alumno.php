@@ -16,7 +16,7 @@ class Alumno extends Model
         'grado',
         'curso',
         'cv_url',
-        'disponiblidad',
+        'disponibilidad',
         'eliminado'
     ];
 }
