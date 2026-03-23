@@ -3,23 +3,23 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\Alumno;
+use App\Models\Empresa;
 use Illuminate\Support\Facades\Auth;
 
-class AlumnoController extends Controller
+class EmpresaController extends Controller
 {
-    public function listStudentAPI()
+    public function listCompanyAPI()
     {
         try {
-            $alumnos = Alumno::select('id', 'id_usuario', 'grado', 'curso', 'cv_url', 'disponibilidad', 'eliminado')->get();
+            $empresas = Empresa::select('id', 'id_usuario', 'nombre', 'descripcion', 'sector', 'direccion', 'web', 'activo')->get();
 
-            if ($alumnos) {
+            if ($empresas) {
                 $response = [
                     'response' => 200,
                     'success' => true,
                     'status' => 'ok',
-                    'message' => 'Alumno',
-                    'alumnos' => $alumnos
+                    'message' => 'Empresa',
+                    'empresas' => $empresas
                 ];
                 return response()->json($response, 200);
             } else {
@@ -27,11 +27,10 @@ class AlumnoController extends Controller
                     'response' => 404,
                     'success' => false,
                     'status' => 'error',
-                    'message' => 'No existe ningún alumno.'
+                    'message' => 'No existe ninguna empresa.'
                 ];
                 return response()->json($response, 404);
             }
-
         } catch (\Illuminate\Validation\ValidationException $e) {
             $response = [
                 'response' => 422,
@@ -43,17 +42,17 @@ class AlumnoController extends Controller
         }
     }
 
-    public function listStudentByIdAPI($id)
+    public function listCompanyByIdAPI($id)
     {
         try {
-            $alumno = Alumno::select('id', 'id_usuario', 'grado', 'curso', 'cv_url', 'disponibilidad', 'eliminado')->where('id', $id)->first();
+            $empresa = Empresa::select('id', 'id_usuario', 'nombre', 'descripcion', 'sector', 'direccion', 'web', 'activo')->where('id', $id)->first();
 
-            if (!$alumno) {
+            if (!$empresa) {
                 $response = [
                     'response' => 404,
                     'success' => false,
                     'status' => 'error',
-                    'message' => 'El alumno no existe.'
+                    'message' => 'La empresa no existe.'
                 ];
                 return response()->json($response, 404);
             } else {
@@ -61,11 +60,10 @@ class AlumnoController extends Controller
                     'response' => 200,
                     'success' => true,
                     'status' => 'ok',
-                    'alumno' => $alumno
+                    'empresa' => $empresa
                 ];
                 return response()->json($response, 200);
             }
-
         } catch (\Illuminate\Validation\ValidationException $e) {
             $response = [
                 'response' => 422,
@@ -77,25 +75,27 @@ class AlumnoController extends Controller
         }
     }
 
-    public function createStudentAPI(Request $request)
+    public function createCompanyAPI(Request $request)
     {
         try {
             $data = $request->validate([
-                'grado' => 'required|string|max:100',
-                'curso' => 'required|string|max:20',
-                'cv_url' => 'required|string|max:255',
-                'disponibilidad' => 'required|boolean'
+                'nombre' => 'required|string|max:100',
+                'descripcion' => 'required|string',
+                'sector' => 'required|string|max:50',
+                'direccion' => 'required|string|max:255',
+                'web' => 'required|string|max:100',
+                'activo' => 'required|boolean'
             ]);
 
             $data['id_usuario'] = Auth::id();
-            $alumno = Alumno::create($data);
+            $empresa = Empresa::create($data);
 
-            if ($alumno) {
+            if ($empresa) {
                 $response = [
                     'response' => 201,
                     'success' => true,
                     'status' => 'ok',
-                    'message' => 'Se ha creado el alumno correctamente.'
+                    'message' => 'Se ha creado la empresa correctamente.'
                 ];
                 return response()->json($response, 201);
             }
@@ -111,36 +111,38 @@ class AlumnoController extends Controller
         }
     }
 
-    public function updateStudentAPI(Request $request, $id)
+    public function updateCompanyAPI(Request $request, $id)
     {
         try {
-            $student = Alumno::find($id);
+            $company = Empresa::find($id);
 
-            if (!$student) {
+            if (!$company) {
                 $response = [
                     'response' => 404,
                     'success' => false,
                     'status' => 'error',
-                    'message' => 'El alumno no existe.'
+                    'message' => 'La empresa no existe'
                 ];
                 return response()->json($response, 404);
             }
 
             $data = $request->validate([
-                'grado' => 'required|string|max:100',
-                'curso' => 'required|string|max:20',
-                'cv_url' => 'required|string|max:255',
-                'disponibilidad' => 'required|boolean'
+                'nombre' => 'required|string|max:100',
+                'descripcion' => 'required|string',
+                'sector' => 'required|string|max:50',
+                'direccion' => 'required|string|max:255',
+                'web' => 'required|string|max:100',
+                'activo' => 'required|boolean'
             ]);
 
             $data['id_usuario'] = Auth::id();
-            $student->update($data);
+            $company->update($data);
 
             $response = [
                 'response' => 200,
-                'success' => false,
+                'success' => true,
                 'status' => 'ok',
-                'message' => 'El alumno se ha actualizado correctamente.'
+                'message' => 'La empresa se ha actualizado correctamente.'
             ];
             return response()->json($response, 200);
 
@@ -155,28 +157,28 @@ class AlumnoController extends Controller
         }
     }
 
-    public function deleteStudentAPI($id)
+    public function deleteCompanyAPI($id)
     {
         try {
-            $student = Alumno::where('id', $id)->where('id_usuario', Auth::id())->first();
+            $company = Empresa::where('id', $id)->where('id_usuario', Auth::id())->first();
 
-            if (!$student) {
+            if (!$company) {
                 $response = [
                     'response' => 404,
                     'success' => false,
                     'status' => 'error',
-                    'message' => 'No existe el alumno.'
+                    'message' => 'No existe la empresa.'
                 ];
                 return response()->json($response, 404);
             }
 
-            $student->delete();
+            $company->delete();
 
             $response = [
                 'response' => 200,
                 'success' => true,
                 'status' => 'ok',
-                'message' => 'El alumno ha sido eliminado correctamente.'
+                'message' => 'La empresa ha sido actualizado correctamente.'
             ];
             return response()->json($response, 200);
 
