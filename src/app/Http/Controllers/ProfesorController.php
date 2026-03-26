@@ -3,23 +3,23 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\Alumno;
+use App\Models\Profesor;
 use Illuminate\Support\Facades\Auth;
 
-class AlumnoController extends Controller
+class ProfesorController extends Controller
 {
-    public function listStudentAPI()
+    public function listTeacherAPI()
     {
         try {
-            $alumnos = Alumno::select('id', 'id_usuario', 'grado', 'curso', 'cv_url', 'disponibilidad', 'eliminado')->get();
+            $profesores = Profesor::select('id', 'id_usuario', 'departamento', 'telefono')->get();
 
-            if ($alumnos) {
+            if ($profesores) {
                 $response = [
                     'response' => 200,
                     'success' => true,
                     'status' => 'ok',
-                    'message' => 'Alumno',
-                    'alumnos' => $alumnos
+                    'message' => 'Profesor',
+                    'profesores' => $profesores
                 ];
                 return response()->json($response, 200);
             } else {
@@ -27,7 +27,7 @@ class AlumnoController extends Controller
                     'response' => 404,
                     'success' => false,
                     'status' => 'error',
-                    'message' => 'No existe ningún alumno.'
+                    'message' => 'No existe ningún profesor.'
                 ];
                 return response()->json($response, 404);
             }
@@ -43,17 +43,17 @@ class AlumnoController extends Controller
         }
     }
 
-    public function listStudentByIdAPI($id)
+    public function listTeacherByIdAPI($id)
     {
         try {
-            $alumno = Alumno::select('id', 'id_usuario', 'grado', 'curso', 'cv_url', 'disponibilidad', 'eliminado')->where('id', $id)->first();
+            $profesor = Profesor::select('id', 'id_usuario', 'departamento', 'telefono')->where('id', $id)->first();
 
-            if (!$alumno) {
+            if (!$profesor) {
                 $response = [
                     'response' => 404,
                     'success' => false,
                     'status' => 'error',
-                    'message' => 'El alumno no existe.'
+                    'message' => 'El profesor no existe.'
                 ];
                 return response()->json($response, 404);
             } else {
@@ -61,7 +61,7 @@ class AlumnoController extends Controller
                     'response' => 200,
                     'success' => true,
                     'status' => 'ok',
-                    'alumno' => $alumno
+                    'profesor' => $profesor
                 ];
                 return response()->json($response, 200);
             }
@@ -77,25 +77,23 @@ class AlumnoController extends Controller
         }
     }
 
-    public function createStudentAPI(Request $request)
+    public function createTeacherAPI(Request $request)
     {
         try {
             $data = $request->validate([
-                'grado' => 'required|string|max:100',
-                'curso' => 'required|string|max:20',
-                'cv_url' => 'required|string|max:255',
-                'disponibilidad' => 'required|boolean'
+                'departamento' => 'required|string|max:100',
+                'telefono' => 'required|string|max:20',
             ]);
 
             $data['id_usuario'] = Auth::id();
-            $alumno = Alumno::create($data);
+            $profesor = Profesor::create($data);
 
-            if ($alumno) {
+            if ($profesor) {
                 $response = [
                     'response' => 201,
                     'success' => true,
                     'status' => 'ok',
-                    'message' => 'Se ha creado el alumno correctamente.'
+                    'message' => 'Se ha creado el profesor correctamente.'
                 ];
                 return response()->json($response, 201);
             }
@@ -111,36 +109,34 @@ class AlumnoController extends Controller
         }
     }
 
-    public function updateStudentAPI(Request $request, $id)
+    public function updateTeacherAPI(Request $request, $id)
     {
         try {
-            $student = Alumno::find($id);
+            $profesor = Profesor::find($id);
 
-            if (!$student) {
+            if (!$profesor) {
                 $response = [
                     'response' => 404,
                     'success' => false,
                     'status' => 'error',
-                    'message' => 'El alumno no existe.'
+                    'message' => 'El profesor no existe.'
                 ];
                 return response()->json($response, 404);
             }
 
             $data = $request->validate([
-                'grado' => 'required|string|max:100',
-                'curso' => 'required|string|max:20',
-                'cv_url' => 'required|string|max:255',
-                'disponibilidad' => 'required|boolean'
+                'departamento' => 'required|string|max:100',
+                'telefono' => 'required|string|max:20',
             ]);
 
             $data['id_usuario'] = Auth::id();
-            $student->update($data);
+            $profesor->update($data);
 
             $response = [
                 'response' => 200,
                 'success' => true,
                 'status' => 'ok',
-                'message' => 'El alumno se ha actualizado correctamente.'
+                'message' => 'El profesor se ha actualizado correctamente.'
             ];
             return response()->json($response, 200);
 
@@ -155,28 +151,28 @@ class AlumnoController extends Controller
         }
     }
 
-    public function deleteStudentAPI($id)
+    public function deleteTeacherAPI($id)
     {
         try {
-            $student = Alumno::where('id', $id)->where('id_usuario', Auth::id())->first();
+            $profesor = Profesor::where('id', $id)->where('id_usuario', Auth::id())->first();
 
-            if (!$student) {
+            if (!$profesor) {
                 $response = [
                     'response' => 404,
                     'success' => false,
                     'status' => 'error',
-                    'message' => 'No existe el alumno.'
+                    'message' => 'No existe el profesor.'
                 ];
                 return response()->json($response, 404);
             }
 
-            $student->delete();
+            $profesor->delete();
 
             $response = [
                 'response' => 200,
                 'success' => true,
                 'status' => 'ok',
-                'message' => 'El alumno ha sido eliminado correctamente.'
+                'message' => 'El profesor ha sido eliminado correctamente.'
             ];
             return response()->json($response, 200);
 
@@ -189,5 +185,6 @@ class AlumnoController extends Controller
             ];
             return response()->json($response, 422);
         }
+
     }
 }
