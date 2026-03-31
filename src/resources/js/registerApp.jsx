@@ -8,11 +8,8 @@ export default function RegisterApp() {
     const [step, setStep] = useState(1); // estado en que paso estamos (1 => rol, 2 => formulario)
     const [role, setRole] = useState(null); // estado para saber el rol elegido
 
-    const handleNext = () => {
-        if (!role) {
-            alert("Selecciona un rol");
-            return;
-        }
+    const handleSelectRole = (selectedRole) => {
+        setRole(selectedRole.toLowerCase());
         setStep(2);
     };
 
@@ -23,10 +20,13 @@ export default function RegisterApp() {
     if (step === 1) {
         return (
             <div id="role">
-                <h1>¿Como vas a usar ConectaFP?</h1>
-                <RoleCard text={"Alumno"} image={""} image_alt={"Alumno"} />
-                <RoleCard text={"Profesor"} image={""} image_alt={"Profesor"} />
-                <RoleCard text={"Empresa"} image={""} image_alt={"Empresa"} />
+                <h1 className="title-conectafp">¿Cómo vas a usar ConectaFP?</h1>
+                <div id="role-cards">
+                    <RoleCard text={"Alumno"} class_name={"role-student"} image={"images/student.svg"} image_alt={"Alumno"} handle_next={() => handleSelectRole('alumno')} />
+                    <RoleCard text={"Profesor"}  class_name={"role-teacher"} image={"images/teacher.svg"} image_alt={"Profesor"} handle_next={() => handleSelectRole('profesor')} />
+                    <RoleCard text={"Empresa"}  class_name={"role-company"} image={"images/company.svg"} image_alt={"Empresa"} handle_next={() => handleSelectRole('empresa')} />
+                </div>
+                
             </div>
         );
     }

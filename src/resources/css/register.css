@@ -1,0 +1,53 @@
+body {
+    margin: 0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #f0f4f8;
+}
+
+.title-conectafp {
+    text-align: center;
+    color: #1e3a5f;
+}
+
+#role {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-height: 60vh;
+    justify-content: center;
+}
+
+#role-cards {
+    display: flex;
+    gap: 24px;
+}
+
+.role-student,
+.role-teacher,
+.role-company {
+    background-color: #ffffff;
+    border: 2px solid #b3d9f7;
+    border-radius: 16px;
+    padding: 40px 32px;
+    width: 180px;
+    text-align: center;
+    cursor: pointer;
+    box-shadow: 0 4px 12px rgba(59, 130, 246, 0.15);
+    transition: transform 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease;
+}
+
+.role-student:hover,
+.role-teacher:hover,
+.role-company:hover {
+    background-color: #e8f4fd;
+    box-shadow: 0 8px 24px rgba(59, 130, 246, 0.3);
+    transform: translateY(-4px);
+}
+
+.role-student h1,
+.role-teacher h1,
+.role-company h1 {
+    font-size: 1.2rem;
+    color: #1e3a5f;
+    margin: 0;
+}

@@ -1,10 +1,10 @@
 import React from "react";
 
-export default function roleCard({text, image, image_alt}) {
+export default function roleCard({text, class_name, image, image_alt, handle_next}) {
     return (
-        <div className="role">
+        <div className={class_name} onClick={handle_next}>
+            <img src={image} alt={image_alt} height="30" width="30"></img>
             <h1>{text}</h1>
-            <img src={image} alt={image_alt}></img>
         </div>
     )
 }

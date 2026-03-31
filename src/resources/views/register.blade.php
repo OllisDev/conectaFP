@@ -5,8 +5,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ConectaFP | Crear cuenta</title>
+    </link>
     @viteReactRefresh
-    @vite(['resources/js/app.jsx'])
+    @vite(['resources/css/register.css', 'resources/js/app.jsx'])
 </head>
 
 <body>
