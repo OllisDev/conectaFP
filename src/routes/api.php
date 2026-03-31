@@ -28,6 +28,7 @@ Route::delete('/usuario/{usuario}/eliminar', [UsuarioController::class, 'deleteU
 // rutas para la autenticación del alumno
 Route::get('/alumno', [AlumnoController::class, 'listStudentAPI'])->name('studentAPI.listStudent');
 Route::get('/alumno/{alumno}', [AlumnoController::class, 'listStudentByIdAPI'])->name('studentAPI.listStudent');
+Route::post('/alumno/register', [AlumnoController::class, 'registerStudentAPI'])->name('studentAPI.registerStudent');
 Route::middleware('auth:api')->post('/alumno/crear', [AlumnoController::class, 'createStudentAPI'])->name('studentAPI.createStudent');
 Route::middleware('auth:api')->put('/alumno/{alumno}', [AlumnoController::class, 'updateStudentAPI'])->name('studentAPI.updateStudent');
 Route::middleware('auth:api')->delete('/alumno/{alumno}', [AlumnoController::class, 'deleteStudentAPI'])->name('studentAPI.deleteStudent');
