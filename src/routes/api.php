@@ -43,6 +43,7 @@ Route::middleware('auth:api')->delete('/empresa/{empresa}', [EmpresaController::
 // rutas para la autenticación del profesor
 Route::get('/profesor', [ProfesorController::class, 'listTeacherAPI'])->name('teacherAPI.listTeacher');
 Route::get('/profesor/{profesor}', [ProfesorController::class, 'listTeacherByIdAPI'])->name('teacherAPI.listTeacherById');
+Route::post('/profesor/register', [ProfesorController::class, 'registerTeacherAPI'])->name('teacherAPI.registerTeacher');
 Route::middleware('auth:api')->post('/profesor/crear', [ProfesorController::class, 'createTeacherAPI'])->name('teacherAPI.createTeacher');
 Route::middleware('auth:api')->put('/profesor/{profesor}', [ProfesorController::class, 'updateTeacherAPI'])->name('teacherAPI.updateTeacher');
 Route::middleware('auth:api')->delete('/profesor/{profesor}', [ProfesorController::class, 'deleteTeacherAPI'])->name('teacherAPI.deleteTeacher');

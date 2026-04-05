@@ -201,9 +201,9 @@ class AlumnoController extends Controller
             $data = $request->validate([
                 'nombre' => 'required|string|max:50',
                 'apellidos' => 'required|string|max:100',
-                'contrasena' => 'required|string|max:255',
-                'email' => 'required|string|max:100',
-                'fecha_nacimiento' => 'required|date',
+                'contrasena' => 'required|string|min:8|max:255',
+                'email' => 'required|email|max:100|unique',
+                'fecha_nacimiento' => 'required|date|before:today',
                 'grado' => 'required|string|max:100',
                 'curso' => 'required|string|max:20',
                 'cv_url' => 'required|string|max:255',
