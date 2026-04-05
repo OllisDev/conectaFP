@@ -36,6 +36,7 @@ Route::middleware('auth:api')->delete('/alumno/{alumno}', [AlumnoController::cla
 // rutas para la autenticación de la empresa
 Route::get('/empresa', [EmpresaController::class, 'listCompanyAPI'])->name('companyAPI.listCompany');
 Route::get('/empresa/{empresa}', [EmpresaController::class, 'listCompanyByIdAPI'])->name('companyAPI.listCompanyById');
+Route::post('/empresa/register', [EmpresaController::class, 'registerCompanyAPI'])->name('companyAPI.registerCompany');
 Route::middleware('auth:api')->post('/empresa/crear', [EmpresaController::class, 'createCompanyAPI'])->name('companyAPI.createCompany');
 Route::middleware('auth:api')->put('/empresa/{empresa}', [EmpresaController::class, 'updateCompanyAPI'])->name('companyAPI.updateCompany');
 Route::middleware('auth:api')->delete('/empresa/{empresa}', [EmpresaController::class, 'deleteCompanyAPI'])->name('companyAPI.deleteCompany');
