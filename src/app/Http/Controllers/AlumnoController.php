@@ -15,7 +15,7 @@ class AlumnoController extends Controller
     public function listStudentAPI()
     {
         try {
-            $alumnos = Alumno::select('id', 'id_usuario', 'grado', 'curso', 'cv_url', 'disponibilidad', 'eliminado')->get();
+            $alumnos = Alumno::select('id', 'id_usuario', 'centro_educativo', 'grado', 'curso', 'dni', 'cv_url', 'disponibilidad', 'eliminado')->get();
 
             if ($alumnos) {
                 $response = [
@@ -50,7 +50,7 @@ class AlumnoController extends Controller
     public function listStudentByIdAPI($id)
     {
         try {
-            $alumno = Alumno::select('id', 'id_usuario', 'grado', 'curso', 'cv_url', 'disponibilidad', 'eliminado')->where('id', $id)->first();
+            $alumno = Alumno::select('id', 'id_usuario', 'centro_educativo', 'grado', 'curso', 'dni', 'cv_url', 'disponibilidad', 'eliminado')->where('id', $id)->first();
 
             if (!$alumno) {
                 $response = [
@@ -202,12 +202,13 @@ class AlumnoController extends Controller
                 'nombre' => 'required|string|max:50',
                 'apellidos' => 'required|string|max:100',
                 'contrasena' => 'required|string|min:8|max:255',
-                'email' => 'required|email|max:100|unique',
+                'email' => 'required|email|max:100|unique:usuario,email',
                 'fecha_nacimiento' => 'required|date|before:today',
+                'centro_educativo' => 'required|string|max:255',
                 'grado' => 'required|string|max:100',
                 'curso' => 'required|string|max:20',
-                'cv_url' => 'required|string|max:255',
-                'disponibilidad' => 'required|boolean',
+                'dni' => 'required|string|max:8',
+                'cv_url' => 'required|string|max:255'
             ], [
                 'nombre.required' => 'El nombre es obligatorio.',
                 'nombre.max' => 'El nombre no puede superar los 50 caracteres.',
@@ -221,11 +222,13 @@ class AlumnoController extends Controller
                 'fecha_nacimiento.required' => 'La fecha de nacimiento es obligatoria.',
                 'fecha_nacimiento.date' => 'El formato de la fecha no es válido.',
                 'fecha_nacimiento.before' => 'La fecha de nacimiento debe ser anterior a hoy.',
+                'centro_educativo.required' => 'El centro educativo es obligatorio.',
+                'centro_educativo.max:255' => 'El centro educativo no puede superar los 255 caracteres.',
                 'grado.required' => 'El grado es obligatorio.',
                 'curso.required' => 'El curso es obligatorio.',
-                'cv_url.required' => 'El CV es obligatorio.',
-                'disponibilidad.required' => 'La disponibilidad es obligatoria.',
-                'disponibilidad.boolean' => 'El valor de disponibilidad no es válido.'
+                'dni.required' => 'El DNI es obligatorio.',
+                'dni.max' => 'El DNI no puede superar los 8 dígitos.',
+                'cv_url.required' => 'El CV es obligatorio.'
             ]);
 
             $response = DB::transaction(function () use ($data) {
@@ -240,10 +243,11 @@ class AlumnoController extends Controller
 
                 Alumno::create([
                     'id_usuario' => $usuario->id,
+                    'centro_educativo' => $data['centro_educativo'],
                     'grado' => $data['grado'],
                     'curso' => $data['curso'],
-                    'cv_url' => $data['cv_url'],
-                    'disponibilidad' => $data['disponibilidad'],
+                    'dni' => $data['dni'],
+                    'cv_url' => $data['cv_url']
                 ]);
 
                 return response()->json([

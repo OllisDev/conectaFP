@@ -13,9 +13,11 @@ class Alumno extends Model
     public $timestamps = false;
     protected $fillable = [
         'id_usuario',
+        'centro_educativo',
         'grado',
         'curso',
         'cv_url',
+        'dni',
         'disponibilidad',
         'eliminado'
     ];

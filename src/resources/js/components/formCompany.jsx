@@ -6,10 +6,6 @@ export default function formCompany({ onBack }) {
                 <h1>Crear cuenta</h1>
                 <form>
                         <div className="form">
-                            <label htmlFor="name">Nombre de usuario:</label>
-                            <input type="text" id="name"></input>
-                        </div>
-                        <div className="form">
                             <label htmlFor="name-company">Nombre de la empresa:</label>
                             <input type="text" id="name-company"></input>
                         </div>

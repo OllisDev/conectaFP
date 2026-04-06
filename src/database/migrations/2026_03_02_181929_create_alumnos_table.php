@@ -13,8 +13,10 @@ return new class extends Migration {
         Schema::create('alumno', function (Blueprint $table) {
             $table->id();
             $table->foreignId('id_usuario')->constrained('usuario')->onDelete('cascade');
+            $table->string('centro_educativo', 255);
             $table->string('grado', 100);
             $table->string('curso', 20);
+            $table->string('dni', 20);
             $table->string('cv_url', 255);
             $table->boolean('disponibilidad')->default(1);
             $table->boolean('eliminado')->default(0);
