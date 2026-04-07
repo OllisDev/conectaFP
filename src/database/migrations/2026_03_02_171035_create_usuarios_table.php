@@ -16,7 +16,7 @@ return new class extends Migration {
             $table->string('apellidos', 100)->nullable(false);
             $table->string('contrasena', 255)->nullable(false);
             $table->string('email', 100)->nullable(false)->unique();
-            $table->date('fecha_nacimiento');
+            $table->string('telefono', 20)->nullable(false);
             $table->boolean('activo')->default(1);
             $table->timestamp('fecha_registro')->useCurrent();
             $table->string('api_token', 80)->unique()->nullable();

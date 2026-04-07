@@ -21,8 +21,18 @@ export default function formCompany({ onBack }) {
                         </div>
 
                         <div className="form">
+                            <label htmlFor="phone">Teléfono:</label>
+                            <input type="text" id="phone"></input>
+                        </div>
+
+                        <div className="form">
                             <label htmlFor="description">Descripción de la empresa:</label>
                             <textarea id="description"></textarea>
+                        </div>
+
+                        <div className="form">
+                            <label htmlFor="nif">NIF:</label>
+                            <input type="text" id="nif"></input>
                         </div>
 
                         <div className="form">

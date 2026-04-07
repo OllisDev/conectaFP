@@ -207,7 +207,7 @@ class AlumnoController extends Controller
                 'centro_educativo' => 'required|string|max:255',
                 'grado' => 'required|string|max:100',
                 'curso' => 'required|string|max:20',
-                'dni' => 'required|string|max:8',
+                'dni' => 'required|string|spanish_personal_id',
                 'cv_url' => 'required|string|max:255'
             ], [
                 'nombre.required' => 'El nombre es obligatorio.',
@@ -227,7 +227,7 @@ class AlumnoController extends Controller
                 'grado.required' => 'El grado es obligatorio.',
                 'curso.required' => 'El curso es obligatorio.',
                 'dni.required' => 'El DNI es obligatorio.',
-                'dni.max' => 'El DNI no puede superar los 8 dígitos.',
+                'dni.spanish_personal_id' => 'DNI incorrecto.',
                 'cv_url.required' => 'El CV es obligatorio.'
             ]);
 

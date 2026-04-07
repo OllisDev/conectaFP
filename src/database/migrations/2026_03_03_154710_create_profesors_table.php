@@ -13,8 +13,9 @@ return new class extends Migration {
         Schema::create('profesor', function (Blueprint $table) {
             $table->id();
             $table->foreignId('id_usuario')->constrained('usuario')->onDelete('cascade');
+            $table->foreignId('id_centro')->constrained('centro_educativo');
+            $table->string('dni', 20);
             $table->string('departamento', 100);
-            $table->string('telefono', 20);
             $table->boolean('eliminado')->default(0);
         });
     }
