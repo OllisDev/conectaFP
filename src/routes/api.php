@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AlumnoController;
+use App\Http\Controllers\CentroEducativoController;
 use App\Http\Controllers\EmpresaController;
 use App\Http\Controllers\ProfesorController;
 use Illuminate\Http\Request;
@@ -48,3 +49,7 @@ Route::post('/profesor/register', [ProfesorController::class, 'registerTeacherAP
 Route::middleware('auth:api')->post('/profesor/crear', [ProfesorController::class, 'createTeacherAPI'])->name('teacherAPI.createTeacher');
 Route::middleware('auth:api')->put('/profesor/{profesor}', [ProfesorController::class, 'updateTeacherAPI'])->name('teacherAPI.updateTeacher');
 Route::middleware('auth:api')->delete('/profesor/{profesor}', [ProfesorController::class, 'deleteTeacherAPI'])->name('teacherAPI.deleteTeacher');
+
+// rutas para los centros educativos
+Route::get('/centro', [CentroEducativoController::class, 'listSchoolAPI'])->name('schoolAPI.listSchool');
+Route::post('centro/crear', [CentroEducativoController::class, 'createSchoolAPI'])->name('schoolAPI.createSchool');
