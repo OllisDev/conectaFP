@@ -14,6 +14,7 @@ return new class extends Migration {
             $table->id();
             $table->foreignId('id_usuario')->constrained('usuario')->onDelete('cascade');
             $table->foreignId('id_centro')->constrained('centro_educativo');
+            $table->foreignId('id_grado')->constrained('grado');
             $table->date('fecha_nacimiento');
             $table->string('grado', 100);
             $table->string('curso', 20);

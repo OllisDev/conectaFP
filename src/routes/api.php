@@ -3,6 +3,7 @@
 use App\Http\Controllers\AlumnoController;
 use App\Http\Controllers\CentroEducativoController;
 use App\Http\Controllers\EmpresaController;
+use App\Http\Controllers\GradoController;
 use App\Http\Controllers\ProfesorController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -53,3 +54,7 @@ Route::middleware('auth:api')->delete('/profesor/{profesor}', [ProfesorControlle
 // rutas para los centros educativos
 Route::get('/centro', [CentroEducativoController::class, 'listSchoolAPI'])->name('schoolAPI.listSchool');
 Route::post('centro/crear', [CentroEducativoController::class, 'createSchoolAPI'])->name('schoolAPI.createSchool');
+
+// rutas para los grados
+Route::get('grado', [GradoController::class, 'listDegreeAPI'])->name('degreeAPI.listDegree');
+Route::post('grado/crear', [GradoController::class, 'createDegreeAPI'])->name('degreeAPI.createDegree');
