@@ -81,42 +81,6 @@ class AlumnoController extends Controller
         }
     }
 
-    public function deleteStudentAPI($id)
-    {
-        try {
-            $student = Alumno::where('id', $id)->where('id_usuario', Auth::id())->first();
-
-            if (!$student) {
-                $response = [
-                    'response' => 404,
-                    'success' => false,
-                    'status' => 'error',
-                    'message' => 'No existe el alumno.'
-                ];
-                return response()->json($response, 404);
-            }
-
-            $student->delete();
-
-            $response = [
-                'response' => 200,
-                'success' => true,
-                'status' => 'ok',
-                'message' => 'El alumno ha sido eliminado correctamente.'
-            ];
-            return response()->json($response, 200);
-
-        } catch (\Illuminate\Validation\ValidationException $e) {
-            $response = [
-                'response' => 422,
-                'success' => false,
-                'status' => 'error',
-                'message' => 'Error de validación: ' . $e->getMessage()
-            ];
-            return response()->json($response, 422);
-        }
-    }
-
     public function registerStudentAPI(Request $request)
     {
         try {
@@ -129,7 +93,7 @@ class AlumnoController extends Controller
                 'id_centro' => 'required|integer|exists:centro_educativo,id',
                 'id_grado' => 'required|integer|exists:grado,id',
                 'fecha_nacimiento' => 'required|date|before:today',
-                'curso' => 'required|string|max:20',
+                'curso' => 'required|in:1º,2º',
                 'dni' => 'required|string|spanish_personal_id',
                 'cv' => 'required|file|mimes:pdf|max:2048'
             ], [
@@ -152,6 +116,7 @@ class AlumnoController extends Controller
                 'fecha_nacimiento.date' => 'El formato de la fecha no es válido.',
                 'fecha_nacimiento.before' => 'La fecha de nacimiento debe ser anterior a hoy.',
                 'curso.required' => 'El curso es obligatorio.',
+                'curso.in' => 'El curso debe ser "1º" o "2º".',
                 'dni.required' => 'El DNI es obligatorio.',
                 'dni.spanish_personal_id' => 'DNI incorrecto.',
                 'cv.required' => 'El CV es obligatorio.'
@@ -169,6 +134,10 @@ class AlumnoController extends Controller
 
                 $cvPath = $request->file('cv')->store('cv', 'public');
 
+
+                if (!$cvPath) {
+                    throw new \Exception('Error al guardar el CV.');
+                }
 
                 Alumno::create([
                     'id_usuario' => $usuario->id,

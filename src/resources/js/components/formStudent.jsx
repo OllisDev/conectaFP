@@ -3,6 +3,87 @@ import React, { useEffect, useState } from "react";
 export default function formStudent({ onBack }) {
     const [centros, setCentros] = useState([]);
     const [grados, setGrados] = useState([]);
+    const [errors, setErrors] = useState([]);
+    const [success, setSuccess] = useState("");
+    const [form, setForm] = useState({
+        nombre: "",
+        apellidos: "",
+        contrasena: "",
+        email: "",
+        telefono: "",
+        id_centro: "",
+        id_grado: "",
+        curso: "",
+        dni: "",
+        fecha_nacimiento: "",
+        cv: null,
+    });
+
+    const handleChange = (e) => {
+        const { id, value, files } = e.target;
+        setForm((prev) => ({
+            ...prev,
+            [id]: files ? files[0] : value,
+        }));
+        setErrors({});
+    };
+
+    const validate = () => {
+        const newErrors = {};
+        if (!form.nombre) newErrors.nombre = "El nombre es obligatorio.";
+        if (!form.apellidos)
+            newErrors.apellidos = "Los apellidos son obligatorios.";
+        if (!form.contrasena || form.contrasena.length < 8)
+            newErrors.contrasena =
+                "La contraseña debe tener al menos 8 caracteres.";
+        if (!form.email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email))
+            newErrors.email = "El email no es válido.";
+        if (!form.telefono || !/^[6-9][0-9]{8}$/.test(form.telefono))
+            newErrors.telefono = "El teléfono no es válido.";
+        if (!form.id_centro)
+            newErrors.id_centro = "El centro educativo es obligatorio.";
+        if (!form.id_grado) newErrors.id_grado = "El grado es obligatorio.";
+        if (!form.fecha_nacimiento)
+            newErrors.fecha_nacimiento =
+                "La fecha de nacimiento es obligatoria.";
+        if (!form.dni) newErrors.dni = "El DNI es obligatorio.";
+        if (!form.cv) newErrors.cv = "El CV es obligatorio.";
+        return newErrors;
+    };
+
+    const handleSubmit = () => {
+        console.log("cv:", form.cv);
+        const validationErrors = validate();
+        if (Object.keys(validationErrors).length > 0) {
+            setErrors(validationErrors);
+            return;
+        }
+
+        const formData = new FormData();
+        Object.entries(form).forEach(([key, value]) => {
+            formData.append(key, value);
+        });
+
+        let url = "/api/alumno/register";
+
+        fetch(url, {
+            method: "POST",
+            body: formData,
+        })
+            .then((res) => res.json())
+            .then((data) => {
+                if (data.success) {
+                    setSuccess("Cuenta creada correctamente.");
+                    setErrors({});
+                } else {
+                    setErrors(data.message);
+                }
+            })
+            .catch((error) => {
+                alert("Error de conexión.");
+                console.log(error);
+            });
+    };
 
     useEffect(() => {
         let url = "/api/centro";
@@ -35,33 +116,54 @@ export default function formStudent({ onBack }) {
             <h1>Crear cuenta</h1>
             <form>
                 <div className="form">
-                    <label htmlFor="name">Nombre:</label>
-                    <input type="text" id="name"></input>
+                    <label htmlFor="nombre">Nombre:</label>
+                    <input
+                        type="text"
+                        id="nombre"
+                        onChange={handleChange}
+                    ></input>
                 </div>
 
                 <div className="form">
-                    <label htmlFor="last-name">Apellidos:</label>
-                    <input type="text" id="last-name"></input>
+                    <label htmlFor="apellidos">Apellidos:</label>
+                    <input
+                        type="text"
+                        id="apellidos"
+                        onChange={handleChange}
+                    ></input>
                 </div>
 
                 <div className="form">
-                    <label htmlFor="password">Contraseña:</label>
-                    <input type="password" id="password"></input>
+                    <label htmlFor="contrasena">Contraseña:</label>
+                    <input
+                        type="password"
+                        id="contrasena"
+                        onChange={handleChange}
+                    ></input>
                 </div>
 
                 <div className="form">
                     <label htmlFor="email">Email:</label>
-                    <input type="email" id="email"></input>
+                    <input
+                        type="email"
+                        id="email"
+                        onChange={handleChange}
+                    ></input>
                 </div>
 
                 <div className="form">
-                    <label htmlFor="phone">Teléfono:</label>
-                    <input type="text" id="phone"></input>
+                    <label htmlFor="telefono">Teléfono:</label>
+                    <input
+                        type="text"
+                        id="telefono"
+                        onChange={handleChange}
+                    ></input>
                 </div>
 
                 <div className="form">
-                    <label htmlFor="school">Centro educativo:</label>
-                    <select id="school" name="centro_educativo_id">
+                    <label htmlFor="id_centro">Centro educativo:</label>
+                    <select id="id_centro" onChange={handleChange}>
+                        <option value="">-- Selecciona un centro --</option>
                         {centros.map((centro) => (
                             <optgroup key={centro.id} label={centro.provincia}>
                                 <option key={centro.id} value={centro.id}>
@@ -73,8 +175,13 @@ export default function formStudent({ onBack }) {
                 </div>
 
                 <div className="form">
-                    <label htmlFor="degree">Grado:</label>
-                    <select id="degree" name="grado_id">
+                    <label htmlFor="id_grado">Grado:</label>
+                    <select
+                        id="id_grado"
+                        name="grado_id"
+                        onChange={handleChange}
+                    >
+                        <option value="">-- Selecciona un grado --</option>
                         {Object.entries(
                             grados.reduce((acc, grado) => {
                                 if (!acc[grado.familia_profesional])
@@ -93,20 +200,37 @@ export default function formStudent({ onBack }) {
                         ))}
                     </select>
                 </div>
+
                 <div className="form">
-                    <label htmlFor="curse">Curso:</label>
-                    <select id="curse">
-                        <option value="1">1º</option>
-                        <option value="2">2º</option>
+                    <label htmlFor="fecha_nacimiento">
+                        Fecha de nacimiento:
+                    </label>
+                    <input
+                        type="date"
+                        id="fecha_nacimiento"
+                        onChange={handleChange}
+                    ></input>
+                </div>
+
+                <div className="form">
+                    <label htmlFor="curso">Curso:</label>
+                    <select id="curso" onChange={handleChange}>
+                        <option value="1º">1º</option>
+                        <option value="2º">2º</option>
                     </select>
                 </div>
                 <div className="form">
                     <label htmlFor="dni">DNI:</label>
-                    <input type="text" id="dni"></input>
+                    <input type="text" id="dni" onChange={handleChange}></input>
                 </div>
                 <div className="form">
                     <label htmlFor="cv">CV:</label>
-                    <input type="file" id="cv"></input>
+                    <input
+                        type="file"
+                        id="cv"
+                        accept=".pdf"
+                        onChange={handleChange}
+                    ></input>
                 </div>
                 <div className="btn-group">
                     <input
@@ -119,12 +243,24 @@ export default function formStudent({ onBack }) {
                         type="button"
                         id="btnRegister"
                         value="Crear cuenta"
+                        onClick={handleSubmit}
                     ></input>
                 </div>
             </form>
             <p>
                 ¿Ya tienes cuenta?<a href="/login">Inicie sesión</a>
             </p>
+            {Object.keys(errors).length > 0 && (
+                <div className="error-box">
+                    <p>{Object.values(errors)[0]}</p>
+                </div>
+            )}
+
+            {success && (
+                <div className="success-box">
+                    <p>{success}</p>
+                </div>
+            )}
         </div>
     );
 }

@@ -16,7 +16,7 @@ return new class extends Migration {
             $table->foreignId('id_centro')->constrained('centro_educativo');
             $table->foreignId('id_grado')->constrained('grado');
             $table->date('fecha_nacimiento');
-            $table->string('curso', 20);
+            $table->enum('curso', ['1º', '2º']);
             $table->string('dni', 20);
             $table->string('cv', 255);
             $table->boolean('disponibilidad')->default(1);

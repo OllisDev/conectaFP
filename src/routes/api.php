@@ -24,7 +24,6 @@ Route::get('/login', function () {
 // rutas para la autenticación del usuario
 Route::get('/usuario', [UsuarioController::class, 'listUserAPI'])->name('userAPI.listUser');
 Route::get('/usuario/{usuario}', [UsuarioController::class, 'listUserByIdAPI'])->name('userAPI.listUserById');
-Route::post('/usuario/crear', [UsuarioController::class, 'createUserAPI'])->name('userAPI.createUser');
 Route::put('/usuario/{usuario}', [UsuarioController::class, 'updateUserAPI'])->name('userAPI.updateUser');
 Route::delete('/usuario/{usuario}/eliminar', [UsuarioController::class, 'deleteUserAPI'])->name('userAPI.deleteUser');
 
@@ -32,9 +31,7 @@ Route::delete('/usuario/{usuario}/eliminar', [UsuarioController::class, 'deleteU
 Route::get('/alumno', [AlumnoController::class, 'listStudentAPI'])->name('studentAPI.listStudent');
 Route::get('/alumno/{alumno}', [AlumnoController::class, 'listStudentByIdAPI'])->name('studentAPI.listStudent');
 Route::post('/alumno/register', [AlumnoController::class, 'registerStudentAPI'])->name('studentAPI.registerStudent');
-Route::middleware('auth:api')->post('/alumno/crear', [AlumnoController::class, 'createStudentAPI'])->name('studentAPI.createStudent');
 Route::middleware('auth:api')->put('/alumno/{alumno}', [AlumnoController::class, 'updateStudentAPI'])->name('studentAPI.updateStudent');
-Route::middleware('auth:api')->delete('/alumno/{alumno}', [AlumnoController::class, 'deleteStudentAPI'])->name('studentAPI.deleteStudent');
 
 // rutas para la autenticación de la empresa
 Route::get('/empresa', [EmpresaController::class, 'listCompanyAPI'])->name('companyAPI.listCompany');

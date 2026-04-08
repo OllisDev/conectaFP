@@ -12,7 +12,7 @@ class UsuarioController extends Controller
     public function listUserAPI()
     {
         try {
-            $usuarios = Usuario::select('id', 'nombre', 'apellidos', 'contrasena', 'email', 'fecha_nacimiento', 'activo', 'fecha_registro')->get();
+            $usuarios = Usuario::select('id', 'nombre', 'apellidos', 'contrasena', 'email', 'activo', 'fecha_registro')->get();
 
             if ($usuarios) {
                 $response = [
@@ -47,7 +47,7 @@ class UsuarioController extends Controller
     public function listUserByIdAPI($id)
     {
         try {
-            $usuario = Usuario::select('id', 'nombre', 'apellidos', 'contrasena', 'email', 'fecha_nacimiento', 'activo', 'fecha_registro')->where('id', $id)->first();
+            $usuario = Usuario::select('id', 'nombre', 'apellidos', 'contrasena', 'email', 'activo', 'fecha_registro')->where('id', $id)->first();
 
             if (!$usuario) {
                 $response = [
@@ -67,52 +67,6 @@ class UsuarioController extends Controller
                 return response()->json($response, 200);
             }
 
-        } catch (\Illuminate\Validation\ValidationException $e) {
-            $response = [
-                'response' => 422,
-                'success' => false,
-                'status' => 'error',
-                'message' => 'Error de validación: ' . $e->getMessage()
-            ];
-            return response()->json($response, 422);
-        }
-    }
-
-    public function createUserAPI(Request $request)
-    {
-        try {
-            $data = $request->validate([
-                'nombre' => 'required|string|max:50',
-                'apellidos' => 'required|string|max:100',
-                'contrasena' => 'required|string|max:255',
-                'email' => 'required|string|max:100',
-                'fecha_nacimiento' => 'required|date',
-                'activo' => 'boolean'
-            ]);
-
-            $data['contrasena'] = Hash::make($data['contrasena']);
-            $data['api_token'] = Str::random(60);
-
-            $usuario = Usuario::create($data);
-
-
-            if ($usuario) {
-                $response = [
-                    'response' => 201,
-                    'success' => true,
-                    'status' => 'ok',
-                    'message' => 'Usuario creado correctamente.',
-                    'token' => $usuario->api_token
-                ];
-                return response()->json($response, 201);
-            } else {
-                $response = [
-                    'response' => 400,
-                    'success' => false,
-                    'status' => 'error',
-                    'message' => 'Formato incorrecto.'
-                ];
-            }
         } catch (\Illuminate\Validation\ValidationException $e) {
             $response = [
                 'response' => 422,
