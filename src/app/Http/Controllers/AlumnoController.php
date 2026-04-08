@@ -15,7 +15,7 @@ class AlumnoController extends Controller
     public function listStudentAPI()
     {
         try {
-            $alumnos = Alumno::select('id', 'id_usuario', 'centro_educativo', 'grado', 'curso', 'dni', 'cv_url', 'disponibilidad', 'eliminado')->get();
+            $alumnos = Alumno::select('id', 'id_usuario', 'id_centro', 'id_grado', 'curso', 'dni', 'cv', 'disponibilidad')->get();
 
             if ($alumnos) {
                 $response = [
@@ -50,7 +50,7 @@ class AlumnoController extends Controller
     public function listStudentByIdAPI($id)
     {
         try {
-            $alumno = Alumno::select('id', 'id_usuario', 'centro_educativo', 'grado', 'curso', 'dni', 'cv_url', 'disponibilidad', 'eliminado')->where('id', $id)->first();
+            $alumno = Alumno::select('id', 'id_usuario', 'id_centro', 'id_grado', 'curso', 'dni', 'cv', 'disponibilidad')->where('id', $id)->first();
 
             if (!$alumno) {
                 $response = [
@@ -69,84 +69,6 @@ class AlumnoController extends Controller
                 ];
                 return response()->json($response, 200);
             }
-
-        } catch (\Illuminate\Validation\ValidationException $e) {
-            $response = [
-                'response' => 422,
-                'success' => false,
-                'status' => 'error',
-                'message' => 'Error de validación: ' . $e->getMessage()
-            ];
-            return response()->json($response, 422);
-        }
-    }
-
-    public function createStudentAPI(Request $request)
-    {
-        try {
-            $data = $request->validate([
-                'grado' => 'required|string|max:100',
-                'curso' => 'required|string|max:20',
-                'cv_url' => 'required|string|max:255',
-                'disponibilidad' => 'required|boolean'
-            ]);
-
-            $data['id_usuario'] = Auth::id();
-            $alumno = Alumno::create($data);
-
-            if ($alumno) {
-                $response = [
-                    'response' => 201,
-                    'success' => true,
-                    'status' => 'ok',
-                    'message' => 'Se ha creado el alumno correctamente.'
-                ];
-                return response()->json($response, 201);
-            }
-
-        } catch (\Illuminate\Validation\ValidationException $e) {
-            $response = [
-                'response' => 422,
-                'success' => false,
-                'status' => 'error',
-                'message' => 'Error de validación: ' . $e->getMessage()
-            ];
-            return response()->json($response, 422);
-        }
-    }
-
-    public function updateStudentAPI(Request $request, $id)
-    {
-        try {
-            $student = Alumno::find($id);
-
-            if (!$student) {
-                $response = [
-                    'response' => 404,
-                    'success' => false,
-                    'status' => 'error',
-                    'message' => 'El alumno no existe.'
-                ];
-                return response()->json($response, 404);
-            }
-
-            $data = $request->validate([
-                'grado' => 'required|string|max:100',
-                'curso' => 'required|string|max:20',
-                'cv_url' => 'required|string|max:255',
-                'disponibilidad' => 'required|boolean'
-            ]);
-
-            $data['id_usuario'] = Auth::id();
-            $student->update($data);
-
-            $response = [
-                'response' => 200,
-                'success' => true,
-                'status' => 'ok',
-                'message' => 'El alumno se ha actualizado correctamente.'
-            ];
-            return response()->json($response, 200);
 
         } catch (\Illuminate\Validation\ValidationException $e) {
             $response = [
@@ -203,12 +125,13 @@ class AlumnoController extends Controller
                 'apellidos' => 'required|string|max:100',
                 'contrasena' => 'required|string|min:8|max:255',
                 'email' => 'required|email|max:100|unique:usuario,email',
+                'telefono' => 'required|string|regex:/^[6-9][0-9]{8}$/',
+                'id_centro' => 'required|integer|exists:centro_educativo,id',
+                'id_grado' => 'required|integer|exists:grado,id',
                 'fecha_nacimiento' => 'required|date|before:today',
-                'centro_educativo' => 'required|string|max:255',
-                'grado' => 'required|string|max:100',
                 'curso' => 'required|string|max:20',
                 'dni' => 'required|string|spanish_personal_id',
-                'cv_url' => 'required|string|max:255'
+                'cv' => 'required|file|mimes:pdf|max:2048'
             ], [
                 'nombre.required' => 'El nombre es obligatorio.',
                 'nombre.max' => 'El nombre no puede superar los 50 caracteres.',
@@ -219,35 +142,42 @@ class AlumnoController extends Controller
                 'email.required' => 'El email es obligatorio.',
                 'email.email' => 'El formato del email no es válido.',
                 'email.unique' => 'Este email ya está registrado.',
+                'telefono.required' => 'El teléfono es obligatorio.',
+                'telefono.regex' => 'El teléfono no es válido.',
+                'id_centro.required' => 'El centro educativo es obligatorio.',
+                'id_centro.exists' => 'El centro educativo no existe.',
+                'id_grado.required' => 'El grado es obligatorio.',
+                'id_grado.exists' => 'El grado no existe.',
                 'fecha_nacimiento.required' => 'La fecha de nacimiento es obligatoria.',
                 'fecha_nacimiento.date' => 'El formato de la fecha no es válido.',
                 'fecha_nacimiento.before' => 'La fecha de nacimiento debe ser anterior a hoy.',
-                'centro_educativo.required' => 'El centro educativo es obligatorio.',
-                'centro_educativo.max:255' => 'El centro educativo no puede superar los 255 caracteres.',
-                'grado.required' => 'El grado es obligatorio.',
                 'curso.required' => 'El curso es obligatorio.',
                 'dni.required' => 'El DNI es obligatorio.',
                 'dni.spanish_personal_id' => 'DNI incorrecto.',
-                'cv_url.required' => 'El CV es obligatorio.'
+                'cv.required' => 'El CV es obligatorio.'
             ]);
 
-            $response = DB::transaction(function () use ($data) {
+            $response = DB::transaction(function () use ($data, $request) {
                 $usuario = Usuario::create([
                     'nombre' => $data['nombre'],
                     'apellidos' => $data['apellidos'],
                     'contrasena' => Hash::make($data['contrasena']),
                     'email' => $data['email'],
-                    'fecha_nacimiento' => $data['fecha_nacimiento'],
+                    'telefono' => $data['telefono'],
                     'api_token' => Str::random(60),
                 ]);
 
+                $cvPath = $request->file('cv')->store('cv', 'public');
+
+
                 Alumno::create([
                     'id_usuario' => $usuario->id,
-                    'centro_educativo' => $data['centro_educativo'],
-                    'grado' => $data['grado'],
+                    'id_centro' => $data['id_centro'],
+                    'id_grado' => $data['id_grado'],
+                    'fecha_nacimiento' => $data['fecha_nacimiento'],
                     'curso' => $data['curso'],
                     'dni' => $data['dni'],
-                    'cv_url' => $data['cv_url']
+                    'cv' => $cvPath
                 ]);
 
                 return response()->json([

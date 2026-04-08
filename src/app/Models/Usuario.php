@@ -16,7 +16,7 @@ class Usuario extends Authenticatable
         'apellidos',
         'contrasena',
         'email',
-        'fecha_nacimiento',
+        'telefono',
         'activo',
         'fecha_registro',
         'api_token'
