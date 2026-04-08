@@ -5,6 +5,7 @@ use App\Http\Controllers\CentroEducativoController;
 use App\Http\Controllers\EmpresaController;
 use App\Http\Controllers\GradoController;
 use App\Http\Controllers\ProfesorController;
+use App\Http\Controllers\SectorController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UsuarioController;
@@ -42,6 +43,11 @@ Route::post('/empresa/register', [EmpresaController::class, 'registerCompanyAPI'
 Route::middleware('auth:api')->post('/empresa/crear', [EmpresaController::class, 'createCompanyAPI'])->name('companyAPI.createCompany');
 Route::middleware('auth:api')->put('/empresa/{empresa}', [EmpresaController::class, 'updateCompanyAPI'])->name('companyAPI.updateCompany');
 Route::middleware('auth:api')->delete('/empresa/{empresa}', [EmpresaController::class, 'deleteCompanyAPI'])->name('companyAPI.deleteCompany');
+
+// rutas para los sectores de la empresa
+Route::get('/sector', [SectorController::class, 'listSectorAPI'])->name('sectorAPI.listSector');
+Route::post('/sector/crear', [SectorController::class, 'createSectorAPI'])->name('sectorAPI.createSector');
+
 
 // rutas para la autenticación del profesor
 Route::get('/profesor', [ProfesorController::class, 'listTeacherAPI'])->name('teacherAPI.listTeacher');
