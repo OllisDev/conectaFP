@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AlumnoController;
 use App\Http\Controllers\CentroEducativoController;
+use App\Http\Controllers\DepartamentoController;
 use App\Http\Controllers\EmpresaController;
 use App\Http\Controllers\GradoController;
 use App\Http\Controllers\ProfesorController;
@@ -31,28 +32,24 @@ Route::delete('/usuario/{usuario}/eliminar', [UsuarioController::class, 'deleteU
 Route::get('/alumno', [AlumnoController::class, 'listStudentAPI'])->name('studentAPI.listStudent');
 Route::get('/alumno/{alumno}', [AlumnoController::class, 'listStudentByIdAPI'])->name('studentAPI.listStudent');
 Route::post('/alumno/register', [AlumnoController::class, 'registerStudentAPI'])->name('studentAPI.registerStudent');
-Route::middleware('auth:api')->put('/alumno/{alumno}', [AlumnoController::class, 'updateStudentAPI'])->name('studentAPI.updateStudent');
 
 // rutas para la autenticación de la empresa
 Route::get('/empresa', [EmpresaController::class, 'listCompanyAPI'])->name('companyAPI.listCompany');
 Route::get('/empresa/{empresa}', [EmpresaController::class, 'listCompanyByIdAPI'])->name('companyAPI.listCompanyById');
 Route::post('/empresa/register', [EmpresaController::class, 'registerCompanyAPI'])->name('companyAPI.registerCompany');
-Route::middleware('auth:api')->post('/empresa/crear', [EmpresaController::class, 'createCompanyAPI'])->name('companyAPI.createCompany');
-Route::middleware('auth:api')->put('/empresa/{empresa}', [EmpresaController::class, 'updateCompanyAPI'])->name('companyAPI.updateCompany');
-Route::middleware('auth:api')->delete('/empresa/{empresa}', [EmpresaController::class, 'deleteCompanyAPI'])->name('companyAPI.deleteCompany');
 
 // rutas para los sectores de la empresa
 Route::get('/sector', [SectorController::class, 'listSectorAPI'])->name('sectorAPI.listSector');
 Route::post('/sector/crear', [SectorController::class, 'createSectorAPI'])->name('sectorAPI.createSector');
 
-
 // rutas para la autenticación del profesor
 Route::get('/profesor', [ProfesorController::class, 'listTeacherAPI'])->name('teacherAPI.listTeacher');
 Route::get('/profesor/{profesor}', [ProfesorController::class, 'listTeacherByIdAPI'])->name('teacherAPI.listTeacherById');
 Route::post('/profesor/register', [ProfesorController::class, 'registerTeacherAPI'])->name('teacherAPI.registerTeacher');
-Route::middleware('auth:api')->post('/profesor/crear', [ProfesorController::class, 'createTeacherAPI'])->name('teacherAPI.createTeacher');
-Route::middleware('auth:api')->put('/profesor/{profesor}', [ProfesorController::class, 'updateTeacherAPI'])->name('teacherAPI.updateTeacher');
-Route::middleware('auth:api')->delete('/profesor/{profesor}', [ProfesorController::class, 'deleteTeacherAPI'])->name('teacherAPI.deleteTeacher');
+
+// rutas para los departamentos de cada profesor
+Route::get('/departamento', [DepartamentoController::class, 'listDepartmentAPI'])->name('listDepartment');
+Route::post('/departamento/crear', [DepartamentoController::class, 'createDepartmentAPI'])->name('createDepartment');
 
 // rutas para los centros educativos
 Route::get('/centro', [CentroEducativoController::class, 'listSchoolAPI'])->name('schoolAPI.listSchool');

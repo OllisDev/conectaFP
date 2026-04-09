@@ -14,8 +14,9 @@ return new class extends Migration {
             $table->id();
             $table->foreignId('id_usuario')->constrained('usuario')->onDelete('cascade');
             $table->foreignId('id_centro')->constrained('centro_educativo');
+            $table->foreignId('id_grado')->constrained('grado');
+            $table->foreignId('id_departamento')->constrained('departamento');
             $table->string('dni', 20);
-            $table->string('departamento', 100);
             $table->boolean('eliminado')->default(0);
         });
     }

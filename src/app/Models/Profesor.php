@@ -13,8 +13,10 @@ class Profesor extends Model
     public $timestamps = false;
     protected $fillable = [
         'id_usuario',
-        'departamento',
-        'telefono',
+        'id_centro',
+        'id_grado',
+        'id_departamento',
+        'dni',
         'eliminado'
     ];
 }

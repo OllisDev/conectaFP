@@ -46,9 +46,31 @@ export default function formStudent({ onBack }) {
         if (!form.fecha_nacimiento)
             newErrors.fecha_nacimiento =
                 "La fecha de nacimiento es obligatoria.";
-        if (!form.dni) newErrors.dni = "El DNI es obligatorio.";
+        if (!form.dni || !validateSpanishId(form.dni))
+            newErrors.dni = "DNI incorrecto.";
         if (!form.cv) newErrors.cv = "El CV es obligatorio.";
         return newErrors;
+    };
+
+    const validateSpanishId = (id) => {
+        const dniRegex = /^[0-9]{8}[A-Z]$/i;
+        const nieRegex = /^[XYZ][0-9]{7}[A-Z]$/i;
+        const letters = "TRWAGMYFPDXBNJZSQVHLCKE";
+
+        const str = id.toUpperCase();
+
+        if (dniRegex.test(str)) {
+            const num = parseInt(str.slice(0, 8), 10);
+            return str[8] === letters[num % 23];
+        }
+
+        if (nieRegex.test(str)) {
+            const niePrefix = { X: "0", Y: "1", Z: "2" };
+            const num = parseInt(niePrefix[str[0]] + str.slice(1, 8), 10);
+            return str[8] === letters[num % 23];
+        }
+
+        return false;
     };
 
     const handleSubmit = () => {
