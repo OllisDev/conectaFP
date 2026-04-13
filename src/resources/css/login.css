@@ -1,0 +1,107 @@
+body {
+    margin: 0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #F2F2F2;
+    min-height: 100vh;
+}
+
+main {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+}
+
+#form-login {
+    background-color: #ffffff;
+    border: 2px solid #b3d9f7;
+    border-radius: 16px;
+    box-shadow: 0 4px 12px rgba(59, 130, 246, 0.15);
+    width: 100%;
+    max-width: 480px;
+    padding: 40px 36px;
+}
+
+#form-login h1 {
+    color: #1e3a5f;
+    text-align: center;
+    margin-top: 0;
+    margin-bottom: 28px;
+    font-size: 1.6rem;
+}
+
+
+.form {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    margin-bottom: 16px;
+}
+
+.form label {
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: #1e3a5f;
+}
+
+.form input[type="text"],
+.form input[type="password"],
+.form input[type="email"] {
+    padding: 10px 12px;
+    border: 2px solid #b3d9f7;
+    border-radius: 8px;
+    background-color: #F2F2F2;
+    color: #1e3a5f;
+    font-family: inherit;
+    font-size: 0.95rem;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    outline: none;
+}
+
+.form input[type="text"]:focus,
+.form input[type="password"]:focus,
+.form input[type="email"]:focus {
+    border-color: #1e3a5f;
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.15);
+}
+
+
+#btnLogin {
+    width: 100%;
+    margin-top: 24px;
+    padding: 10px 0;
+    border: 2px solid #1e3a5f;
+    border-radius: 8px;
+    background-color: #1e3a5f;
+    color: #ffffff;
+    font-family: inherit;
+    font-size: 0.95rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
+}
+
+#btnLogin:hover {
+    background-color: #16304f;
+    box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+    transform: translateY(-2px);
+}
+
+
+#form-login p {
+    text-align: center;
+    margin-top: 20px;
+    color: #1e3a5f;
+    font-size: 0.9rem;
+}
+
+#form-login p a {
+    color: #1e3a5f;
+    font-weight: 600;
+    margin-left: 4px;
+    text-decoration: underline;
+}
+
+#form-login p a:hover {
+    color: rgba(59, 130, 246, 0.8);
+}

@@ -78,6 +78,63 @@ class UsuarioController extends Controller
         }
     }
 
+    public function loginUserAPI(Request $request)
+    {
+        try {
+            $data = $request->validate([
+                'email' => 'required|email|lowercase|max:100',
+                'contrasena' => 'required|string|min:8|max:255',
+            ], [
+                'email.required' => 'El email es obligatorio.',
+                'email.email' => 'El formato del email no es válido.',
+                'email.lowercase' => 'El email debe estar en minúsculas.',
+                'contrasena.required' => 'La contraseña es obligatoria.',
+                'contrasena.min' => 'La contraseña debe tener al menos 8 caracteres.',
+                'contrasena.max' => 'La contraseña debe tener menos de 255 caracteres.'
+            ]);
+
+            $usuario = Usuario::where('email', $data['email'])->first();
+
+            if (!$usuario || !Hash::check($data['contrasena'], $usuario->contrasena)) {
+                $response = [
+                    'response' => 401,
+                    'success' => false,
+                    'status' => 'error',
+                    'message' => 'Credenciales incorrectas.'
+                ];
+                return response()->json($response, 401);
+            }
+
+            if (!$usuario->activo) {
+                $response = [
+                    'response' => 403,
+                    'success' => false,
+                    'status' => 'error',
+                    'message' => 'La cuenta está desactivada.'
+                ];
+                return response()->json($response, 403);
+            }
+
+            $response = [
+                'response' => 200,
+                'success' => true,
+                'status' => 'ok',
+                'message' => 'Inicio de sesión correcto.',
+                'api_token' => $usuario->api_token
+            ];
+            return response()->json($response, 200);
+
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            $response = [
+                'response' => 400,
+                'success' => false,
+                'status' => 'error',
+                'message' => $e->errors()
+            ];
+            return response()->json($response, 422);
+        }
+    }
+
     public function updateUserAPI(Request $request, $id)
     {
         try {
