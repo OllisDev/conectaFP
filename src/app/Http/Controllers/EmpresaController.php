@@ -17,24 +17,25 @@ class EmpresaController extends Controller
         try {
             $empresas = Empresa::select('id', 'id_usuario', 'id_sector', 'nif', 'descripcion', 'direccion', 'web', 'activo')->get();
 
-            if ($empresas) {
+            if ($empresas->isEmpty()) {
+                $response = [
+                    'response' => 404,
+                    'success' => false,
+                    'status' => 'error',
+                    'message' => 'No existe ningún alumno.'
+                ];
+                return response()->json($response, 404);
+            } else {
                 $response = [
                     'response' => 200,
                     'success' => true,
                     'status' => 'ok',
                     'message' => 'Empresa',
-                    'empresas' => $empresas
+                    'alumnos' => $empresas
                 ];
                 return response()->json($response, 200);
-            } else {
-                $response = [
-                    'response' => 404,
-                    'success' => false,
-                    'status' => 'error',
-                    'message' => 'No existe ninguna empresa.'
-                ];
-                return response()->json($response, 404);
             }
+
         } catch (\Illuminate\Validation\ValidationException $e) {
             $response = [
                 'response' => 422,
@@ -50,6 +51,16 @@ class EmpresaController extends Controller
     {
         try {
             $empresa = Empresa::select('id', 'id_usuario', 'id_sector', 'nif', 'descripcion', 'direccion', 'web', 'activo')->where('id', $id)->first();
+
+            if (!is_numeric($id) || (int) $id <= 0) {
+                $response = [
+                    'response' => 400,
+                    'success' => false,
+                    'status' => 'error',
+                    'message' => 'El ID proporcionado no es válido.'
+                ];
+                return response()->json($response, 400);
+            }
 
             if (!$empresa) {
                 $response = [

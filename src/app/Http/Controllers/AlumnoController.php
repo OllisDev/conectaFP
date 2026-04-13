@@ -17,7 +17,15 @@ class AlumnoController extends Controller
         try {
             $alumnos = Alumno::select('id', 'id_usuario', 'id_centro', 'id_grado', 'curso', 'dni', 'cv', 'disponibilidad')->get();
 
-            if ($alumnos) {
+            if ($alumnos->isEmpty()) {
+                $response = [
+                    'response' => 404,
+                    'success' => false,
+                    'status' => 'error',
+                    'message' => 'No existe ningún alumno.'
+                ];
+                return response()->json($response, 404);
+            } else {
                 $response = [
                     'response' => 200,
                     'success' => true,
@@ -26,14 +34,6 @@ class AlumnoController extends Controller
                     'alumnos' => $alumnos
                 ];
                 return response()->json($response, 200);
-            } else {
-                $response = [
-                    'response' => 404,
-                    'success' => false,
-                    'status' => 'error',
-                    'message' => 'No existe ningún alumno.'
-                ];
-                return response()->json($response, 404);
             }
 
         } catch (\Illuminate\Validation\ValidationException $e) {
@@ -51,6 +51,16 @@ class AlumnoController extends Controller
     {
         try {
             $alumno = Alumno::select('id', 'id_usuario', 'id_centro', 'id_grado', 'curso', 'dni', 'cv', 'disponibilidad')->where('id', $id)->first();
+
+            if (!is_numeric($id) || (int) $id <= 0) {
+                $response = [
+                    'response' => 400,
+                    'success' => false,
+                    'status' => 'error',
+                    'message' => 'El ID proporcionado no es válido.'
+                ];
+                return response()->json($response, 400);
+            }
 
             if (!$alumno) {
                 $response = [
@@ -99,7 +109,7 @@ class AlumnoController extends Controller
                 ],
                 'email' => 'required|email|lowercase|max:100|unique:usuario,email',
                 'telefono' => 'required|string|regex:/^[6-9][0-9]{8}$/|unique:usuario,telefono',
-                'id_centro' => 'required|integer|min:1|exists:centro,id',
+                'id_centro' => 'required|integer|min:1|exists:centro_educativo,id',
                 'id_grado' => 'required|integer|min:1|exists:grado,id',
                 'fecha_nacimiento' => 'required|date|before:' . now()->subYears(16)->toDateString() . '|after:1900-01-01',
                 'curso' => 'required|in:1º,2º',
