@@ -85,41 +85,69 @@ class AlumnoController extends Controller
     {
         try {
             $data = $request->validate([
-                'nombre' => 'required|string|max:50',
-                'apellidos' => 'required|string|max:100',
-                'contrasena' => 'required|string|min:8|max:255',
-                'email' => 'required|email|max:100|unique:usuario,email',
-                'telefono' => 'required|string|regex:/^[6-9][0-9]{8}$/',
-                'id_centro' => 'required|integer|exists:centro_educativo,id',
-                'id_grado' => 'required|integer|exists:grado,id',
-                'fecha_nacimiento' => 'required|date|before:today',
+                'nombre' => 'required|string|min:2|max:50|regex:/^[\p{L}\s\-\']+$/u',
+                'apellidos' => 'required|string|min:2|max:100|regex:/^[\p{L}\s\-\']+$/u',
+                'contrasena' => [
+                    'required',
+                    'string',
+                    'min:8',
+                    'max:255',
+                    \Illuminate\Validation\Rules\Password::min(8)
+                        ->mixedCase()
+                        ->numbers()
+                        ->symbols()
+                ],
+                'email' => 'required|email|lowercase|max:100|unique:usuario,email',
+                'telefono' => 'required|string|regex:/^[6-9][0-9]{8}$/|unique:usuario,telefono',
+                'id_centro' => 'required|integer|min:1|exists:centro,id',
+                'id_grado' => 'required|integer|min:1|exists:grado,id',
+                'fecha_nacimiento' => 'required|date|before:' . now()->subYears(16)->toDateString() . '|after:1900-01-01',
                 'curso' => 'required|in:1º,2º',
-                'dni' => 'required|string|spanish_personal_id',
-                'cv' => 'required|file|mimes:pdf|max:2048'
+                'dni' => 'required|string|size:9|regex:/^[0-9]{8}[A-Za-z]$/|spanish_personal_id|unique:alumno,dni',
+                'cv' => 'required|file|mimes:pdf|mimetypes:application/pdf|max:2048'
             ], [
                 'nombre.required' => 'El nombre es obligatorio.',
                 'nombre.max' => 'El nombre no puede superar los 50 caracteres.',
+                'nombre.min' => 'El nombre debe tener al menos 2 caracteres.',
+                'nombre.regex' => 'El nombre solo puede contener letras, espacios, guiones y apóstrofes.',
                 'apellidos.required' => 'Los apellidos son obligatorios.',
                 'apellidos.max' => 'Los apellidos no pueden superar los 100 caracteres.',
+                'apellidos.min' => 'Los apellidos deben tener al menos 2 caracteres.',
+                'apellidos.regex' => 'Los apellidos solo pueden contener letras, espacios, guiones y apóstrofes.',
                 'contrasena.required' => 'La contraseña es obligatoria.',
                 'contrasena.min' => 'La contraseña debe tener al menos 8 caracteres.',
+                'contrasena.max' => 'La contraseña no puede superar los 255 caracteres.',
+                'contrasena.password' => 'La contraseña debe contener mayúsculas, minúsculas, números y símbolos.',
                 'email.required' => 'El email es obligatorio.',
                 'email.email' => 'El formato del email no es válido.',
-                'email.unique' => 'Este email ya está registrado.',
+                'email.unique' => 'Este email ya está registrado con otra cuenta.',
+                'email.max' => 'El email no puede superar los 100 caracteres.',
+                'email.lowercase' => 'El email debe estar en minúsculas.',
                 'telefono.required' => 'El teléfono es obligatorio.',
                 'telefono.regex' => 'El teléfono no es válido.',
+                'telefono.unique' => 'El teléfono ya está registrado con otra cuenta.',
                 'id_centro.required' => 'El centro educativo es obligatorio.',
                 'id_centro.exists' => 'El centro educativo no existe.',
+                'id_centro.integer' => 'El identificador del centro debe ser un número entero.',
                 'id_grado.required' => 'El grado es obligatorio.',
                 'id_grado.exists' => 'El grado no existe.',
+                'id_grado.integer' => 'El identificador del grado debe ser un número entero.',
                 'fecha_nacimiento.required' => 'La fecha de nacimiento es obligatoria.',
                 'fecha_nacimiento.date' => 'El formato de la fecha no es válido.',
-                'fecha_nacimiento.before' => 'La fecha de nacimiento debe ser anterior a hoy.',
+                'fecha_nacimiento.after' => 'La fecha de nacimeinto no puede ser antes de 1900.',
+                'fecha_nacimiento.before' => 'La edad debe ser mayor a 16 años.',
                 'curso.required' => 'El curso es obligatorio.',
                 'curso.in' => 'El curso debe ser "1º" o "2º".',
                 'dni.required' => 'El DNI es obligatorio.',
+                'dni.size' => 'El DNI debe tener 9 caractéres.',
+                'dni.regex' => 'El formato del DNI no es valido.',
                 'dni.spanish_personal_id' => 'DNI incorrecto.',
-                'cv.required' => 'El CV es obligatorio.'
+                'dni.unique' => 'El DNI está registrado con otra cuenta.',
+                'cv.required' => 'El CV es obligatorio.',
+                'cv.file' => 'El CV debe ser un archivo.',
+                'cv.mimes' => 'El CV debe ser un archivo PDF.',
+                'cv.mimetypes' => 'El formato de CV no es válido.',
+                'cv.max' => 'El CV no puede superar los 2MB.',
             ]);
 
             $response = DB::transaction(function () use ($data, $request) {

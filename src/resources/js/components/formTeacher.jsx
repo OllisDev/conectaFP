@@ -29,23 +29,99 @@ export default function formTeacher({ onBack }) {
 
     const validate = () => {
         const newErrors = {};
-        if (!form.nombre) newErrors.nombre = "El nombre es obligatorio.";
-        if (!form.apellidos)
+        // validaciones para el campo "nombre"
+        if (!form.nombre) {
+            newErrors.nombre = "El nombre es obligatorio.";
+        } else if (form.nombre.length < 2) {
+            newErrors.nombre = "El nombre debe tener al menos 2 caracteres.";
+        } else if (form.nombre.length > 50) {
+            newErrors.nombre = "El nombre no puede superar los 50 caracteres.";
+        } else if (!/^[\p{L}\s\-']+$/u.test(form.nombre)) {
+            newErrors.nombre =
+                "El nombre solo puede contener letras, espacios, guiones y apóstrofes.";
+        }
+
+        // validaciones para el campo "apellidos"
+        if (!form.apellidos) {
             newErrors.apellidos = "Los apellidos son obligatorios.";
-        if (!form.contrasena || form.contrasena.length < 8)
+        } else if (form.apellidos.length < 2) {
+            newErrors.apellidos =
+                "Los apellidos deben tener al menos 2 caracteres.";
+        } else if (form.apellidos.length > 100) {
+            newErrors.apellidos =
+                "Los apellidos no pueden superar los 100 caracteres.";
+        } else if (!/^[\p{L}\s\-']+$/u.test(form.apellidos)) {
+            newErrors.apellidos =
+                "Los apellidos solo pueden contener letras, espacios, guiones y apóstrofes.";
+        }
+
+        // validaciones para el campo "contraseña"
+        if (!form.contrasena) {
+            newErrors.contrasena = "La contraseña es obligatoria.";
+        } else if (form.contrasena.length < 8) {
             newErrors.contrasena =
                 "La contraseña debe tener al menos 8 caracteres.";
-        if (!form.email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email))
-            newErrors.email = "El email no es válido.";
-        if (!form.telefono || !/^[6-9][0-9]{8}$/.test(form.telefono))
+        } else if (form.contrasena.length > 255) {
+            newErrors.contrasena =
+                "La contraseña no puede superar los 255 caracteres.";
+        } else if (
+            !/[A-Z]/.test(form.contrasena) ||
+            !/[a-z]/.test(form.contrasena)
+        ) {
+            newErrors.contrasena =
+                "La contraseña debe contener mayúsculas y minúsculas.";
+        } else if (!/[0-9]/.test(form.contrasena)) {
+            newErrors.contrasena =
+                "La contraseña debe contener al menos un número.";
+        } else if (!/[^A-Za-z0-9]/.test(form.contrasena)) {
+            newErrors.contrasena =
+                "La contraseña debe contener al menos un símbolo.";
+        }
+
+        // validaciones para el campo "email"
+        if (!form.email) {
+            newErrors.email = "El email es obligatorio.";
+        } else if (form.email !== form.email.toLowerCase()) {
+            newErrors.email = "El email debe estar en minúsculas.";
+        } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email)) {
+            newErrors.email = "El formato del email no es válido.";
+        } else if (form.email.length > 100) {
+            newErrors.email = "El email no puede superar los 100 caracteres.";
+        }
+
+        // validaciones para el campo "telefono"
+        if (!form.telefono) {
+            newErrors.telefono = "El teléfono es obligatorio.";
+        } else if (!/^[6-9][0-9]{8}$/.test(form.telefono)) {
             newErrors.telefono = "El teléfono no es válido.";
-        if (!form.id_centro)
+        }
+
+        // validaciones para el campo "centro educativo"
+        if (!form.id_centro) {
             newErrors.id_centro = "El centro educativo es obligatorio.";
-        if (!form.id_grado) newErrors.id_grado = "El grado es obligatorio.";
-        if (!form.id_departamento)
+        }
+
+        // validaciones para el campo "grado"
+        if (!form.id_grado) {
+            newErrors.id_grado = "El grado es obligatorio.";
+        }
+
+        // validaciones para el campo "departamento"
+        if (!form.id_departamento) {
             newErrors.id_departamento = "El departamento es obligatorio.";
-        if (!form.dni || !validateSpanishId(form.dni))
+        }
+
+        // validaciones para el campo "dni"
+        if (!form.dni) {
+            newErrors.dni = "El DNI es obligatorio.";
+        } else if (form.dni.length !== 9) {
+            newErrors.dni = "El DNI debe tener 9 caracteres.";
+        } else if (!/^[0-9]{8}[A-Za-z]$/.test(form.dni)) {
+            newErrors.dni = "El formato del DNI no es válido.";
+        } else if (!validateSpanishId(form.dni)) {
             newErrors.dni = "DNI incorrecto.";
+        }
+
         return newErrors;
     };
 

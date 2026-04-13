@@ -14,9 +14,9 @@ class Empresa extends Model
 
     protected $fillable = [
         'id_usuario',
-        'nombre',
         'descripcion',
-        'sector',
+        'nif',
+        'id_sector',
         'direccion',
         'web',
         'activo'
