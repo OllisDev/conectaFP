@@ -77,8 +77,12 @@ export default function formLogin() {
             .then((data) => {
                 if (data.success) {
                     localStorage.setItem("api_token", data.api_token);
+                    localStorage.setItem(
+                        "user",
+                        JSON.stringify({ nombre: data.nombre, rol: data.rol }),
+                    );
                     setErrors({});
-                    window.location.href = "/";
+                    window.location.href = "/feed";
                 } else {
                     setErrors(data.message);
                 }

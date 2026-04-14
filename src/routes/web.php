@@ -10,6 +10,6 @@ Route::get('/register', function () {
     return view('register');
 });
 
-Route::get('/', function () {
-    return view('main');
+Route::get('/feed', function () {
+    return view('feed');
 });

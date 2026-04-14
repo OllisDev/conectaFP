@@ -115,12 +115,22 @@ class UsuarioController extends Controller
                 return response()->json($response, 403);
             }
 
+            $rol = null;
+            if ($usuario->alumno()->exists())
+                $rol = 'alumno';
+            elseif ($usuario->profesor()->exists())
+                $rol = 'profesor';
+            elseif ($usuario->empresa()->exists())
+                $rol = 'empresa';
+
             $response = [
                 'response' => 200,
                 'success' => true,
                 'status' => 'ok',
                 'message' => 'Inicio de sesión correcto.',
-                'api_token' => $usuario->api_token
+                'api_token' => $usuario->api_token,
+                'nombre' => $usuario->nombre,
+                'rol' => $rol
             ];
             return response()->json($response, 200);
 
