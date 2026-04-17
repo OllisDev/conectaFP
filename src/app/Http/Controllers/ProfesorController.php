@@ -112,7 +112,7 @@ class ProfesorController extends Controller
                 'id_centro' => 'required|integer|min:1|exists:centro_educativo,id',
                 'id_grado' => 'required|integer|min:1|exists:grado,id',
                 'id_departamento' => 'required|integer|min:1|exists:departamento,id',
-                'dni' => 'required|string|size:9|regex:/^[0-9]{8}[A-Za-z]$/|spanish_personal_id|unique:alumno,dni'
+                'dni' => 'required|string|size:9|regex:/^[0-9]{8}[A-Za-z]$/|spanish_personal_id|unique:profesor,dni'
             ], [
                 'nombre.required' => 'El nombre es obligatorio.',
                 'nombre.max' => 'El nombre no puede superar los 50 caracteres.',

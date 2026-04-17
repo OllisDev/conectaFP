@@ -21,4 +21,9 @@ class Oferta extends Model
         'estado',
         'eliminado'
     ];
+
+    public function empresa()
+    {
+        return $this->belongsTo(Empresa::class, 'id_empresa');
+    }
 }

@@ -110,14 +110,14 @@ export default function formCompany({ onBack }) {
         }
 
         // validaciones para el campo "descripcion"
-        if (!form.descripcion) {
-            newErrors.descripcion = "La descripción es obligatoria.";
-        } else if (form.descripcion.length < 10) {
-            newErrors.descripcion =
-                "La descripción debe tener al menos 10 caracteres.";
-        } else if (form.descripcion.length > 5000) {
-            newErrors.descripcion =
-                "La descripción debe tener menos de 5000 caracteres.";
+        if (form.descripcion) {
+            if (form.descripcion.length < 10) {
+                newErrors.descripcion =
+                    "La descripción debe tener al menos 10 caracteres.";
+            } else if (form.descripcion.length > 5000) {
+                newErrors.descripcion =
+                    "La descripción debe tener menos de 5000 caracteres.";
+            }
         }
 
         // validaciones para el campo "direccion"
@@ -129,15 +129,15 @@ export default function formCompany({ onBack }) {
         }
 
         // validaciones para el campo "web"
-        if (!form.web) {
-            newErrors.web = "La web es obligatoria.";
-        } else if (form.web.length > 100) {
-            newErrors.web = "La web no puede superar los 100 caracteres.";
-        } else {
-            try {
-                new URL(form.web);
-            } catch {
-                newErrors.web = "Formato incorrecto de la web.";
+        if (form.web) {
+            if (form.web.length > 100) {
+                newErrors.web = "La web no puede superar los 100 caracteres.";
+            } else {
+                try {
+                    new URL(form.web);
+                } catch {
+                    newErrors.web = "Formato incorrecto de la web.";
+                }
             }
         }
         return newErrors;

@@ -13,7 +13,7 @@
     <div id="header"></div>
 
     <main>
-
+        <div id="feed"></div>
     </main>
 </body>
 

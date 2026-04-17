@@ -15,7 +15,7 @@ return new class extends Migration {
             $table->string('nombre', 100);
             $table->enum('tipo', ['Grado medio', 'Grado superior']);
             $table->string('familia_profesional', 100);
-            $table->string('codigo_grado', 20);
+            $table->string('codigo_grado', 20)->unique();
         });
     }
 

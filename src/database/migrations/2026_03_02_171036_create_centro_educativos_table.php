@@ -15,7 +15,7 @@ return new class extends Migration {
             $table->string('nombre', 50);
             $table->string('localidad', 100);
             $table->string('provincia', 100);
-            $table->string('codigo_centro', 20);
+            $table->string('codigo_centro', 20)->unique();
         });
     }
 

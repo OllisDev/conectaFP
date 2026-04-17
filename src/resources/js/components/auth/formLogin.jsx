@@ -79,7 +79,11 @@ export default function formLogin() {
                     localStorage.setItem("api_token", data.api_token);
                     localStorage.setItem(
                         "user",
-                        JSON.stringify({ nombre: data.nombre, rol: data.rol }),
+                        JSON.stringify({
+                            nombre: data.nombre,
+                            rol: data.rol,
+                            id: data.id_rol,
+                        }),
                     );
                     setErrors({});
                     window.location.href = "/feed";

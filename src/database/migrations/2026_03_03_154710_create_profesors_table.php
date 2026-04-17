@@ -16,7 +16,7 @@ return new class extends Migration {
             $table->foreignId('id_centro')->constrained('centro_educativo');
             $table->foreignId('id_grado')->constrained('grado');
             $table->foreignId('id_departamento')->constrained('departamento');
-            $table->string('dni', 20);
+            $table->string('dni', 9)->unique();
             $table->boolean('eliminado')->default(0);
         });
     }

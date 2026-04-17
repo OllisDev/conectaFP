@@ -116,12 +116,17 @@ class UsuarioController extends Controller
             }
 
             $rol = null;
-            if ($usuario->alumno()->exists())
+            $idRol = null;
+            if ($usuario->alumno()->exists()) {
                 $rol = 'alumno';
-            elseif ($usuario->profesor()->exists())
+                $idRol = $usuario->alumno->id;
+            } elseif ($usuario->profesor()->exists()) {
                 $rol = 'profesor';
-            elseif ($usuario->empresa()->exists())
+                $idRol = $usuario->profesor->id;
+            } elseif ($usuario->empresa()->exists()) {
                 $rol = 'empresa';
+                $idRol = $usuario->empresa->id;
+            }
 
             $response = [
                 'response' => 200,
@@ -130,6 +135,7 @@ class UsuarioController extends Controller
                 'message' => 'Inicio de sesión correcto.',
                 'api_token' => $usuario->api_token,
                 'nombre' => $usuario->nombre,
+                'id_rol' => $idRol,
                 'rol' => $rol
             ];
             return response()->json($response, 200);

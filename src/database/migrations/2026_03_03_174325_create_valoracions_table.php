@@ -13,8 +13,8 @@ return new class extends Migration {
         Schema::create('valoracion', function (Blueprint $table) {
             $table->id();
             $table->foreignId('id_tutoria')->nullable(false)->constrained('tutoria')->onDelete('cascade');
-            $table->integer('puntuacion');
-            $table->text('comentario');
+            $table->tinyInteger('profesor')->unsigned();
+            $table->text('comentario')->nullable();
             $table->timestamp('fecha')->useCurrent();
         });
     }

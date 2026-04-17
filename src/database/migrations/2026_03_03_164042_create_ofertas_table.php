@@ -12,7 +12,7 @@ return new class extends Migration {
     {
         Schema::create('oferta', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('id_empresa')->constrained('empresa')->onDelete('cascade')->nullable(false);
+            $table->foreignId('id_empresa')->constrained('empresa')->onDelete('cascade');
             $table->string('titulo')->nullable(false);
             $table->text('descripcion');
             $table->text('requisitos');

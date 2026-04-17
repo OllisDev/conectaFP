@@ -16,7 +16,7 @@ return new class extends Migration {
             $table->foreignId('id_profesor')->nullable()->constrained('profesor')->onDelete('set null');
             $table->foreignId('id_empresa')->nullable(false)->constrained('empresa')->onDelete('restrict');
             $table->date('fecha_inicio');
-            $table->date('fecha_fin');
+            $table->date('fecha_fin')->nullable();
             $table->enum('estado', ['Activa', 'Finalizada', 'Cancelada'])->default('Activa');
             $table->boolean('eliminado')->default(0);
         });

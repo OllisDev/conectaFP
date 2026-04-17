@@ -109,9 +109,9 @@ class EmpresaController extends Controller
                 'telefono' => 'required|string|regex:/^[6-9][0-9]{8}$/|unique:usuario,telefono',
                 'id_sector' => 'required|integer|min:1|exists:sector,id',
                 'nif' => 'required|string|size:9|regex:/^[0-9]{8}[A-Z]$/|nif|unique:empresa,nif',
-                'descripcion' => 'required|string|min:10|max:5000',
+                'descripcion' => 'nullable|string|min:10|max:5000',
                 'direccion' => 'required|string|max:255',
-                'web' => 'required|string|url|max:100',
+                'web' => 'nullable|string|url|max:100',
             ], [
                 'nombre.required' => 'El nombre es obligatorio.',
                 'nombre.max' => 'El nombre no puede superar los 50 caracteres.',
@@ -138,12 +138,10 @@ class EmpresaController extends Controller
                 'nif.regex' => 'El formato del NIF no es valido.',
                 'nif.nif' => 'NIF incorrecto.',
                 'nif.unique' => 'El NIF está registrado con otra cuenta.',
-                'descripcion.required' => 'La descripción es obligatorio.',
                 'descripcion.min' => 'La descripción debe tener al menos 10 caracteres.',
                 'descripcion.max' => 'La descripción debe tener menos de 5000 caracteres.',
                 'direccion.required' => 'La dirección es obligatorio.',
                 'direccion.max' => 'La dirección no puede superar los 255 caracteres.',
-                'web.required' => 'La web es obligatorio.',
                 'web.url' => 'Formato incorrecto de la web.',
                 'web.max' => 'La web no puede superar los 100 caracteres.'
             ]);
@@ -161,9 +159,9 @@ class EmpresaController extends Controller
                     'id_usuario' => $usuario->id,
                     'id_sector' => $data['id_sector'],
                     'nif' => $data['nif'],
-                    'descripcion' => $data['descripcion'],
+                    'descripcion' => $data['descripcion'] ?: null,
                     'direccion' => $data['direccion'],
-                    'web' => $data['web']
+                    'web' => $data['web'] ?: null
                 ]);
 
                 return response()->json([

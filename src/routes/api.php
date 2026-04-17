@@ -5,8 +5,10 @@ use App\Http\Controllers\CentroEducativoController;
 use App\Http\Controllers\DepartamentoController;
 use App\Http\Controllers\EmpresaController;
 use App\Http\Controllers\GradoController;
+use App\Http\Controllers\OfertaController;
 use App\Http\Controllers\ProfesorController;
 use App\Http\Controllers\SectorController;
+use App\Http\Controllers\SolicitudController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UsuarioController;
@@ -59,3 +61,12 @@ Route::post('centro/crear', [CentroEducativoController::class, 'createSchoolAPI'
 // rutas para los grados
 Route::get('grado', [GradoController::class, 'listDegreeAPI'])->name('degreeAPI.listDegree');
 Route::post('grado/crear', [GradoController::class, 'createDegreeAPI'])->name('degreeAPI.createDegree');
+
+// rutas para los ofertas de trabajo
+Route::get('/oferta', [OfertaController::class, 'listOfferAPI'])->name('offerAPI.listOffer');
+Route::get('/oferta/{oferta}', [OfertaController::class, 'listOfferByIdAPI'])->name('offerAPI.listOfferById');
+Route::post('oferta/crear', [OfertaController::class, 'createOfferAPI'])->name('offerAPI.createOffer');
+
+// rutas para las solicitudes
+Route::get('/solicitud/alumno/{id_alumno}', [SolicitudController::class, 'listRequestByStudentAPI'])->name('requestAPI.listRequestByStudent');
+Route::post('/solicitud', [SolicitudController::class, 'requestAPI'])->name('requestAPI.request');
