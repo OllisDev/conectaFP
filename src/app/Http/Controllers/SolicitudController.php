@@ -20,7 +20,7 @@ class SolicitudController extends Controller
                 return response()->json($response, 400);
             }
 
-            $solicitud = Solicitud::select('id_oferta', 'id_alumno', 'fecha_solicitud', 'estado')->where('id_alumno', $id)->get();
+            $solicitud = Solicitud::with(['oferta.empresa.usuario'])->select('id', 'id_oferta', 'id_alumno', 'fecha_solicitud', 'estado')->where('id_alumno', $id)->get();
 
             if ($solicitud->isEmpty()) {
                 $response = [
@@ -102,6 +102,42 @@ class SolicitudController extends Controller
                 'message' => $e->errors()
             ];
             return response()->json($response, 400);
+        }
+    }
+
+    public function deleteRequestAPI($id)
+    {
+        try {
+            $solicitud = Solicitud::where('id', $id)->first();
+
+            if (!$solicitud) {
+                $response = [
+                    'response' => 404,
+                    'success' => false,
+                    'status' => 'error',
+                    'message' => 'No existe la solicitud.'
+                ];
+                return response()->json($response, 404);
+            }
+
+            $solicitud->delete();
+
+            $response = [
+                'response' => 200,
+                'success' => true,
+                'status' => 'ok',
+                'message' => 'La solicitud ha sido eliminado correctamente.'
+            ];
+            return response()->json($response, 200);
+
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            $response = [
+                'response' => 422,
+                'success' => false,
+                'status' => 'error',
+                'message' => 'Error de validación: ' . $e->getMessage()
+            ];
+            return response()->json($response, 422);
         }
     }
 }

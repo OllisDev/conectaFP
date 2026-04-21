@@ -70,3 +70,4 @@ Route::post('oferta/crear', [OfertaController::class, 'createOfferAPI'])->name('
 // rutas para las solicitudes
 Route::get('/solicitud/alumno/{id_alumno}', [SolicitudController::class, 'listRequestByStudentAPI'])->name('requestAPI.listRequestByStudent');
 Route::post('/solicitud', [SolicitudController::class, 'requestAPI'])->name('requestAPI.request');
+Route::delete('/solicitud/{solicitud}', [SolicitudController::class, 'deleteRequestAPI'])->name('requestAPI.deleteRequest');

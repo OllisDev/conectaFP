@@ -4,12 +4,14 @@ import RegisterApp from "./registerApp";
 import LoginApp from "./components/auth/formLogin";
 import Header from "./components/header/headerRouter";
 import Feed from "./components/feed/feedRouter";
+import MyRequests from "./components/shared/myRequests";
 
 const headerElement = document.getElementById("header");
 const footerElement = document.getElementById("footer");
 const registerElement = document.getElementById("register");
 const loginElement = document.getElementById("login");
 const feedElement = document.getElementById("feed");
+const myRequestsElement = document.getElementById("myRequests");
 
 if (headerElement) {
     const header = createRoot(headerElement);
@@ -29,4 +31,9 @@ if (loginElement) {
 if (feedElement) {
     const feed = createRoot(feedElement);
     feed.render(<Feed />);
+}
+
+if (myRequestsElement) {
+    const myRequests = createRoot(myRequestsElement);
+    myRequests.render(<MyRequests />);
 }

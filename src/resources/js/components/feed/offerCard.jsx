@@ -1,6 +1,11 @@
 import React, { useState, useEffect } from "react";
 
-export default function OfferCard({ oferta, yaSolicitada, idAlumno }) {
+export default function OfferCard({
+    oferta,
+    yaSolicitada,
+    solicitudId,
+    idAlumno,
+}) {
     const estadoClass =
         oferta.estado === "Abierta"
             ? "abierta"
@@ -28,6 +33,26 @@ export default function OfferCard({ oferta, yaSolicitada, idAlumno }) {
                     setSolicitada(true);
                 } else {
                     alert(data.message || "Error al solicitar.");
+                }
+            })
+            .catch(() => alert("Error de conexión."))
+            .finally(() => setLoading(false));
+    };
+
+    const handleCancelar = () => {
+        setLoading(true);
+        fetch(`/api/solicitud/${solicitudId}`, {
+            method: "DELETE",
+            headers: {
+                "Content-Type": "applicaction/json",
+            },
+        })
+            .then((res) => res.json())
+            .then((data) => {
+                if (data.success) {
+                    setSolicitada(false);
+                } else {
+                    alert(data.message || "Error al cancelar.");
                 }
             })
             .catch(() => alert("Error de conexión."))
@@ -64,20 +89,21 @@ export default function OfferCard({ oferta, yaSolicitada, idAlumno }) {
             </div>
 
             <div className="offer-card-request">
-                <input
-                    type="button"
-                    value={
-                        solicitada
-                            ? "Ya solicitada"
-                            : loading
-                              ? "Enviando..."
-                              : "Solicitar"
-                    }
-                    onClick={
-                        !solicitada && !loading ? handleSolicitar : undefined
-                    }
-                    disabled={solicitada || loading}
-                />
+                {solicitada ? (
+                    <input
+                        type="button"
+                        value={loading ? "Cancelando..." : "Cancelar solicitud"}
+                        onClick={!loading ? handleCancelar : undefined}
+                        disabled={loading}
+                    />
+                ) : (
+                    <input
+                        type="button"
+                        value={loading ? "Enviando..." : "Solicitar"}
+                        onClick={!loading ? handleSolicitar : undefined}
+                        disabled={loading}
+                    />
+                )}
             </div>
         </div>
     );

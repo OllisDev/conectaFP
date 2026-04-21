@@ -19,7 +19,7 @@ export default function headerStudent() {
                 />
             </div>
             <nav className="header-nav">
-                <a href="#">
+                <a href="/feed">
                     <img src="/images/home.svg" alt="Inicio" />
                     <span>Inicio</span>
                 </a>
@@ -27,7 +27,7 @@ export default function headerStudent() {
                     <img src="/images/offers.svg" alt="Ofertas" />
                     <span>Ofertas</span>
                 </a>
-                <a href="#">
+                <a href="/mis-solicitudes">
                     <img src="/images/requests.svg" alt="Mis solicitudes" />
                     <span>Mis solicitudes</span>
                 </a>

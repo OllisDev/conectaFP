@@ -19,4 +19,9 @@ class Solicitud extends Model
         'estado',
         'eliminado'
     ];
+
+    public function oferta()
+    {
+        return $this->belongsTo(Oferta::class, 'id_oferta');
+    }
 }

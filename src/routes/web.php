@@ -13,3 +13,7 @@ Route::get('/register', function () {
 Route::get('/feed', function () {
     return view('feed');
 });
+
+Route::get('/mis-solicitudes', function () {
+    return view('myRequests');
+});

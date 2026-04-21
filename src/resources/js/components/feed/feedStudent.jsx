@@ -31,8 +31,7 @@ export default function feedStudent() {
         fetch(`/api/solicitud/alumno/${idAlumno}`)
             .then((res) => res.json())
             .then((data) => {
-                if (data.success)
-                    setSolicitud(data.solicitud.map((s) => s.id_oferta));
+                if (data.success) setSolicitud(data.solicitud);
             });
     }, []);
 
@@ -82,7 +81,12 @@ export default function feedStudent() {
                     <OfferCard
                         key={oferta.id}
                         oferta={oferta}
-                        yaSolicitada={solicitud.includes(oferta.id)}
+                        yaSolicitada={solicitud.some(
+                            (s) => s.id_oferta === oferta.id,
+                        )}
+                        solicitudId={
+                            solicitud.find((s) => s.id_oferta === oferta.id)?.id
+                        }
                         idAlumno={JSON.parse(localStorage.getItem("user"))?.id}
                     />
                 ))}
