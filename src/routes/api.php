@@ -64,8 +64,10 @@ Route::post('grado/crear', [GradoController::class, 'createDegreeAPI'])->name('d
 
 // rutas para los ofertas de trabajo
 Route::get('/oferta', [OfertaController::class, 'listOfferAPI'])->name('offerAPI.listOffer');
+Route::get('/oferta/filtrar', [OfertaController::class, 'filterOfferAPI'])->name('offerAPI.filterOffer');
 Route::get('/oferta/{oferta}', [OfertaController::class, 'listOfferByIdAPI'])->name('offerAPI.listOfferById');
-Route::post('oferta/crear', [OfertaController::class, 'createOfferAPI'])->name('offerAPI.createOffer');
+Route::post('/oferta/crear', [OfertaController::class, 'createOfferAPI'])->name('offerAPI.createOffer');
+
 
 // rutas para las solicitudes
 Route::get('/solicitud/alumno/{id_alumno}', [SolicitudController::class, 'listRequestByStudentAPI'])->name('requestAPI.listRequestByStudent');

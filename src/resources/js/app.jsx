@@ -4,6 +4,7 @@ import RegisterApp from "./registerApp";
 import LoginApp from "./components/auth/formLogin";
 import Header from "./components/header/headerRouter";
 import Feed from "./components/feed/feedRouter";
+import Offers from "./components/offers/offersRouter";
 import MyRequests from "./components/shared/myRequests";
 
 const headerElement = document.getElementById("header");
@@ -11,6 +12,7 @@ const footerElement = document.getElementById("footer");
 const registerElement = document.getElementById("register");
 const loginElement = document.getElementById("login");
 const feedElement = document.getElementById("feed");
+const offersElement = document.getElementById("offers");
 const myRequestsElement = document.getElementById("myRequests");
 
 if (headerElement) {
@@ -31,6 +33,11 @@ if (loginElement) {
 if (feedElement) {
     const feed = createRoot(feedElement);
     feed.render(<Feed />);
+}
+
+if (offersElement) {
+    const offers = createRoot(offersElement);
+    offers.render(<Offers />);
 }
 
 if (myRequestsElement) {

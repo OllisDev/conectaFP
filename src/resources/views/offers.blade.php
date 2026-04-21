@@ -4,15 +4,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ConectaFP | Mis solicitudes</title>
+    <title>ConectaFP | Ofertas</title>
     @viteReactRefresh
-    @vite(['resources/css/offers.css', 'resources/css/myRequests.css', 'resources/js/app.jsx'])
+    @vite(['resources/css/offers.css', 'resources/js/app.jsx'])
 </head>
 
 <body>
     <div id="header"></div>
 
-    <div id="myRequests"></div>
+    <main>
+        <div id="offers"></div>
+    </main>
 </body>
 
 </html>

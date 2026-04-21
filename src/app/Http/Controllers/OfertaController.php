@@ -86,6 +86,58 @@ class OfertaController extends Controller
         }
     }
 
+    public function filterOfferAPI(Request $request)
+    {
+        try {
+
+            $query = Oferta::with(['empresa.usuario']);
+
+            if ($request->filled('modalidad')) {
+                $query->where('modalidad', $request->modalidad);
+            }
+
+            if ($request->filled('id_sector')) {
+                $query->whereHas('empresa', function ($q) use ($request) {
+                    $q->where('id_sector', $request->id_sector);
+                });
+            }
+
+            if ($request->filled('titulo')) {
+                $query->where('titulo', 'like', '%' . $request->titulo . '%');
+            }
+
+            $ofertas = $query->get();
+
+            if ($ofertas->isEmpty()) {
+                $response = [
+                    'response' => 404,
+                    'success' => false,
+                    'status' => 'error',
+                    'message' => 'No se encontraron ofertas con los filtros aplicados.'
+                ];
+                return response()->json($response, 404);
+            }
+
+            $response = [
+                'response' => 200,
+                'success' => true,
+                'status' => 'ok',
+                'message' => 'Oferta',
+                'ofertas' => $ofertas
+            ];
+            return response()->json($response, 200);
+
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            $response = [
+                'response' => 422,
+                'success' => false,
+                'status' => 'error',
+                'message' => 'Error de validación: ' . $e->getMessage()
+            ];
+            return response()->json($response, 422);
+        }
+    }
+
     public function createOfferAPI(Request $request)
     {
         try {

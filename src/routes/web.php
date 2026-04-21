@@ -14,6 +14,10 @@ Route::get('/feed', function () {
     return view('feed');
 });
 
+Route::get('/ofertas', function () {
+    return view('offers');
+});
+
 Route::get('/mis-solicitudes', function () {
     return view('myRequests');
 });
