@@ -22,4 +22,21 @@ class Tutoria extends Model
         'estado',
         'eliminado'
     ];
+
+    public function alumno()
+    {
+        return $this->belongsTo(Alumno::class, 'id_alumno');
+    }
+
+    public function profesor()
+    {
+        return $this->belongsTo(Profesor::class, 'id_profesor');
+    }
+
+    public function empresa()
+    {
+        return $this->belongsTo(Empresa::class, 'id_empresa');
+    }
 }
+
+

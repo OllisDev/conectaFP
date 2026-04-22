@@ -22,4 +22,15 @@ class Alumno extends Model
         'disponibilidad',
         'eliminado'
     ];
+
+    public function alumno()
+    {
+        return $this->belongsTo(Usuario::class, 'id_usuario');
+
+    }
+
+    public function usuario()
+    {
+        return $this->belongsTo(Usuario::class, 'id_usuario');
+    }
 }

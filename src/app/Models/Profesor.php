@@ -19,4 +19,14 @@ class Profesor extends Model
         'dni',
         'eliminado'
     ];
+
+    public function profesor()
+    {
+        return $this->belongsTo(Usuario::class, 'id_usuario');
+    }
+
+    public function usuario()
+    {
+        return $this->belongsTo(Usuario::class, 'id_usuario');
+    }
 }

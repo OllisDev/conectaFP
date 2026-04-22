@@ -6,6 +6,7 @@ import Header from "./components/header/headerRouter";
 import Feed from "./components/feed/feedRouter";
 import Offers from "./components/offers/offersRouter";
 import MyRequests from "./components/shared/myRequests";
+import Tutorial from "./components/tutorial/tutorialRouter";
 
 const headerElement = document.getElementById("header");
 const footerElement = document.getElementById("footer");
@@ -14,6 +15,7 @@ const loginElement = document.getElementById("login");
 const feedElement = document.getElementById("feed");
 const offersElement = document.getElementById("offers");
 const myRequestsElement = document.getElementById("myRequests");
+const tutorialElement = document.getElementById("tutorial");
 
 if (headerElement) {
     const header = createRoot(headerElement);
@@ -43,4 +45,9 @@ if (offersElement) {
 if (myRequestsElement) {
     const myRequests = createRoot(myRequestsElement);
     myRequests.render(<MyRequests />);
+}
+
+if (tutorialElement) {
+    const tutorial = createRoot(tutorialElement);
+    tutorial.render(<Tutorial />);
 }

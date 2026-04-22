@@ -15,7 +15,6 @@ class Valoracion extends Model
 
     protected $fillable = [
         'id_tutoria',
-        'puntuacion',
         'comentario',
         'fecha'
     ];

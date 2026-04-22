@@ -105,6 +105,49 @@ class SolicitudController extends Controller
         }
     }
 
+    public function updateRequestAPI(Request $request, $id)
+    {
+        try {
+            $solicitud = Solicitud::find($id);
+
+            if (!$solicitud) {
+                $response = [
+                    'response' => 404,
+                    'success' => false,
+                    'status' => 'error',
+                    'message' => 'La solicitud no existe.'
+                ];
+                return response()->json($response, 400);
+            }
+
+            $data = $request->validate([
+                'estado' => 'required|in:Pendiente,Revision,Aceptada,Rechazada'
+            ], [
+                'estado.required' => 'El estado es obligatorio.',
+                'estado.in' => 'El estado debe ser "Pendiente", "Revision", "Aceptada" o "Rechazada".'
+            ]);
+
+            $solicitud->update($data);
+
+            $response = [
+                'response' => 200,
+                'success' => true,
+                'status' => 'ok',
+                'message' => 'La solicitud se ha actualizado correctamente.'
+            ];
+            return response()->json($response, 200);
+
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            $response = [
+                'response' => 400,
+                'success' => false,
+                'status' => 'error',
+                'message' => $e->errors()
+            ];
+            return response()->json($response, 400);
+        }
+    }
+
     public function deleteRequestAPI($id)
     {
         try {

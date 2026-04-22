@@ -9,6 +9,7 @@ use App\Http\Controllers\OfertaController;
 use App\Http\Controllers\ProfesorController;
 use App\Http\Controllers\SectorController;
 use App\Http\Controllers\SolicitudController;
+use App\Http\Controllers\TutoriaController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UsuarioController;
@@ -68,8 +69,13 @@ Route::get('/oferta/filtrar', [OfertaController::class, 'filterOfferAPI'])->name
 Route::get('/oferta/{oferta}', [OfertaController::class, 'listOfferByIdAPI'])->name('offerAPI.listOfferById');
 Route::post('/oferta/crear', [OfertaController::class, 'createOfferAPI'])->name('offerAPI.createOffer');
 
-
 // rutas para las solicitudes
 Route::get('/solicitud/alumno/{id_alumno}', [SolicitudController::class, 'listRequestByStudentAPI'])->name('requestAPI.listRequestByStudent');
 Route::post('/solicitud', [SolicitudController::class, 'requestAPI'])->name('requestAPI.request');
+Route::put('/solicitud/{solicitud}/actualizar', [SolicitudController::class, 'updateRequestAPI'])->name('requestAPI.updateRequest');
 Route::delete('/solicitud/{solicitud}', [SolicitudController::class, 'deleteRequestAPI'])->name('requestAPI.deleteRequest');
+
+// rutas para las tutorias
+Route::get('/tutoria/alumno/{id_alumno}', [TutoriaController::class, 'listTutorialByStudentAPI'])->name('tutorialAPI.listTutorialByStudent');
+Route::get('/tutoria/profesor/{id_profesor}', [TutoriaController::class, 'listTutorialByTeacherAPI'])->name('tutorialAPI.listTutorialByTeacher');
+Route::post('/tutoria/crear', [TutoriaController::class, 'createTutorialAPI'])->name('tutorialAPI.createTutorial');

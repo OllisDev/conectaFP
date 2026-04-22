@@ -24,7 +24,7 @@ export default function offersStudent() {
             headers: { "Content-Type": "application/json" },
         })
             .then((res) => res.json())
-            .then((data) => setOfertas(data.alumnos));
+            .then((data) => setOfertas(data.alumnos || []));
 
         const user = JSON.parse(localStorage.getItem("user"));
         const idAlumno = user?.id;
@@ -89,7 +89,7 @@ export default function offersStudent() {
             },
         })
             .then((res) => res.json())
-            .then((data) => setOfertas(data.alumnos));
+            .then((data) => setOfertas(data.alumnos || []));
     };
 
     return (
@@ -144,6 +144,8 @@ export default function offersStudent() {
             <div className="card-container">
                 {mensaje ? (
                     <p className="no-results">{mensaje}</p>
+                ) : ofertas.length === 0 ? (
+                    <p className="no-results">No hay ofertas disponibles.</p>
                 ) : (
                     ofertas.map((oferta) => (
                         <OfferCard

@@ -21,3 +21,7 @@ Route::get('/ofertas', function () {
 Route::get('/mis-solicitudes', function () {
     return view('myRequests');
 });
+
+Route::get('/mi-tutoria', function () {
+    return view('myTutorial');
+});

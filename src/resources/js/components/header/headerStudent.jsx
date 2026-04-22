@@ -31,7 +31,7 @@ export default function headerStudent() {
                     <img src="/images/requests.svg" alt="Mis solicitudes" />
                     <span>Mis solicitudes</span>
                 </a>
-                <a href="/mi-tutoría">
+                <a href="/mi-tutoria">
                     <img src="/images/tutorial.svg" alt="Mi tutoría" />
                     <span>Mi tutoría</span>
                 </a>

@@ -1,0 +1,197 @@
+.tutorial-container {
+    padding: 32px;
+    padding-top: 96px;
+    min-height: calc(100vh - 64px);
+    background-color: #f2f2f2;
+}
+
+.tutorial-menu {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 24px;
+    border-bottom: 2px solid #b3d9f7;
+    padding-bottom: 0;
+}
+
+.tutorial-tab {
+    padding: 10px 24px;
+    border: none;
+    background: none;
+    color: #0f62a1;
+    font-size: 0.95rem;
+    font-weight: 600;
+    cursor: pointer;
+    border-bottom: 3px solid transparent;
+    margin-bottom: -2px;
+    border-radius: 0;
+    transition: color 0.2s ease, border-color 0.2s ease;
+}
+
+.tutorial-tab:hover {
+    color: #1e3a5f;
+}
+
+.tutorial-tab.active {
+    color: #1e3a5f;
+    border-bottom: 3px solid #1e3a5f;
+}
+
+.tutorial-content {
+    background-color: #ffffff;
+    border-radius: 16px;
+    box-shadow: 0 2px 8px rgba(59, 130, 246, 0.15);
+    padding: 24px;
+    min-height: 300px;
+}
+
+.tutorial-section p {
+    color: #1e3a5f;
+    font-size: 0.95rem;
+    margin: 0;
+}
+
+.card-container {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.tutorial-card {
+    background: #f9fbfd;
+    border-radius: 14px;
+    box-shadow: 0 2px 8px rgba(59, 130, 246, 0.10);
+    padding: 24px 28px;
+    border-left: 6px solid #1e3a5f;
+    transition: box-shadow 0.2s;
+}
+
+.tutorial-card:hover {
+    box-shadow: 0 4px 16px rgba(59, 130, 246, 0.18);
+}
+
+.tutorial-card-company {
+    color: #1e3a5f;
+    font-size: 1.2rem;
+    font-weight: 700;
+    margin-bottom: 8px;
+}
+
+.tutorial-card div {
+    margin-bottom: 6px;
+    color: #0f62a1;
+    font-size: 1rem;
+}
+
+.tutorial-card strong {
+    color: #052842;
+    font-weight: 600;
+}
+
+.tutorial-card:last-child {
+    margin-bottom: 0;
+}
+
+.tutorial-card-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 18px;
+    margin-bottom: 12px;
+}
+
+.tutorial-card-company {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: #1e3a5f;
+}
+
+.tutorial-card-company h3 {
+    margin: 0;
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: #1e3a5f;
+}
+
+.tutorial-card-teacher {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 1rem;
+    color: #0f62a1;
+    font-weight: 500;
+}
+
+.tutorial-card-status {
+    font-size: 0.75rem;
+    font-weight: 600;
+    padding: 4px 10px;
+    border-radius: 20px;
+    white-space: nowrap;
+    margin-left: 8px;
+}
+
+.tutorial-card-footer {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-top: 10px;
+    font-size: 0.95rem;
+    color: #052842;
+}
+
+.tutorial-card-date {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    color: #0f62a1;
+    font-size: 0.95rem;
+}
+
+.tutorial-card-button {
+    margin-top: 18px;
+    display: flex;
+    justify-content: flex-end;
+}
+
+.tutorial-card-button button {
+    background-color: #0f62a1;
+    color: #fff;
+    border: none;
+    border-radius: 10px;
+    padding: 8px 22px;
+    font-size: 0.95rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.2s, transform 0.1s;
+}
+
+.tutorial-card-button button:hover {
+    background-color: #1e3a5f;
+    transform: translateY(-1px);
+}
+
+img {
+    height: 20px;
+    width: 20px;
+}
+
+.tutorial-card-status.activa {
+    background-color: #d1fae5;
+    color: #065f46;
+    border-color: #34d399;
+}
+
+.tutorial-card-status.finalizada {
+    background-color: #fee2e2;
+    color: #991b1b;
+    border-color: #f87171;
+}
+
+.tutorial-card-status.cancelada {
+    background-color: #fef3c7;
+    color: #92400e;
+    border-color: #fbbf24;
+}
