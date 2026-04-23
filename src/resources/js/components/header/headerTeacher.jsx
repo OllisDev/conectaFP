@@ -15,21 +15,13 @@ export default function headerTeacher() {
                 <input type="text" id="search" placeholder="Buscar..." />
             </div>
             <nav className="header-nav">
-                <a href="#">
+                <a href="/feed">
                     <img src="/images/home.svg" alt="Inicio" />
                     <span>Inicio</span>
                 </a>
-                <a href="#">
+                <a href="/mis-tutorias">
                     <img src="/images/tutorial.svg" alt="Mis tutorías" />
                     <span>Mis tutorías</span>
-                </a>
-                <a href="#">
-                    <img src="/images/employee.svg" alt="Empresas" />
-                    <span>Empresas</span>
-                </a>
-                <a href="#">
-                    <img src="/images/offers.svg" alt="Ofertas" />
-                    <span>Ofertas</span>
                 </a>
             </nav>
             <div className="header-actions">

@@ -1,8 +1,8 @@
 import React, { useState } from "react";
-import TutorialList from "./tutorialList";
-import { createRoot } from "react-dom/client";
+import TutorialListTeacher from "./tutorialListTeacher";
+import CreateTutorial from "./createTutorial";
 
-export default function TutorialRouter() {
+export default function tutorialRouterTeacher() {
     const [activeTab, setActiveTab] = useState("tutorias");
 
     return (
@@ -15,6 +15,12 @@ export default function TutorialRouter() {
                     Mis tutorías
                 </button>
                 <button
+                    className={`tutorial-tab ${activeTab === "crear tutoria" ? "active" : ""}`}
+                    onClick={() => setActiveTab("crear tutoria")}
+                >
+                    Crear tutoría
+                </button>
+                <button
                     className={`tutorial-tab ${activeTab === "chat" ? "active" : ""}`}
                     onClick={() => setActiveTab("chat")}
                 >
@@ -25,7 +31,12 @@ export default function TutorialRouter() {
             <div className="tutorial-content">
                 {activeTab === "tutorias" && (
                     <div className="tutorial-section">
-                        <TutorialList />
+                        <TutorialListTeacher />
+                    </div>
+                )}
+                {activeTab === "crear tutoria" && (
+                    <div className="tutorial-section">
+                        <CreateTutorial />
                     </div>
                 )}
                 {activeTab === "chat" && (

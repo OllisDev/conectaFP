@@ -168,4 +168,91 @@ class TutoriaController extends Controller
             return response()->json($response, 400);
         }
     }
+
+    public function updateTutorialAPI(Request $request, $id)
+    {
+        try {
+            $tutoria = Tutoria::find($id);
+
+            if (!$tutoria) {
+                $response = [
+                    'response' => 404,
+                    'success' => false,
+                    'status' => 'error',
+                    'message' => 'La tutoría no existe.'
+                ];
+                return response()->json($response, 404);
+            }
+
+            $data = $request->validate([
+                'fecha_inicio' => 'date|date_format:Y-m-d H:i:s|after_or_equal:today',
+                'fecha_fin' => 'date|date_format:Y-m-d H:i:s|after:fecha_inicio',
+                'estado' => 'in:Activa,Finalizada,Cancelada'
+            ], [
+                'fecha_inicio.date' => 'La fecha de inicio no es válida.',
+                'fecha_inicio.date_format' => 'La fecha de inicio debe tener el formato AAAA-MM-DD HH:MM:SS.',
+                'fecha_inicio.after_or_equal' => 'La fecha de inicio no puede ser anterior a hoy.',
+                'fecha_fin.date' => 'La fecha de fin no es válida.',
+                'fecha_fin.date_format' => 'La fecha de fin debe tener el formato AAAA-MM-DD.',
+                'fecha_fin.after' => 'La fecha de fin debe tener el formato AAAA-MM-DD HH:MM:SS.',
+                'estado.in' => 'El estado debe ser "Activa", "Finalizada" o "Cancelada".'
+            ]);
+
+            $tutoria->update($data);
+
+            $response = [
+                'response' => 200,
+                'success' => true,
+                'status' => 'ok',
+                'message' => 'La tutoria se ha actualizado correctamente.'
+            ];
+            return response($response, 200);
+
+
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            $response = [
+                'response' => 400,
+                'success' => false,
+                'status' => 'error',
+                'message' => $e->errors()
+            ];
+            return response()->json($response, 400);
+        }
+    }
+
+    public function deleteTutorialAPI($id)
+    {
+        try {
+            $tutoria = Tutoria::where('id', $id)->first();
+
+            if (!$tutoria) {
+                $response = [
+                    'response' => 404,
+                    'success' => false,
+                    'status' => 'error',
+                    'message' => 'No existe la tutoría.'
+                ];
+                return response()->json($response, 404);
+            }
+
+            $tutoria->delete();
+
+            $response = [
+                'response' => 200,
+                'success' => true,
+                'status' => 'ok',
+                'message' => 'La tutoria ha sido eliminado correctamente.'
+            ];
+            return response()->json($response, 200);
+
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            $response = [
+                'response' => 422,
+                'success' => false,
+                'status' => 'error',
+                'message' => 'Error de validación: ' . $e->getMessage()
+            ];
+            return response()->json($response, 422);
+        }
+    }
 }

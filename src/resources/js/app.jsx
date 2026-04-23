@@ -6,7 +6,8 @@ import Header from "./components/header/headerRouter";
 import Feed from "./components/feed/feedRouter";
 import Offers from "./components/offers/offersRouter";
 import MyRequests from "./components/shared/myRequests";
-import Tutorial from "./components/tutorial/tutorialRouter";
+import TutorialStudent from "./components/tutorial/student/tutorialRouterStudent";
+import TutorialTeacher from "./components/tutorial/teacher/tutorialRouterTeacher";
 
 const headerElement = document.getElementById("header");
 const footerElement = document.getElementById("footer");
@@ -15,7 +16,8 @@ const loginElement = document.getElementById("login");
 const feedElement = document.getElementById("feed");
 const offersElement = document.getElementById("offers");
 const myRequestsElement = document.getElementById("myRequests");
-const tutorialElement = document.getElementById("tutorial");
+const tutorialStudentElement = document.getElementById("tutorialStudent");
+const tutorialTeacherElement = document.getElementById("tutorialTeacher");
 
 if (headerElement) {
     const header = createRoot(headerElement);
@@ -47,7 +49,12 @@ if (myRequestsElement) {
     myRequests.render(<MyRequests />);
 }
 
-if (tutorialElement) {
-    const tutorial = createRoot(tutorialElement);
-    tutorial.render(<Tutorial />);
+if (tutorialStudentElement) {
+    const tutorialStudent = createRoot(tutorialStudentElement);
+    tutorialStudent.render(<TutorialStudent />);
+}
+
+if (tutorialTeacherElement) {
+    const tutorialTeacher = createRoot(tutorialTeacherElement);
+    tutorialTeacher.render(<TutorialTeacher />);
 }

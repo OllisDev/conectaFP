@@ -12,8 +12,7 @@
 <body>
     <div id="header"></div>
 
-
-    <div id="tutorial"></div>
+    <div id="tutorialStudent"></div>
 
 </body>
 

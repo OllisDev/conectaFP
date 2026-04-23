@@ -10,10 +10,12 @@ Route::get('/register', function () {
     return view('register');
 });
 
+
 Route::get('/feed', function () {
     return view('feed');
 });
 
+// -- RUTAS ALUMNO --
 Route::get('/ofertas', function () {
     return view('offers');
 });
@@ -23,5 +25,10 @@ Route::get('/mis-solicitudes', function () {
 });
 
 Route::get('/mi-tutoria', function () {
-    return view('myTutorial');
+    return view('myTutorialStudent');
+});
+
+// -- RUTAS PROFESOR --
+Route::get('/mis-tutorias', function () {
+    return view('myTutorialTeacher');
 });

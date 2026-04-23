@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
 
-export default function tutorialList() {
+export default function tutorialListStudent() {
     const [tutorias, setTutorias] = useState([]);
 
-    useEffect(() => {
+    const fetchTutorias = () => {
         const user = JSON.parse(localStorage.getItem("user"));
         const id = user?.id;
         if (!id) return;
@@ -20,6 +20,16 @@ export default function tutorialList() {
             .then((data) => {
                 if (data.Tutorias) setTutorias(data.Tutorias);
             });
+    };
+
+    useEffect(() => {
+        fetchTutorias();
+
+        const interval = setInterval(() => {
+            fetchTutorias();
+        }, 30000);
+
+        return () => clearInterval(interval);
     }, []);
 
     function openGoogleCalendar(tutoria) {
@@ -52,6 +62,15 @@ export default function tutorialList() {
 
     return (
         <div className="list-container">
+            <div className="refresh-container">
+                <button
+                    type="button"
+                    className="btn-refresh"
+                    onClick={fetchTutorias}
+                >
+                    <img src="/images/update.svg"></img>
+                </button>
+            </div>
             <div className="card-container">
                 {tutorias.length === 0 ? (
                     <p>No tienes tutorías.</p>
