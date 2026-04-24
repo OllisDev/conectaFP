@@ -11,7 +11,10 @@ class AsignacionController extends Controller
     public function listAssignmentAPI()
     {
         try {
+            $user = Auth::user();
+            $profesor = $user->profesor;
             $asignaciones = Asignacion::with('alumno.usuario', 'profesor.usuario', 'empresa.usuario')
+                ->where('id_profesor', $profesor->id)
                 ->select('id', 'id_alumno', 'id_profesor', 'id_empresa', 'estado')
                 ->get();
 
@@ -29,7 +32,7 @@ class AsignacionController extends Controller
                     'success' => true,
                     'status' => 'ok',
                     'message' => 'Empresa',
-                    'empresas' => $asignaciones
+                    'asignaciones' => $asignaciones
                 ];
                 return response()->json($response, 200);
             }
@@ -94,6 +97,55 @@ class AsignacionController extends Controller
                 'message' => 'La asignación se ha creado correctamente.'
             ];
             return response()->json($response, 201);
+
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            $response = [
+                'response' => 400,
+                'success' => false,
+                'status' => 'error',
+                'message' => $e->errors()
+            ];
+            return response()->json($response, 400);
+        }
+    }
+
+    public function updateAssignmentAPI(Request $request, $id)
+    {
+        try {
+            $asignacion = Asignacion::find($id);
+
+            if (!$asignacion) {
+                $response = [
+                    'response' => 404,
+                    'success' => false,
+                    'status' => 'error',
+                    'message' => 'La asignación no existe.'
+                ];
+                return response()->json($response, 404);
+            }
+
+            $data = $request->validate([
+                'estado' => 'required|in:Activo,Finalizado'
+            ], [
+                'estado.required' => 'El estado es obligatorio.',
+                'estado.in' => 'El estado deber "Activo" o "Finalizado".'
+            ]);
+
+            $user = Auth::user();
+            $profesor = $user->profesor;
+
+            $asignacion->update([
+                'id_profesor' => $profesor->id,
+                'estado' => $data['estado']
+            ]);
+
+            $response = [
+                'response' => 200,
+                'success' => true,
+                'status' => 'ok',
+                'message' => 'La asignación ha sido actualizado correctamente.'
+            ];
+            return response()->json($response, 200);
 
         } catch (\Illuminate\Validation\ValidationException $e) {
             $response = [
