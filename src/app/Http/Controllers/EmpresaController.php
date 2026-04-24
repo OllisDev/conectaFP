@@ -15,7 +15,7 @@ class EmpresaController extends Controller
     public function listCompanyAPI()
     {
         try {
-            $empresas = Empresa::select('id', 'id_usuario', 'id_sector', 'nif', 'descripcion', 'direccion', 'web', 'activo')->get();
+            $empresas = Empresa::with('usuario')->select('id', 'id_usuario', 'id_sector', 'nif', 'descripcion', 'direccion', 'web', 'activo')->get();
 
             if ($empresas->isEmpty()) {
                 $response = [
@@ -31,7 +31,7 @@ class EmpresaController extends Controller
                     'success' => true,
                     'status' => 'ok',
                     'message' => 'Empresa',
-                    'alumnos' => $empresas
+                    'empresas' => $empresas
                 ];
                 return response()->json($response, 200);
             }
@@ -79,6 +79,53 @@ class EmpresaController extends Controller
                 ];
                 return response()->json($response, 200);
             }
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            $response = [
+                'response' => 422,
+                'success' => false,
+                'status' => 'error',
+                'message' => 'Error de validación: ' . $e->getMessage()
+            ];
+            return response()->json($response, 422);
+        }
+    }
+
+    public function listCompanyByAcceptedAPI($id_alumno)
+    {
+        try {
+            $empresas = Empresa::whereHas('solicitud', function ($q) use ($id_alumno) {
+                $q->where('id_alumno', $id_alumno)
+                    ->where('estado', 'Aceptada');
+            })->with('usuario')->get();
+
+            if (!is_numeric($id_alumno) || (int) $id_alumno <= 0) {
+                $response = [
+                    'response' => 400,
+                    'success' => false,
+                    'status' => 'error',
+                    'message' => 'El ID proporcionado no es válido.'
+                ];
+                return response()->json($response, 400);
+            }
+
+            if (!$empresas) {
+                $response = [
+                    'response' => 404,
+                    'success' => false,
+                    'status' => 'error',
+                    'message' => 'La empresa no existe.'
+                ];
+                return response()->json($response, 404);
+            } else {
+                $response = [
+                    'response' => 200,
+                    'success' => true,
+                    'status' => 'ok',
+                    'empresas' => $empresas
+                ];
+                return response()->json($response, 200);
+            }
+
         } catch (\Illuminate\Validation\ValidationException $e) {
             $response = [
                 'response' => 422,

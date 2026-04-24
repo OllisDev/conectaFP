@@ -8,6 +8,7 @@ import Offers from "./components/offers/offersRouter";
 import MyRequests from "./components/shared/myRequests";
 import TutorialStudent from "./components/tutorial/student/tutorialRouterStudent";
 import TutorialTeacher from "./components/tutorial/teacher/tutorialRouterTeacher";
+import Assignments from "./components/assignments/assignmentsRouter";
 
 const headerElement = document.getElementById("header");
 const footerElement = document.getElementById("footer");
@@ -18,6 +19,7 @@ const offersElement = document.getElementById("offers");
 const myRequestsElement = document.getElementById("myRequests");
 const tutorialStudentElement = document.getElementById("tutorialStudent");
 const tutorialTeacherElement = document.getElementById("tutorialTeacher");
+const assignmentElement = document.getElementById("assignments");
 
 if (headerElement) {
     const header = createRoot(headerElement);
@@ -57,4 +59,9 @@ if (tutorialStudentElement) {
 if (tutorialTeacherElement) {
     const tutorialTeacher = createRoot(tutorialTeacherElement);
     tutorialTeacher.render(<TutorialTeacher />);
+}
+
+if (assignmentElement) {
+    const assignment = createRoot(assignmentElement);
+    assignment.render(<Assignments />);
 }

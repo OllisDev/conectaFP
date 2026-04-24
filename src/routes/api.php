@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AlumnoController;
+use App\Http\Controllers\AsignacionController;
 use App\Http\Controllers\CentroEducativoController;
 use App\Http\Controllers\DepartamentoController;
 use App\Http\Controllers\EmpresaController;
@@ -41,6 +42,7 @@ Route::post('/alumno/register', [AlumnoController::class, 'registerStudentAPI'])
 Route::get('/empresa', [EmpresaController::class, 'listCompanyAPI'])->name('companyAPI.listCompany');
 Route::get('/empresa/{empresa}', [EmpresaController::class, 'listCompanyByIdAPI'])->name('companyAPI.listCompanyById');
 Route::post('/empresa/register', [EmpresaController::class, 'registerCompanyAPI'])->name('companyAPI.registerCompany');
+Route::get('/empresa/aceptado/{id_alumno}', [EmpresaController::class, 'listCompanyByAcceptedAPI'])->name('companyAPI.listCompanyByAcceptedAPI');
 
 // rutas para los sectores de la empresa
 Route::get('/sector', [SectorController::class, 'listSectorAPI'])->name('sectorAPI.listSector');
@@ -81,3 +83,8 @@ Route::get('/tutoria/profesor/{id_profesor}', [TutoriaController::class, 'listTu
 Route::post('/tutoria/crear', [TutoriaController::class, 'createTutorialAPI'])->name('tutorialAPI.createTutorial');
 Route::put('/tutoria/{tutoria}/actualizar', [TutoriaController::class, 'updateTutorialAPI'])->name('tutorialAPI.updateTutorial');
 Route::delete('/tutoria/{tutoria}/eliminar', [TutoriaController::class, 'deleteTutorialAPI'])->name('tutorialAPI.deleteTutorial');
+
+// rutas para las asignaciones
+Route::get('/asignacion', [AsignacionController::class, 'listAssignmentAPI'])->name('assignmentAPI.listAssignment');
+Route::middleware('auth:api')->post('/asignacion/crear', [AsignacionController::class, 'createAssignmentAPI'])->name('assignmentAPI.createAssignment');
+Route::middleware('auth:api')->delete('/asignacion/{asignacion}/eliminar', [AsignacionController::class, 'deleteAssignmentAPI'])->name('assignmentAPI.deleteAssignment');

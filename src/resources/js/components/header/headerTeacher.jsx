@@ -23,6 +23,13 @@ export default function headerTeacher() {
                     <img src="/images/tutorial.svg" alt="Mis tutorías" />
                     <span>Mis tutorías</span>
                 </a>
+                <a href="/mis-asignaciones">
+                    <img
+                        src="/images/assignments.svg"
+                        alt="Mis asignaciones"
+                    ></img>
+                    <span>Mis asignaciones</span>
+                </a>
             </nav>
             <div className="header-actions">
                 <a href="#" className="header-notif">

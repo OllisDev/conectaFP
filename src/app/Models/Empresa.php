@@ -26,4 +26,9 @@ class Empresa extends Model
     {
         return $this->belongsTo(Usuario::class, 'id_usuario');
     }
+
+    public function solicitud()
+    {
+        return $this->hasMany(\App\Models\Solicitud::class, 'id_empresa');
+    }
 }

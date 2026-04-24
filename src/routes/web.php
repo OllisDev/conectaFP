@@ -32,3 +32,7 @@ Route::get('/mi-tutoria', function () {
 Route::get('/mis-tutorias', function () {
     return view('myTutorialTeacher');
 });
+
+Route::get('/mis-asignaciones', function () {
+    return view('myAssignments');
+});

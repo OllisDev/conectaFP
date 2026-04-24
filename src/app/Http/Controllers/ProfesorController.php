@@ -15,7 +15,7 @@ class ProfesorController extends Controller
     public function listTeacherAPI()
     {
         try {
-            $profesores = Profesor::select('id', 'id_usuario', 'id_centro', 'id_grado', 'id_departamento', 'dni')->get();
+            $profesores = Profesor::with('usuario')->select('id', 'id_usuario', 'id_centro', 'id_grado', 'id_departamento', 'dni')->get();
 
             if ($profesores->isEmpty()) {
                 $response = [

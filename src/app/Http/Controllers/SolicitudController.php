@@ -64,6 +64,7 @@ class SolicitudController extends Controller
                     \Illuminate\Validation\Rule::unique('solicitud')->where(fn($q) => $q->where('id_alumno', $request->id_alumno)),
                 ],
                 'id_alumno' => 'required|integer|min:1|exists:alumno,id',
+                'id_empresa' => 'required|integer|min:1|exists:empresa,id',
             ], [
                 'id_oferta.required' => 'La oferta es obligatoria.',
                 'id_oferta.exists' => 'La oferta no existe.',
@@ -72,6 +73,9 @@ class SolicitudController extends Controller
                 'id_alumno.required' => 'El alumno es obligatorio.',
                 'id_alumno.exists' => 'El alumno no existe.',
                 'id_alumno.integer' => 'El identificador del alumno debe ser un número entero.',
+                'id_empresa.required' => 'La empresa es obligatoria.',
+                'id_empresa.exists' => 'La empresa no existe.',
+                'id_empresa.integer' => 'El identificador de la empresa debe ser un número entero.',
             ]);
 
             $solicitud = Solicitud::create($data);

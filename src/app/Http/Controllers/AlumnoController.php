@@ -15,7 +15,7 @@ class AlumnoController extends Controller
     public function listStudentAPI()
     {
         try {
-            $alumnos = Alumno::select('id', 'id_usuario', 'id_centro', 'id_grado', 'curso', 'dni', 'cv', 'disponibilidad')->get();
+            $alumnos = Alumno::with('usuario')->select('id', 'id_usuario', 'id_centro', 'id_grado', 'curso', 'dni', 'cv', 'disponibilidad')->get();
 
             if ($alumnos->isEmpty()) {
                 $response = [

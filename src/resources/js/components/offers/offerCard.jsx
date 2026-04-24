@@ -25,7 +25,11 @@ export default function OfferCard({
         fetch("/api/solicitud", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ id_oferta: oferta.id, id_alumno: idAlumno }),
+            body: JSON.stringify({
+                id_oferta: oferta.id,
+                id_alumno: idAlumno,
+                id_empresa: oferta.empresa?.id,
+            }),
         })
             .then((res) => res.json())
             .then((data) => {
