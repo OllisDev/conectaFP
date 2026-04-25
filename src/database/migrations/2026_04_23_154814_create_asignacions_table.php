@@ -15,7 +15,7 @@ return new class extends Migration {
             $table->foreignId('id_alumno')->constrained('alumno')->onDelete('cascade');
             $table->foreignId('id_profesor')->constrained('profesor')->onDelete('cascade');
             $table->foreignId('id_empresa')->constrained('empresa')->onDelete('cascade');
-            $table->enum('estado', ['Activo', 'Finalizado']);
+            $table->enum('estado', ['Activa', 'Finalizada']);
             $table->timestamp('fecha_asignacion')->useCurrent();
         });
     }

@@ -6,14 +6,6 @@ export default function headerTeacher() {
             <div className="header-logo">
                 <span className="header-brand">ConectaFP</span>
             </div>
-            <div className="header-search">
-                <img
-                    src="/images/search.svg"
-                    alt="Buscar"
-                    className="search-icon"
-                />
-                <input type="text" id="search" placeholder="Buscar..." />
-            </div>
             <nav className="header-nav">
                 <a href="/feed">
                     <img src="/images/home.svg" alt="Inicio" />

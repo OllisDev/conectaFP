@@ -6,18 +6,6 @@ export default function headerStudent() {
             <div className="header-logo">
                 <span className="header-brand">ConectaFP</span>
             </div>
-            <div className="header-search">
-                <img
-                    src="/images/search.svg"
-                    alt="Buscar"
-                    className="search-icon"
-                ></img>
-                <input
-                    type="text"
-                    id="search"
-                    placeholder="Buscar ofertas..."
-                />
-            </div>
             <nav className="header-nav">
                 <a href="/feed">
                     <img src="/images/home.svg" alt="Inicio" />

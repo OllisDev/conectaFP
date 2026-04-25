@@ -6,18 +6,6 @@ export default function headerCompany() {
             <div className="header-logo">
                 <span className="header-brand">ConectaFP</span>
             </div>
-            <div className="header-search">
-                <img
-                    src="/images/search.svg"
-                    alt="Buscar"
-                    className="search-icon"
-                />
-                <input
-                    type="text"
-                    id="search"
-                    placeholder="Buscar alumnos..."
-                />
-            </div>
             <nav className="header-nav">
                 <a href="#">
                     <img src="/images/home.svg" alt="Inicio" />
