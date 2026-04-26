@@ -4,7 +4,12 @@ import { createRoot } from "react-dom/client";
 
 export default function tutorialStudentRouter() {
     const [activeTab, setActiveTab] = useState("tutorias");
-
+    const token = localStorage.getItem("api_token");
+    const userStr = localStorage.getItem("user");
+    if (!token || !userStr) {
+        window.location.href = "/login";
+        return null; // Evita renderizar el componente
+    }
     return (
         <div className="tutorial-container">
             <div className="tutorial-menu">

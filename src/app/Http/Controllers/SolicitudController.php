@@ -4,10 +4,11 @@ namespace App\Http\Controllers;
 
 use App\Models\Solicitud;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class SolicitudController extends Controller
 {
-    public function listRequestByStudentAPI($id)
+    public function listRequestByTeacherAPI($id)
     {
         try {
             if (!is_numeric($id) || (int) $id <= 0) {
@@ -20,7 +21,7 @@ class SolicitudController extends Controller
                 return response()->json($response, 400);
             }
 
-            $solicitud = Solicitud::with(['oferta.empresa.usuario'])->select('id', 'id_oferta', 'id_alumno', 'fecha_solicitud', 'estado')->where('id_alumno', $id)->get();
+            $solicitud = Solicitud::with(['oferta.empresa.usuario'])->select('id', 'id_oferta', 'id_alumno', 'fecha_solicitud', 'estado')->where('id_profesor', $id)->get();
 
             if ($solicitud->isEmpty()) {
                 $response = [
@@ -78,7 +79,15 @@ class SolicitudController extends Controller
                 'id_empresa.integer' => 'El identificador de la empresa debe ser un número entero.',
             ]);
 
-            $solicitud = Solicitud::create($data);
+            $profesor = Auth::user()->profesor;
+
+
+            $solicitud = Solicitud::create([
+                'id_oferta' => $data['id_oferta'],
+                'id_alumno' => $data['id_alumno'],
+                'id_empresa' => $data['id_empresa'],
+                'id_profesor' => $profesor->id
+            ]);
 
             if ($solicitud) {
                 $response = [
@@ -88,6 +97,7 @@ class SolicitudController extends Controller
                     'message' => 'Se ha creado la solicitud correctamente.'
                 ];
                 return response()->json($response, 201);
+
             } else {
                 $response = [
                     'response' => 500,

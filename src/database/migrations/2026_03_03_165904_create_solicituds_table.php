@@ -12,9 +12,10 @@ return new class extends Migration {
     {
         Schema::create('solicitud', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('id_oferta')->constrained('oferta')->onDelete('cascade');
-            $table->foreignId('id_alumno')->constrained('alumno')->onDelete('cascade');
-            $table->foreignId('id_empresa')->constrained('empresa')->onDelete('cascade');
+            $table->foreignId('id_oferta')->constrained('oferta');
+            $table->foreignId('id_alumno')->constrained('alumno');
+            $table->foreignId('id_empresa')->constrained('empresa');
+            $table->foreignId('id_profesor')->constrained('profesor');
             $table->unique(['id_oferta', 'id_alumno']);
             $table->timestamp('fecha_solicitud')->useCurrent();
             $table->enum('estado', ['Pendiente', 'Revision', 'Aceptada', 'Rechazada'])->default('Pendiente');

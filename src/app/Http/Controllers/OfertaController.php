@@ -106,6 +106,12 @@ class OfertaController extends Controller
                 $query->where('titulo', 'like', '%' . $request->titulo . '%');
             }
 
+            if ($request->filled('id_profesor')) {
+                $query->whereHas('solicitudes', function ($q) use ($request) {
+                    $q->where('id_profesor', $request->id_profesor);
+                });
+            }
+
             $ofertas = $query->get();
 
             if ($ofertas->isEmpty()) {

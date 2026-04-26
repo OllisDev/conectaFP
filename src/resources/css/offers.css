@@ -167,6 +167,26 @@ body {
     color: #052842;
 }
 
+.profile-dropdown {
+    display: flex;
+    flex-direction: column;
+}
+
+.dropdown-item {
+    padding: 0.75rem 1rem;
+    color: #1e3a5f;
+    text-decoration: none;
+    transition: background 0.2s;
+}
+
+.dropdown-item:hover {
+    background: #f1f5f9;
+}
+
+.profile-dropdown .dropdown-item {
+    color: #1e3a5f;
+}
+
 /* Layout general */
 .feed-container {
     display: flex;
@@ -278,6 +298,48 @@ body {
 
 .filter-btn:active {
     transform: translateY(0);
+}
+
+.checkbox-label {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: #1e3a5f;
+    cursor: pointer;
+    user-select: none;
+}
+
+.filter-checkbox {
+    appearance: none;
+    width: 18px;
+    height: 18px;
+    border: 2px solid #b3d9f7;
+    border-radius: 5px;
+    background: #f2f2f2;
+    transition: border-color 0.2s, background 0.2s;
+    position: relative;
+    cursor: pointer;
+    margin: 0;
+}
+
+.filter-checkbox:checked {
+    background: #0f62a1;
+    border-color: #0f62a1;
+}
+
+.filter-checkbox:checked::after {
+    content: "";
+    display: block;
+    position: absolute;
+    left: 5px;
+    top: 1px;
+    width: 5px;
+    height: 10px;
+    border: solid #fff;
+    border-width: 0 2.5px 2.5px 0;
+    transform: rotate(45deg);
 }
 
 .filter-clear {

@@ -6,11 +6,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ConectaFP | Feed</title>
     @viteReactRefresh
-    @vite(['resources/css/offers.css', 'resources/js/app.jsx'])
+    @vite(['resources/css/offers.css', 'resources/css/feed.css', 'resources/js/app.jsx'])
 </head>
 
 <body>
     <div id="header"></div>
+
+    <div id="feed"></div>
 </body>
 
 </html>

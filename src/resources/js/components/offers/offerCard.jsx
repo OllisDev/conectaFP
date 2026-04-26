@@ -13,56 +13,6 @@ export default function OfferCard({
               ? "cerrada"
               : "pausada";
 
-    const [solicitada, setSolicitada] = useState(yaSolicitada);
-    const [loading, setLoading] = useState(false);
-
-    useEffect(() => {
-        setSolicitada(yaSolicitada);
-    }, [yaSolicitada]);
-
-    const handleSolicitar = () => {
-        setLoading(true);
-        fetch("/api/solicitud", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({
-                id_oferta: oferta.id,
-                id_alumno: idAlumno,
-                id_empresa: oferta.empresa?.id,
-            }),
-        })
-            .then((res) => res.json())
-            .then((data) => {
-                if (data.success) {
-                    setSolicitada(true);
-                } else {
-                    alert(data.message || "Error al solicitar.");
-                }
-            })
-            .catch(() => alert("Error de conexión."))
-            .finally(() => setLoading(false));
-    };
-
-    const handleCancelar = () => {
-        setLoading(true);
-        fetch(`/api/solicitud/${solicitudId}`, {
-            method: "DELETE",
-            headers: {
-                "Content-Type": "applicaction/json",
-            },
-        })
-            .then((res) => res.json())
-            .then((data) => {
-                if (data.success) {
-                    setSolicitada(false);
-                } else {
-                    alert(data.message || "Error al cancelar.");
-                }
-            })
-            .catch(() => alert("Error de conexión."))
-            .finally(() => setLoading(false));
-    };
-
     return (
         <div className="offer-card">
             <div className="offer-card-header">
@@ -90,24 +40,6 @@ export default function OfferCard({
             <div className="offer-card-footer">
                 <span className="offer-card-modalidad">{oferta.modalidad}</span>
                 <span>{oferta.fecha_publicacion}</span>
-            </div>
-
-            <div className="offer-card-request">
-                {solicitada ? (
-                    <input
-                        type="button"
-                        value={loading ? "Cancelando..." : "Cancelar solicitud"}
-                        onClick={!loading ? handleCancelar : undefined}
-                        disabled={loading}
-                    />
-                ) : (
-                    <input
-                        type="button"
-                        value={loading ? "Enviando..." : "Solicitar"}
-                        onClick={!loading ? handleSolicitar : undefined}
-                        disabled={loading}
-                    />
-                )}
             </div>
         </div>
     );

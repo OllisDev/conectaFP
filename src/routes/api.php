@@ -15,14 +15,6 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UsuarioController;
 
-Route::get('/login', function () {
-    return response()->json([
-        'response' => 401,
-        'success' => false,
-        'status' => 'unauthenticated',
-        'message' => 'No autenticado.'
-    ], 401);
-})->name('login');
 
 // -- RUTAS API CRUD --
 
@@ -72,8 +64,8 @@ Route::get('/oferta/{oferta}', [OfertaController::class, 'listOfferByIdAPI'])->n
 Route::post('/oferta/crear', [OfertaController::class, 'createOfferAPI'])->name('offerAPI.createOffer');
 
 // rutas para las solicitudes
-Route::get('/solicitud/alumno/{id_alumno}', [SolicitudController::class, 'listRequestByStudentAPI'])->name('requestAPI.listRequestByStudent');
-Route::post('/solicitud', [SolicitudController::class, 'requestAPI'])->name('requestAPI.request');
+Route::get('/solicitud/profesor/{id_profesor}', [SolicitudController::class, 'listRequestByTeacherAPI'])->name('requestAPI.listRequestByTeacher');
+Route::middleware('auth:api')->post('/solicitud/profesor/crear', [SolicitudController::class, 'requestAPI'])->name('requestAPI.request');
 Route::put('/solicitud/{solicitud}/actualizar', [SolicitudController::class, 'updateRequestAPI'])->name('requestAPI.updateRequest');
 Route::delete('/solicitud/{solicitud}', [SolicitudController::class, 'deleteRequestAPI'])->name('requestAPI.deleteRequest');
 

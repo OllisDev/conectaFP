@@ -5,10 +5,18 @@ export default function myRequests() {
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        const user = JSON.parse(localStorage.getItem("user"));
-        const idAlumno = user?.id;
+        const token = localStorage.getItem("api_token");
+        const userStr = localStorage.getItem("user");
+        if (!token || !userStr) {
+            window.location.href = "/login";
+            return;
+        }
 
-        fetch(`/api/solicitud/alumno/${idAlumno}`)
+        const user = JSON.parse(userStr);
+
+        const idProfesor = user?.id;
+
+        fetch(`/api/solicitud/profesor/${idProfesor}`)
             .then((res) => res.json())
             .then((data) => {
                 if (data.success) {
@@ -20,7 +28,7 @@ export default function myRequests() {
 
     return (
         <div className="requests-container">
-            <h1>Mis solicitudes</h1>
+            <h1>Solicitudes</h1>
             <div className="table-container">
                 {loading ? (
                     <p>Cargando...</p>

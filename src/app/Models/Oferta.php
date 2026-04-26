@@ -26,4 +26,9 @@ class Oferta extends Model
     {
         return $this->belongsTo(Empresa::class, 'id_empresa');
     }
+
+    public function solicitudes()
+    {
+        return $this->hasMany(Solicitud::class, 'id_oferta');
+    }
 }

@@ -16,6 +16,7 @@ class Solicitud extends Model
         'id_oferta',
         'id_alumno',
         'id_empresa',
+        'id_profesor',
         'fecha_solicitud',
         'estado',
         'eliminado'

@@ -7,6 +7,13 @@ export default function offersStudent() {
     const [solicitud, setSolicitud] = useState([]);
     const [mensaje, setMensaje] = useState(null);
 
+    const token = localStorage.getItem("api_token");
+    const userStr = localStorage.getItem("user");
+    if (!token || !userStr) {
+        window.location.href = "/login";
+        return;
+    }
+
     useEffect(() => {
         let url = "/api/sector";
 
@@ -14,26 +21,36 @@ export default function offersStudent() {
             method: "GET",
             headers: {
                 "Content-Type": "application/json",
+                Accept: "application/json",
+                Authorization: "Bearer" + token,
             },
         })
-            .then((res) => res.json())
+            .then((res) => {
+                if (res.status === 401) {
+                    window.location.href = "/login";
+                    return;
+                }
+                return res.json();
+            })
             .then((data) => setSectores(data.sectores));
 
         fetch("/api/oferta", {
             method: "GET",
-            headers: { "Content-Type": "application/json" },
+            headers: {
+                "Content-Type": "application/json",
+                Accept: "application/json",
+                Authorization: "Bearer" + token,
+            },
         })
-            .then((res) => res.json())
+            .then((res) => {
+                if (res.status === 401) {
+                    console.log("Redirigiendo a login");
+                    window.location.href = "/login";
+                    return;
+                }
+                return res.json();
+            })
             .then((data) => setOfertas(data.alumnos || []));
-
-        const user = JSON.parse(localStorage.getItem("user"));
-        const idAlumno = user?.id;
-
-        fetch(`/api/solicitud/alumno/${idAlumno}`)
-            .then((res) => res.json())
-            .then((data) => {
-                if (data.success) setSolicitud(data.solicitud);
-            });
     }, []);
 
     const handleFiltros = () => {
@@ -41,6 +58,7 @@ export default function offersStudent() {
         const modalidad = document.getElementById("modalidad").value;
         const sector = document.getElementById("id_sector").value;
         const titulo = document.getElementById("titulo").value;
+        const checkSolicitado = document.getElementById("ofertas-solicitadas");
 
         if (modalidad) {
             params.append("modalidad", modalidad);
@@ -54,15 +72,28 @@ export default function offersStudent() {
             params.append("titulo", titulo);
         }
 
+        if (checkSolicitado && checkSolicitado.checked) {
+            const user = JSON.parse(localStorage.getItem("user"));
+            console.log(user.id);
+            params.append("id_profesor", user.id);
+        }
+
         let url = `/api/oferta/filtrar?${params.toString()}`;
 
         fetch(url, {
             method: "GET",
             headers: {
                 "Content-Type": "application/json",
+                Accept: "application/json",
             },
         })
-            .then((res) => res.json())
+            .then((res) => {
+                if (res.status === 401) {
+                    window.location.href = "/login";
+                    return;
+                }
+                return res.json();
+            })
             .then((data) => {
                 if (data.success) {
                     setOfertas(data.ofertas);
@@ -86,9 +117,16 @@ export default function offersStudent() {
             method: "GET",
             headers: {
                 "Content-Type": "application/json",
+                Accept: "application/json",
             },
         })
-            .then((res) => res.json())
+            .then((res) => {
+                if (res.status === 401) {
+                    window.location.href = "/login";
+                    return;
+                }
+                return res.json();
+            })
             .then((data) => setOfertas(data.alumnos || []));
     };
 
@@ -123,6 +161,19 @@ export default function offersStudent() {
                             id="titulo"
                             placeholder="Buscar por título..."
                         />
+                    </div>
+                    <div className="form">
+                        <label
+                            htmlFor="ofertas-solicitadas"
+                            className="checkbox-label"
+                        >
+                            Ofertas solicitadas
+                        </label>
+                        <input
+                            type="checkbox"
+                            id="ofertas-solicitadas"
+                            className="filter-checkbox"
+                        ></input>
                     </div>
                     <button
                         type="button"
