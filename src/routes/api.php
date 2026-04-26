@@ -24,6 +24,7 @@ Route::get('/usuario/{usuario}', [UsuarioController::class, 'listUserByIdAPI'])-
 Route::post('/usuario/login', [UsuarioController::class, 'loginUserAPI'])->name('userAPI.loginUser');
 Route::put('/usuario/{usuario}', [UsuarioController::class, 'updateUserAPI'])->name('userAPI.updateUser');
 Route::delete('/usuario/{usuario}/eliminar', [UsuarioController::class, 'deleteUserAPI'])->name('userAPI.deleteUser');
+Route::post('/usuario/logout', [UsuarioController::class, 'logoutUserAPI'])->name('userAPI.logoutUser');
 
 // rutas para la autenticación del alumno
 Route::get('/alumno', [AlumnoController::class, 'listStudentAPI'])->name('studentAPI.listStudent');

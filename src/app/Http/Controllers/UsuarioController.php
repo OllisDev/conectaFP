@@ -234,4 +234,45 @@ class UsuarioController extends Controller
             return response()->json($response, 422);
         }
     }
+
+    public function logoutUserAPI(Request $request)
+    {
+        try {
+            $token = $request->bearerToken();
+            if (!$token) {
+                return response()->json([
+                    'response' => 401,
+                    'success' => false,
+                    'status' => 'error',
+                    'message' => 'Token no proporcionado.'
+                ], 401);
+            }
+
+            $usuario = Usuario::where('api_token', $token)->first();
+
+            if (!$usuario) {
+                return response()->json([
+                    'response' => 401,
+                    'success' => false,
+                    'status' => 'error',
+                    'message' => 'Usuario no autenticado.'
+                ], 401);
+            }
+
+            return response()->json([
+                'response' => 200,
+                'success' => true,
+                'status' => 'ok',
+                'message' => 'Sesión cerrada correctamente.'
+            ], 200);
+
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            return response()->json([
+                'response' => 422,
+                'success' => false,
+                'status' => 'error',
+                'message' => 'Error de validación: ' . $e->getMessage()
+            ], 422);
+        }
+    }
 }

@@ -16,6 +16,22 @@ export default function headerStudent() {
         };
     }, []);
 
+    const logout = () => {
+        const token = localStorage.getItem("api_token");
+        let url = "/api/usuario/logout";
+
+        fetch(url, {
+            method: "POST",
+            headers: {
+                Authorization: `Bearer ${token}`,
+                "Content-Type": "application/json",
+            },
+        });
+        localStorage.removeItem("api_token");
+        localStorage.removeItem("user");
+        window.location.href = "/login";
+    };
+
     return (
         <header className="header-container">
             <div className="header-logo">
@@ -81,7 +97,11 @@ export default function headerStudent() {
                             <a href="#" className="dropdown-item">
                                 Editar perfil
                             </a>
-                            <a href="#" className="dropdown-item">
+                            <a
+                                href="#"
+                                className="dropdown-item"
+                                onClick={logout}
+                            >
                                 Cerrar sesión
                             </a>
                         </div>
