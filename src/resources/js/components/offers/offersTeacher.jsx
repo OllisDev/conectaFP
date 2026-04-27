@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
-import OfferCardStudent from "./offerCardStudent";
+import OfferCardTeacher from "./offerCardTeacher";
 
-export default function offersStudent() {
+export default function offersTeacher() {
     const [sectores, setSectores] = useState([]);
     const [ofertas, setOfertas] = useState([]);
     const [solicitud, setSolicitud] = useState([]);
@@ -199,7 +199,7 @@ export default function offersStudent() {
                     <p className="no-results">No hay ofertas disponibles.</p>
                 ) : (
                     ofertas.map((oferta) => (
-                        <OfferCardStudent
+                        <OfferCardTeacher
                             key={oferta.id}
                             oferta={oferta}
                             yaSolicitada={solicitud.some(

@@ -79,6 +79,8 @@ Route::delete('/tutoria/{tutoria}/eliminar', [TutoriaController::class, 'deleteT
 
 // rutas para las asignaciones
 Route::middleware('auth:api')->get('/asignacion', [AsignacionController::class, 'listAssignmentAPI'])->name('assignmentAPI.listAssignment');
+Route::middleware('auth:api')->get('/asignacion/alumno/{id_alumno}', [AsignacionController::class, 'listAssignmentByStudentAPI'])->name('assignmentAPI.listAssignmentByStudent');
+Route::middleware('auth:api')->get('/asignacion/alumno/{id_alumno}/empresa', [AsignacionController::class, 'listAssignmentByStudentForCompanyAPI'])->name('assignmentAPI.listAssignmentByStudentForCompany');
 Route::middleware('auth:api')->post('/asignacion/crear', [AsignacionController::class, 'createAssignmentAPI'])->name('assignmentAPI.createAssignment');
 Route::middleware('auth:api')->delete('/asignacion/{asignacion}/eliminar', [AsignacionController::class, 'deleteAssignmentAPI'])->name('assignmentAPI.deleteAssignment');
 Route::middleware('auth:api')->put('/asignacion/{asignacion}/actualizar', [AsignacionController::class, 'updateAssignmentAPI'])->name('assignmentAPI.updateAssignment');

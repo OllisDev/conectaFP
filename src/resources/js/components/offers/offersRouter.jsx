@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import OffersStudent from "./offersStudent";
+import OffersTeacher from "./offersTeacher";
 
 export default function offersRouter() {
     const [rol, setRol] = useState(null);
@@ -15,5 +16,6 @@ export default function offersRouter() {
     }, []);
 
     if (rol === "alumno") return <OffersStudent />;
+    if (rol === "profesor") return <OffersTeacher />;
     return null;
 }

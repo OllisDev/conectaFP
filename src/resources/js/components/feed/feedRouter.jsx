@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import FeedStudent from "./feedStudent";
+import FeedTeacher from "./feedTeacher";
 
 export default function feedRouter() {
     const user = localStorage.getItem("user");
@@ -16,5 +17,6 @@ export default function feedRouter() {
     }, [user]);
 
     if (rol === "alumno") return <FeedStudent />;
+    if (rol === "profesor") return <FeedTeacher />;
     return null;
 }

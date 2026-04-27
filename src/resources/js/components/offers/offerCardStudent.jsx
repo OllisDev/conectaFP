@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 
-export default function OfferCard({
+export default function OfferCardStudent({
     oferta,
     yaSolicitada,
     solicitudId,

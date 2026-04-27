@@ -4,6 +4,12 @@ import CreateTutorial from "./createTutorial";
 
 export default function tutorialRouterTeacher() {
     const [activeTab, setActiveTab] = useState("tutorias");
+    const token = localStorage.getItem("api_token");
+    const userStr = localStorage.getItem("user");
+    if (!token || !userStr) {
+        window.location.href = "/login";
+        return null; // Evita renderizar el componente
+    }
 
     return (
         <div className="tutorial-container">

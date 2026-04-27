@@ -6,6 +6,8 @@ use App\Models\Asignacion;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
+use function PHPSTORM_META\map;
+
 class AsignacionController extends Controller
 {
     public function listAssignmentAPI()
@@ -36,6 +38,145 @@ class AsignacionController extends Controller
                 ];
                 return response()->json($response, 200);
             }
+
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            $response = [
+                'response' => 422,
+                'success' => false,
+                'status' => 'error',
+                'message' => 'Error de validación: ' . $e->getMessage()
+            ];
+            return response()->json($response, 422);
+        }
+    }
+
+    public function listAssignmentByStudentAPI($idAlumno)
+    {
+        try {
+            $user = Auth::user();
+            if (!$user || !$user->profesor) {
+                return response()->json([
+                    'response' => 401,
+                    'success' => false,
+                    'status' => 'error',
+                    'message' => 'No autenticado o el usuario no es profesor.'
+                ], 401);
+            }
+            $profesor = $user->profesor;
+
+            if (!is_numeric($idAlumno) || (int) $idAlumno <= 0) {
+                $response = [
+                    'response' => 400,
+                    'success' => false,
+                    'status' => 'error',
+                    'message' => 'El ID proporcionado no es válido.'
+                ];
+                return response()->json($response, 400);
+            }
+
+            if (!$idAlumno) {
+                $response = [
+                    'response' => 404,
+                    'success' => false,
+                    'status' => 'error',
+                    'message' => 'El alumno no existe.'
+                ];
+                return response()->json($response, 404);
+            }
+
+            $asignaciones = Asignacion::with(['alumno.usuario', 'empresa'])
+                ->where('id_profesor', $profesor->id)
+                ->where('id_alumno', $idAlumno)
+                ->get();
+
+            if ($asignaciones->isEmpty()) {
+                $response = [
+                    'response' => 404,
+                    'success' => false,
+                    'status' => 'error',
+                    'message' => 'No se encontraron asignaciones de ese alumno con el profesor.'
+                ];
+                return response()->json($response, 404);
+            }
+
+            $response = [
+                'response' => 200,
+                'success' => true,
+                'status' => 'ok',
+                'message' => 'asignaciones',
+                'asignaciones' => $asignaciones
+            ];
+            return response()->json($response, 200);
+
+
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            $response = [
+                'response' => 422,
+                'success' => false,
+                'status' => 'error',
+                'message' => 'Error de validación: ' . $e->getMessage()
+            ];
+            return response()->json($response, 422);
+        }
+    }
+
+    public function listAssignmentByStudentForCompanyAPI($idAlumno)
+    {
+        try {
+            $user = Auth::user();
+            if (!$user || !$user->profesor) {
+                return response()->json([
+                    'response' => 401,
+                    'success' => false,
+                    'status' => 'error',
+                    'message' => 'No autenticado o el usuario no es profesor.'
+                ], 401);
+            }
+            $profesor = $user->profesor;
+
+            if (!is_numeric($idAlumno) || (int) $idAlumno <= 0) {
+                $response = [
+                    'response' => 400,
+                    'success' => false,
+                    'status' => 'error',
+                    'message' => 'El ID proporcionado no es válido.'
+                ];
+                return response()->json($response, 400);
+            }
+
+            if (!$idAlumno) {
+                $response = [
+                    'response' => 404,
+                    'success' => false,
+                    'status' => 'error',
+                    'message' => 'El alumno no existe.'
+                ];
+                return response()->json($response, 404);
+            }
+
+            $asignaciones = Asignacion::with('empresa')
+                ->where('id_profesor', $profesor->id)
+                ->where('id_alumno', $idAlumno)
+                ->get();
+
+            if ($asignaciones->isEmpty()) {
+                $response = [
+                    'response' => 404,
+                    'success' => false,
+                    'status' => 'error',
+                    'message' => 'No se encontraron asignaciones de ese alumno con el profesor.'
+                ];
+                return response()->json($response, 404);
+            }
+
+            $response = [
+                'response' => 200,
+                'success' => true,
+                'status' => 'ok',
+                'message' => 'asignaciones',
+                'asignaciones' => $asignaciones
+            ];
+            return response()->json($response, 200);
 
         } catch (\Illuminate\Validation\ValidationException $e) {
             $response = [
