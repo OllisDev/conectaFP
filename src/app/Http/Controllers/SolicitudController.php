@@ -10,27 +10,26 @@ use Illuminate\Support\Facades\DB;
 
 class SolicitudController extends Controller
 {
-    public function listRequestByTeacherAPI($id)
+    public function listRequestByTeacherAPI()
     {
         try {
-            if (!is_numeric($id) || (int) $id <= 0) {
-                $response = [
-                    'response' => 400,
-                    'success' => false,
-                    'status' => 'error',
-                    'message' => 'El ID proporcionado no es válido.'
-                ];
-                return response()->json($response, 400);
-            }
+            $user = Auth::user();
+            $idProfesor = $user->profesor->id;
 
-            $solicitud = Solicitud::with(['oferta.empresa.usuario'])->select('id', 'id_oferta', 'id_alumno', 'fecha_solicitud', 'estado')->where('id_profesor', $id)->get();
+            $alumnosAsignados = Alumno::where('id_profesor', $idProfesor)->pluck('id')->toArray();
 
-            if ($solicitud->isEmpty()) {
+            $solicitudes = Solicitud::with(['oferta.empresa.usuario'])
+                ->select('id', 'id_oferta', 'id_alumno', 'fecha_solicitud', 'estado')
+                ->where('id_profesor', $idProfesor)
+                ->whereIn('id_alumno', $alumnosAsignados)
+                ->get();
+
+            if ($solicitudes->isEmpty()) {
                 $response = [
                     'response' => 404,
                     'success' => false,
                     'status' => 'error',
-                    'message' => 'No se encontraron solicitudes para este alumno.'
+                    'message' => 'No se encontraron solicitudes para los alumnos.'
                 ];
                 return response()->json($response, 404);
             }
@@ -39,7 +38,7 @@ class SolicitudController extends Controller
                 'response' => 200,
                 'success' => true,
                 'status' => 'ok',
-                'solicitud' => $solicitud
+                'solicitud' => $solicitudes
             ];
             return response()->json($response, 200);
 

@@ -50,12 +50,9 @@ export default function headerTeacher() {
                     <img src="/images/tutorial.svg" alt="Mis tutorías" />
                     <span>Mis tutorías</span>
                 </a>
-                <a href="/mis-asignaciones">
-                    <img
-                        src="/images/assignments.svg"
-                        alt="Mis asignaciones"
-                    ></img>
-                    <span>Mis asignaciones</span>
+                <a href="/mis-solicitudes">
+                    <img src="/images/requests.svg" alt="Solicitudes"></img>
+                    <span>Mis Solicitudes</span>
                 </a>
             </nav>
             <div className="header-actions" ref={menuRef}>
