@@ -13,6 +13,7 @@ class Alumno extends Model
     public $timestamps = false;
     protected $fillable = [
         'id_usuario',
+        'id_profesor',
         'id_centro',
         'id_grado',
         'fecha_nacimiento',
@@ -37,5 +38,10 @@ class Alumno extends Model
     public function profesor()
     {
         return $this->belongsTo(Profesor::class, 'id_profesor');
+    }
+
+    public function grado()
+    {
+        return $this->belongsTo(Grado::class, 'id_grado');
     }
 }

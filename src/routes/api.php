@@ -30,6 +30,7 @@ Route::post('/usuario/logout', [UsuarioController::class, 'logoutUserAPI'])->nam
 Route::get('/alumno', [AlumnoController::class, 'listStudentAPI'])->name('studentAPI.listStudent');
 Route::get('/alumno/{alumno}', [AlumnoController::class, 'listStudentByIdAPI'])->name('studentAPI.listStudent');
 Route::post('/alumno/register', [AlumnoController::class, 'registerStudentAPI'])->name('studentAPI.registerStudent');
+Route::middleware('auth:api')->get('/alumnos/profesor', [AlumnoController::class, 'listStudentByTeacherAPI'])->name('studentAPI.listStudentByTeacher');
 
 // rutas para la autenticación de la empresa
 Route::get('/empresa', [EmpresaController::class, 'listCompanyAPI'])->name('companyAPI.listCompany');

@@ -6,6 +6,7 @@ export default function offersTeacher() {
     const [ofertas, setOfertas] = useState([]);
     const [solicitud, setSolicitud] = useState([]);
     const [mensaje, setMensaje] = useState(null);
+    const [expandedOfferId, setExpandedOfferId] = useState(null);
 
     const token = localStorage.getItem("api_token");
     const userStr = localStorage.getItem("user");
@@ -202,15 +203,13 @@ export default function offersTeacher() {
                         <OfferCardTeacher
                             key={oferta.id}
                             oferta={oferta}
-                            yaSolicitada={solicitud.some(
-                                (s) => s.id_oferta === oferta.id,
-                            )}
-                            solicitudId={
-                                solicitud.find((s) => s.id_oferta === oferta.id)
-                                    ?.id
-                            }
-                            idAlumno={
-                                JSON.parse(localStorage.getItem("user"))?.id
+                            isExpanded={expandedOfferId === oferta.id}
+                            onExpand={() =>
+                                setExpandedOfferId(
+                                    expandedOfferId === oferta.id
+                                        ? null
+                                        : oferta.id,
+                                )
                             }
                         />
                     ))

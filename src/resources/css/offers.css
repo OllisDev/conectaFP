@@ -369,6 +369,156 @@ body {
     box-shadow: 0 2px 8px rgba(59, 130, 246, 0.15);
     border-left: 4px solid #0f62a1;
     transition: transform 0.2s ease, box-shadow 0.2s ease;
+    transition: all 0.3s;
+}
+
+.offer-card.expanded {
+    min-height: 340px;
+    background: #eaf4fb;
+    box-shadow: 0 8px 32px rgba(30, 58, 95, 0.18);
+    border-left: 6px solid #0f62a1;
+    transform: scale(1.02);
+    transition: all 0.3s cubic-bezier(.4, 2, .6, 1);
+    z-index: 2;
+    position: relative;
+    padding-bottom: 32px;
+}
+
+.expanded-container {
+    margin-top: 18px;
+    padding: 18px 20px 10px 20px;
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(59, 130, 246, 0.08);
+    font-size: 1rem;
+    color: #1e3a5f;
+    animation: fadeIn 0.3s;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.alumnos-titulo {
+    color: #0f62a1;
+    font-weight: bold;
+}
+
+.alumnos-lista {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 18px;
+    margin-top: 12px;
+}
+
+.alumno-card {
+    background: #f7fafc;
+    border: 2px solid #b3d9f7;
+    border-radius: 12px;
+    padding: 16px 18px;
+    min-width: 260px;
+    max-width: 320px;
+    flex: 1 1 260px;
+    box-shadow: 0 2px 8px rgba(59, 130, 246, 0.08);
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.alumno-card:hover {
+    border-color: #0f62a1;
+    box-shadow: 0 4px 16px rgba(30, 58, 95, 0.12);
+}
+
+.alumno-card-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    cursor: pointer;
+}
+
+.alumno-checkbox {
+    width: 22px;
+    height: 22px;
+    accent-color: #0f62a1;
+    margin-right: 4px;
+    cursor: pointer;
+}
+
+.alumno-avatar {
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    background: #0f62a1;
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 1.2rem;
+    margin-right: 6px;
+}
+
+.alumno-nombre {
+    font-size: 1rem;
+    font-weight: 600;
+    color: #1e3a5f;
+}
+
+.alumno-card-info {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    font-size: 0.93rem;
+    color: #0f62a1;
+    margin-left: 36px;
+}
+
+.btn-actions {
+    display: flex;
+    gap: 12px;
+    margin-top: 18px;
+    justify-content: flex-end;
+}
+
+.btn-submmit,
+.btn-close {
+    background-color: #0f62a1;
+    color: #fff;
+    border: none;
+    border-radius: 10px;
+    padding: 10px 28px;
+    font-size: 1rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background 0.2s, transform 0.1s, box-shadow 0.2s;
+    box-shadow: 0 2px 8px rgba(59, 130, 246, 0.15);
+    letter-spacing: 0.5px;
+}
+
+.btn-close {
+    background: #b3d9f7;
+    color: #0f62a1;
+}
+
+.btn-submmit:hover {
+    background-color: #1e3a5f;
+    transform: scale(1.06) translateY(-2px);
+    box-shadow: 0 4px 16px rgba(30, 58, 95, 0.18);
+}
+
+.btn-close:hover {
+    background: #eaf4fb;
+    color: #052842;
 }
 
 .offer-card:hover {
@@ -471,24 +621,24 @@ body {
     justify-content: flex-end;
 }
 
-.offer-card-request button,
-.offer-card-request input[type="button"] {
+.offer-card-request button {
     background-color: #0f62a1;
-    color: #ffffff;
+    color: #fff;
     border: none;
     border-radius: 10px;
-    padding: 8px 22px;
-    font-size: 0.95rem;
-    font-weight: 600;
+    padding: 10px 28px;
+    font-size: 1rem;
+    font-weight: 700;
     cursor: pointer;
-    transition: background-color 0.2s, transform 0.1s, box-shadow 0.2s;
-    box-shadow: 0 1px 4px rgba(59, 130, 246, 0.08);
-    margin-top: 8px;
+    transition: background 0.2s, transform 0.1s, box-shadow 0.2s;
+    box-shadow: 0 2px 8px rgba(59, 130, 246, 0.15);
+    /* Esto es solo para el botón, no para el contenedor */
+    margin-top: 12px;
+    letter-spacing: 0.5px;
 }
 
-.offer-card-request button:hover,
-.offer-card-request input[type="button"]:hover {
+.offer-card-request button:hover {
     background-color: #1e3a5f;
-    transform: translateY(-1px) scale(1.04);
-    box-shadow: 0 2px 8px rgba(59, 130, 246, 0.15);
+    transform: scale(1.06) translateY(-2px);
+    box-shadow: 0 4px 16px rgba(30, 58, 95, 0.18);
 }

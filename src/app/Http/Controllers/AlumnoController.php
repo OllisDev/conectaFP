@@ -15,7 +15,7 @@ class AlumnoController extends Controller
     public function listStudentAPI()
     {
         try {
-            $alumnos = Alumno::with('usuario')->select('id', 'id_usuario', 'id_centro', 'id_grado', 'curso', 'dni', 'cv', 'disponibilidad')->get();
+            $alumnos = Alumno::with('usuario')->select('id', 'id_usuario', 'id_profesor', 'id_centro', 'id_grado', 'curso', 'dni', 'cv', 'disponibilidad')->get();
 
             if ($alumnos->isEmpty()) {
                 $response = [
@@ -79,6 +79,56 @@ class AlumnoController extends Controller
                 ];
                 return response()->json($response, 200);
             }
+
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            $response = [
+                'response' => 422,
+                'success' => false,
+                'status' => 'error',
+                'message' => 'Error de validación: ' . $e->getMessage()
+            ];
+            return response()->json($response, 422);
+        }
+    }
+
+    public function listStudentByTeacherAPI()
+    {
+        try {
+            $user = Auth::user();
+            if (!$user || !$user->profesor) {
+                return response()->json([
+                    'response' => 401,
+                    'success' => false,
+                    'status' => 'error',
+                    'message' => 'No autenticado o el usuario no es profesor.'
+                ], 401);
+            }
+            $idProfesor = $user->profesor->id;
+
+
+            $alumnos = Alumno::with(['usuario', 'grado'])
+                ->where('id_profesor', $idProfesor)
+                ->select('id', 'id_usuario', 'id_centro', 'id_grado', 'curso', 'dni', 'cv', 'disponibilidad')
+                ->get();
+
+            if ($alumnos->isEmpty()) {
+                $response = [
+                    'response' => 404,
+                    'success' => false,
+                    'status' => 'error',
+                    'message' => 'No hay alumnos asignados a este profesor.'
+                ];
+                return response()->json($response, 404);
+            }
+
+            $response = [
+                'response' => 200,
+                'success' => true,
+                'status' => 'ok',
+                'alumnos' => $alumnos
+            ];
+            return response()->json($response, 200);
+
 
         } catch (\Illuminate\Validation\ValidationException $e) {
             $response = [
