@@ -45,6 +45,7 @@ export default function nyRequestTeacher() {
                             <tr>
                                 <th>Título</th>
                                 <th>Empresa</th>
+                                <th>Alumno</th>
                                 <th>Fecha</th>
                                 <th>Estado</th>
                             </tr>
@@ -56,6 +57,7 @@ export default function nyRequestTeacher() {
                                     <td>
                                         {s.oferta?.empresa?.usuario?.nombre}
                                     </td>
+                                    <td>{s.alumno?.usuario?.nombre}</td>
                                     <td>{s.fecha_solicitud}</td>
                                     <td>{s.estado}</td>
                                 </tr>

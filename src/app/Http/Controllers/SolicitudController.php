@@ -18,7 +18,7 @@ class SolicitudController extends Controller
 
             $alumnosAsignados = Alumno::where('id_profesor', $idProfesor)->pluck('id')->toArray();
 
-            $solicitudes = Solicitud::with(['oferta.empresa.usuario'])
+            $solicitudes = Solicitud::with(['oferta.empresa.usuario', 'alumno.usuario'])
                 ->select('id', 'id_oferta', 'id_alumno', 'fecha_solicitud', 'estado')
                 ->where('id_profesor', $idProfesor)
                 ->whereIn('id_alumno', $alumnosAsignados)
