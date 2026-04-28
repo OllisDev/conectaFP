@@ -110,6 +110,7 @@ class AlumnoController extends Controller
                 'email' => 'required|email|lowercase|max:100|unique:usuario,email',
                 'telefono' => 'required|string|regex:/^[6-9][0-9]{8}$/|unique:usuario,telefono',
                 'id_centro' => 'required|integer|min:1|exists:centro_educativo,id',
+                'id_profesor' => 'required|integer|min:1|exists:profesor,id',
                 'id_grado' => 'required|integer|min:1|exists:grado,id',
                 'fecha_nacimiento' => 'required|date|before:' . now()->subYears(16)->toDateString() . '|after:1900-01-01',
                 'curso' => 'required|in:1º,2º',
@@ -139,6 +140,9 @@ class AlumnoController extends Controller
                 'id_centro.required' => 'El centro educativo es obligatorio.',
                 'id_centro.exists' => 'El centro educativo no existe.',
                 'id_centro.integer' => 'El identificador del centro debe ser un número entero.',
+                'id_profesor.required' => 'El profesor es obligatorio.',
+                'id_profesor.exists' => 'El profesor no existe.',
+                'id_profesor.integer' => 'El identificador del profesor debe ser un número entero.',
                 'id_grado.required' => 'El grado es obligatorio.',
                 'id_grado.exists' => 'El grado no existe.',
                 'id_grado.integer' => 'El identificador del grado debe ser un número entero.',
@@ -179,6 +183,7 @@ class AlumnoController extends Controller
 
                 Alumno::create([
                     'id_usuario' => $usuario->id,
+                    'id_profesor' => $data['id_profesor'],
                     'id_centro' => $data['id_centro'],
                     'id_grado' => $data['id_grado'],
                     'fecha_nacimiento' => $data['fecha_nacimiento'],

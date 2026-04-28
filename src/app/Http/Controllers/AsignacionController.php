@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Alumno;
 use App\Models\Asignacion;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;

@@ -47,6 +47,50 @@ class ProfesorController extends Controller
         }
     }
 
+    public function listTeacherByCenterAPI($idCentro)
+    {
+        try {
+            $profesores = Profesor::with('usuario')->select('id', 'id_usuario', 'id_centro', 'id_grado', 'id_departamento', 'dni')->where('id_centro', $idCentro)->get();
+
+            if (!is_numeric($idCentro) || (int) $idCentro <= 0) {
+                $response = [
+                    'response' => 400,
+                    'success' => false,
+                    'status' => 'error',
+                    'message' => 'El ID proporcionado no es válido.'
+                ];
+                return response()->json($response, 400);
+            }
+
+            if (!$profesores) {
+                $response = [
+                    'response' => 404,
+                    'success' => false,
+                    'status' => 'error',
+                    'message' => 'El profesor no existe.'
+                ];
+                return response()->json($response, 404);
+            } else {
+                $response = [
+                    'response' => 200,
+                    'success' => true,
+                    'status' => 'ok',
+                    'profesores' => $profesores
+                ];
+                return response()->json($response, 200);
+            }
+
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            $response = [
+                'response' => 422,
+                'success' => false,
+                'status' => 'error',
+                'message' => 'Error de validación: ' . $e->getMessage()
+            ];
+            return response()->json($response, 422);
+        }
+    }
+
     public function listTeacherByIdAPI($id)
     {
         try {

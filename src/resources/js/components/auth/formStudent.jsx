@@ -12,12 +12,14 @@ export default function formStudent({ onBack }) {
         email: "",
         telefono: "",
         id_centro: "",
+        id_profesor: "",
         id_grado: "",
         curso: "",
         dni: "",
         fecha_nacimiento: "",
         cv: null,
     });
+    const [profesores, setProfesores] = useState([]);
 
     const handleChange = (e) => {
         const { id, value, files } = e.target;
@@ -101,6 +103,10 @@ export default function formStudent({ onBack }) {
         // validaciones para el campo "centro educativo"
         if (!form.id_centro) {
             newErrors.id_centro = "El centro educativo es obligatorio.";
+        }
+
+        if (!form.id_profesor) {
+            newErrors.id_profesor = "El profesor es obligatorio.";
         }
 
         // validaciones para el campo "grado"
@@ -229,6 +235,22 @@ export default function formStudent({ onBack }) {
     }, []);
 
     useEffect(() => {
+        if (form.id_centro) {
+            // Llama a tu endpoint para obtener los profesores de ese centro
+            fetch(`/api/profesor/centro/${form.id_centro}`, {
+                method: "GET",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+            })
+                .then((res) => res.json())
+                .then((data) => setProfesores(data.profesores || []));
+        } else {
+            setProfesores([]);
+        }
+    }, [form.id_centro]);
+
+    useEffect(() => {
         let url = "/api/grado";
 
         fetch(url, {
@@ -300,6 +322,19 @@ export default function formStudent({ onBack }) {
                                     {centro.nombre} - {centro.localidad}
                                 </option>
                             </optgroup>
+                        ))}
+                    </select>
+                </div>
+
+                <div className="form">
+                    <label htmlFor="id_profesor">Profesor:</label>
+                    <select id="id_profesor" onChange={handleChange}>
+                        <option value="">-- Selecciona un profesor --</option>
+                        {profesores.map((profesor) => (
+                            <option key={profesor.id} value={profesor.id}>
+                                {profesor.usuario?.nombre}{" "}
+                                {profesor.usuario?.apellidos}
+                            </option>
                         ))}
                     </select>
                 </div>

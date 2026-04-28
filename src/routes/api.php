@@ -44,6 +44,7 @@ Route::post('/sector/crear', [SectorController::class, 'createSectorAPI'])->name
 // rutas para la autenticación del profesor
 Route::get('/profesor', [ProfesorController::class, 'listTeacherAPI'])->name('teacherAPI.listTeacher');
 Route::get('/profesor/{profesor}', [ProfesorController::class, 'listTeacherByIdAPI'])->name('teacherAPI.listTeacherById');
+Route::get('/profesor/centro/{id_centro}', [ProfesorController::class, 'listTeacherByCenterAPI'])->name('teacherAPI.listTeacherByCenter');
 Route::post('/profesor/register', [ProfesorController::class, 'registerTeacherAPI'])->name('teacherAPI.registerTeacher');
 
 // rutas para los departamentos de cada profesor
