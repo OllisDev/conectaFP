@@ -9,6 +9,8 @@ export default function OfferCardTeacher({ oferta, isExpanded, onExpand }) {
               : "pausada";
 
     const [alumnosAsignados, setAlumnosAsignados] = useState([]);
+    const [alumnosSeleccionados, setAlumnosSeleccionados] = useState([]);
+    const [mensaje, setMensaje] = useState(null);
 
     useEffect(() => {
         if (isExpanded) {
@@ -34,6 +36,58 @@ export default function OfferCardTeacher({ oferta, isExpanded, onExpand }) {
                 });
         }
     }, [isExpanded]);
+
+    const handleCheckboxChange = (id) => {
+        setAlumnosSeleccionados((prev) =>
+            prev.includes(id) ? prev.filter((al) => al !== id) : [...prev, id],
+        );
+    };
+
+    const handleSubmitRequest = () => {
+        setMensaje(null);
+
+        if (alumnosSeleccionados.length === 0) {
+            setMensaje("Debes de seleccionar al menos un alumno.");
+            return;
+        }
+
+        const token = localStorage.getItem("api_token");
+        let url = "/api/solicitud/profesor/crear";
+
+        fetch(url, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                Accept: "application/json",
+                Authorization: `Bearer ${token}`,
+            },
+            body: JSON.stringify({
+                id_oferta: oferta.id,
+                id_empresa: oferta.empresa?.id,
+                alumnos: alumnosSeleccionados,
+            }),
+        })
+            .then((res) => res.json())
+            .then((data) => {
+                if (data.success) {
+                    setMensaje(
+                        data.message || "Solicitud enviada correctamente.",
+                    );
+                    setAlumnosSeleccionados([]);
+                } else {
+                    setMensaje(data.message || "Error al enviar la solicitud");
+                }
+            })
+            .catch((error) => {
+                setMensaje("Error de servidor.");
+                console.log(error);
+            });
+    };
+
+    const handleClose = () => {
+        setMensaje(null);
+        onExpand();
+    };
 
     return (
         <div className="offer-card">
@@ -91,6 +145,14 @@ export default function OfferCardTeacher({ oferta, isExpanded, onExpand }) {
                                                 <label className="alumno-card-header">
                                                     <input
                                                         type="checkbox"
+                                                        checked={alumnosSeleccionados.includes(
+                                                            alumno.id,
+                                                        )}
+                                                        onChange={() =>
+                                                            handleCheckboxChange(
+                                                                alumno.id,
+                                                            )
+                                                        }
                                                         id={`alumno-${alumno.id}`}
                                                         name="alumnos"
                                                         className="alumno-checkbox"
@@ -143,11 +205,24 @@ export default function OfferCardTeacher({ oferta, isExpanded, onExpand }) {
                                     )}
                                 </div>
                             </div>
+                            {mensaje && (
+                                <div
+                                    style={{
+                                        color: mensaje.includes("correctamente")
+                                            ? "green"
+                                            : "red",
+                                        margin: "10px 0",
+                                    }}
+                                >
+                                    {mensaje}
+                                </div>
+                            )}
                             <div className="btn-actions">
                                 <button
                                     type="button"
                                     id="btnSubmit"
                                     className="btn-submmit"
+                                    onClick={handleSubmitRequest}
                                 >
                                     Enviar solicitud
                                 </button>
@@ -155,7 +230,7 @@ export default function OfferCardTeacher({ oferta, isExpanded, onExpand }) {
                                     type="button"
                                     id="btnClose"
                                     className="btn-close"
-                                    onClick={onExpand}
+                                    onClick={handleClose}
                                 >
                                     Cerrar
                                 </button>

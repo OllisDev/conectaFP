@@ -98,7 +98,7 @@ class SolicitudController extends Controller
                     'response' => 400,
                     'success' => false,
                     'status' => 'error',
-                    'message' => 'Los siguientes alumnos no están asignados a este profesor: ' . implode(', ', $alumnosNoValidos) . '.'
+                    'message' => 'Los siguientes alumnos no están asignados a este profesor: '
                 ], 400);
             }
 
@@ -117,7 +117,7 @@ class SolicitudController extends Controller
                     'response' => 400,
                     'success' => false,
                     'status' => 'error',
-                    'message' => 'Ya existe una solicitud previa para los siguientes alumnos: ' . implode(', ', $yaExisten) . '.'
+                    'message' => 'Ya existe una solicitud previa.'
                 ], 400);
             }
 
