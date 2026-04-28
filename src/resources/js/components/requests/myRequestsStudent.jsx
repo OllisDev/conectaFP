@@ -12,11 +12,16 @@ export default function myRequests() {
             return;
         }
 
-        const user = JSON.parse(userStr);
+        let url = "/api/solicitud/alumno";
 
-        const idProfesor = user?.id;
-
-        fetch(`/api/solicitud/profesor/${idProfesor}`)
+        fetch(url, {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${token}`,
+                Accept: "application/json",
+            },
+        })
             .then((res) => res.json())
             .then((data) => {
                 if (data.success) {
@@ -40,6 +45,7 @@ export default function myRequests() {
                             <tr>
                                 <th>Título</th>
                                 <th>Empresa</th>
+                                <th>Profesor</th>
                                 <th>Fecha</th>
                                 <th>Estado</th>
                             </tr>
@@ -51,6 +57,7 @@ export default function myRequests() {
                                     <td>
                                         {s.oferta?.empresa?.usuario?.nombre}
                                     </td>
+                                    <td>{s.profesor?.usuario?.nombre}</td>
                                     <td>{s.fecha_solicitud}</td>
                                     <td>{s.estado}</td>
                                 </tr>

@@ -26,4 +26,9 @@ class Solicitud extends Model
     {
         return $this->belongsTo(Oferta::class, 'id_oferta');
     }
+
+    public function profesor()
+    {
+        return $this->belongsTo(Profesor::class, 'id_profesor');
+    }
 }

@@ -54,6 +54,68 @@ class SolicitudController extends Controller
         }
     }
 
+    public function listRequestByStudentAPI()
+    {
+        try {
+            $user = Auth::user();
+            if (!$user || !$user->alumno) {
+                return response()->json([
+                    'response' => 401,
+                    'success' => false,
+                    'status' => 'error',
+                    'message' => 'No autenticado o el usuario no es alumno.'
+                ], 401);
+            }
+
+            $idAlumno = $user->alumno->id;
+            $alumno = Alumno::find($idAlumno);
+
+            if (!$alumno || !$alumno->id_profesor) {
+                return response()->json([
+                    'response' => 404,
+                    'success' => false,
+                    'status' => 'error',
+                    'message' => 'El alumno no tiene profesor asignado.'
+                ], 404);
+            }
+
+            $idProfesor = $alumno->id_profesor;
+
+            $solicitudes = Solicitud::with(['oferta.empresa.usuario', 'profesor.usuario'])
+                ->select('id', 'id_oferta', 'id_alumno', 'id_profesor', 'fecha_solicitud', 'estado')
+                ->where('id_profesor', $idProfesor)
+                ->where('id_alumno', $idAlumno)
+                ->get();
+
+            if ($solicitudes->isEmpty()) {
+                $response = [
+                    'response' => 404,
+                    'success' => false,
+                    'status' => 'error',
+                    'message' => 'No se encontraron solicitudes para los alumnos.'
+                ];
+                return response()->json($response, 404);
+            }
+
+            $response = [
+                'response' => 200,
+                'success' => true,
+                'status' => 'ok',
+                'solicitud' => $solicitudes
+            ];
+            return response()->json($response, 200);
+
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            $response = [
+                'response' => 422,
+                'success' => false,
+                'status' => 'error',
+                'message' => 'Error de validación: ' . $e->getMessage()
+            ];
+            return response()->json($response, 422);
+        }
+    }
+
     public function requestAPI(Request $request)
     {
         try {
