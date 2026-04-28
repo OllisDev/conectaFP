@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Alumno;
 use App\Models\Solicitud;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class SolicitudController extends Controller
 {
@@ -50,6 +52,103 @@ class SolicitudController extends Controller
                 'message' => 'Error de validación: ' . $e->getMessage()
             ];
             return response()->json($response, 422);
+        }
+    }
+
+    public function requestAPI(Request $request)
+    {
+        try {
+            $user = Auth::user();
+
+            if (!$user || !$user->profesor) {
+                return response()->json([
+                    'response' => 401,
+                    'success' => false,
+                    'status' => 'error',
+                    'message' => 'No autenticado o el usuario no es profesor.'
+                ], 401);
+            }
+            $idProfesor = $user->profesor->id;
+
+            $data = $request->validate([
+                'id_oferta' => 'required|integer|min:1|exists:oferta,id',
+                'id_empresa' => 'required|integer|min:1|exists:empresa,id',
+                'alumnos' => 'required|array|min:1',
+                'alumnos.*' => 'required|integer|min:1|distinct|exists:alumno,id'
+            ], [
+                'id_oferta.required' => 'La oferta es obligatoria.',
+                'id_oferta.exists' => 'La oferta no existe.',
+                'id_oferta.integer' => 'El identificador de la oferta debe ser un número entero.',
+                'id_empresa.required' => 'La empresa es obligatoria.',
+                'id_empresa.exists' => 'La empresa no existe.',
+                'id_empresa.integer' => 'El identificador de la empresa debe ser un número entero.',
+                'alumnos.array' => 'El campo alumnos debe ser un array.',
+                'alumnos.min' => 'Debes seleccionar al menos un alumno.',
+                'alumnos.*.required' => 'El alumno es obligatorio.',
+                'alumnos.*.integer' => 'El identificador del alumno debe ser un número entero.',
+                'alumnos.*.min' => 'El identificador del alumno debe ser mayor que 0.',
+                'alumnos.*.distinct' => 'No puedes seleccionar el mismo alumno más de una vez.',
+                'alumnos.*.exists' => 'El alumno seleccionado no existe.',
+            ]);
+
+            $alumnosAsignados = Alumno::where('id_profesor', $idProfesor)->pluck('id')->toArray();
+            $alumnosNoValidos = array_diff($data['alumnos'], $alumnosAsignados);
+            if (count($alumnosNoValidos) > 0) {
+                return response()->json([
+                    'response' => 400,
+                    'success' => false,
+                    'status' => 'error',
+                    'message' => 'Los siguientes alumnos no están asignados a este profesor: ' . implode(', ', $alumnosNoValidos) . '.'
+                ], 400);
+            }
+
+            $yaExisten = [];
+            foreach ($data['alumnos'] as $idAlumno) {
+                $existe = Solicitud::where('id_oferta', $data['id_oferta'])
+                    ->where('id_alumno', $idAlumno)
+                    ->where('id_profesor', $idProfesor)
+                    ->exists();
+                if ($existe) {
+                    $yaExisten[] = $idAlumno;
+                }
+            }
+            if (count($yaExisten) > 0) {
+                return response()->json([
+                    'response' => 400,
+                    'success' => false,
+                    'status' => 'error',
+                    'message' => 'Ya existe una solicitud previa para los siguientes alumnos: ' . implode(', ', $yaExisten) . '.'
+                ], 400);
+            }
+
+            $response = DB::transaction(function () use ($data, $idProfesor) {
+                foreach ($data['alumnos'] as $idAlumno) {
+                    Solicitud::create([
+                        'id_oferta' => $data['id_oferta'],
+                        'id_alumno' => $idAlumno,
+                        'id_empresa' => $data['id_empresa'],
+                        'id_profesor' => $idProfesor
+                    ]);
+                }
+                return response()->json([
+                    'response' => 201,
+                    'success' => true,
+                    'status' => 'ok',
+                    'message' => 'Solicitud enviada correctamente.'
+                ], 201);
+            });
+
+            return $response;
+
+
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            $response = [
+                'response' => 400,
+                'success' => false,
+                'status' => 'error',
+                'message' => $e->errors()
+            ];
+            return response()->json($response, 400);
         }
     }
 

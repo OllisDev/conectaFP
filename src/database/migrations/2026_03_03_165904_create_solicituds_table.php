@@ -16,7 +16,7 @@ return new class extends Migration {
             $table->foreignId('id_alumno')->constrained('alumno');
             $table->foreignId('id_empresa')->constrained('empresa');
             $table->foreignId('id_profesor')->constrained('profesor');
-            $table->unique(['id_oferta', 'id_alumno']);
+            $table->unique(['id_oferta', 'id_alumno', 'id_profesor']);
             $table->timestamp('fecha_solicitud')->useCurrent();
             $table->enum('estado', ['Pendiente', 'Revision', 'Aceptada', 'Rechazada'])->default('Pendiente');
             $table->boolean('eliminado')->default(0);
