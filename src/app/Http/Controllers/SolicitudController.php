@@ -63,6 +63,63 @@ class SolicitudController extends Controller
         }
     }
 
+    public function listRequestByCompanyAPI()
+    {
+        try {
+            $user = Auth::user();
+            $empresa = $user->empresa;
+
+            if (!$empresa) {
+                return response()->json([
+                    'response' => 401,
+                    'success' => false,
+                    'status' => 'error',
+                    'message' => 'No autenticado o el usuario no es una empresa.'
+                ], 401);
+            }
+
+            $solicitudes = Solicitud::with([
+                'oferta' => function ($q) use ($empresa) {
+                    $q->where('id_empresa', $empresa->id)->where('eliminado', 0);
+                },
+                'oferta.empresa.usuario',
+                'alumno.usuario',
+                'profesor.usuario'
+            ])
+                ->whereHas('oferta', function ($q) use ($empresa) {
+                    $q->where('id_empresa', $empresa->id)->where('eliminado', 0);
+                })
+                ->get();
+
+            if ($solicitudes->isEmpty()) {
+                $response = [
+                    'response' => 404,
+                    'success' => false,
+                    'status' => 'error',
+                    'message' => 'No se encontraron solicitudes para los alumnos.'
+                ];
+                return response()->json($response, 404);
+            }
+
+            $response = [
+                'response' => 200,
+                'success' => true,
+                'status' => 'ok',
+                'solicitud' => $solicitudes
+            ];
+            return response()->json($response, 200);
+
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            $response = [
+                'response' => 422,
+                'success' => false,
+                'status' => 'error',
+                'message' => 'Error de validación: ' . $e->getMessage()
+            ];
+            return response()->json($response, 422);
+        }
+    }
+
     public function listRequestByStudentAPI()
     {
         try {
