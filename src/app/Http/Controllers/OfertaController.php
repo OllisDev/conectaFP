@@ -193,19 +193,25 @@ class OfertaController extends Controller
 
     public function createOfferAPI(Request $request)
     {
+        $user = Auth::user();
+        $empresa = $user->empresa;
+
+        if (!$empresa) {
+            return response()->json([
+                'response' => 401,
+                'success' => false,
+                'status' => 'error',
+                'message' => 'No autenticado o el usuario no es una empresa.'
+            ], 401);
+        }
+
         try {
             $data = $request->validate([
-                'id_empresa' => 'required|integer|min:1|exists:empresa,id',
                 'titulo' => 'required|string|min:2|max:255',
                 'descripcion' => 'required|string|min:10|max:5000',
                 'requisitos' => 'required|string|min:2|max:5000',
-                'modalidad' => 'in:Presencial,Remoto,Híbrido',
-                'estado' => 'nullable|in:Abierta,Cerrada,Pausada'
+                'modalidad' => 'in:Presencial,Remoto,Híbrido'
             ], [
-                'id_empresa.required' => 'La empresa es obligatoria.',
-                'id_empresa.exists' => 'La empresa no existe.',
-                'id_empresa.integer' => 'El identificador de la empresa debe ser un número entero.',
-                'id_empresa:min' => 'La empresa debe tener por lo menos 1 caracter.',
                 'titulo.required' => 'El titulo es obligatorio',
                 'titulo.min' => 'El título debe tener al menos 2 caracteres.',
                 'titulo.max' => 'El título no debe tener mas de 255 caracteres.',
@@ -218,10 +224,11 @@ class OfertaController extends Controller
                 'modalidad.required' => 'La modalidad es obligatoria.',
                 'modalidad.min' => 'Debes seleccionar al menos una modalidad.',
                 'modalidad.in' => 'La modalidad debe ser "Presencial", "Remoto" o "Híbrido".',
-                'estado.in' => 'El estado debe ser "Abierta", "Cerrada" o "Pausada".'
             ]);
 
+            $data['id_empresa'] = $empresa->id;
             $data['fecha_publicacion'] = now()->toDateString();
+
             $oferta = Oferta::create($data);
 
             if ($oferta) {

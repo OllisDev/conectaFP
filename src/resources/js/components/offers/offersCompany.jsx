@@ -14,7 +14,7 @@ export default function offersCompany() {
         return;
     }
 
-    useEffect(() => {
+    const fetchOfertas = () => {
         let url = "/api/oferta/empresa";
 
         fetch(url, {
@@ -27,8 +27,12 @@ export default function offersCompany() {
         })
             .then((res) => res.json())
             .then((data) => {
-                setOfertas(data.ofertas);
+                setOfertas(Array.isArray(data.ofertas) ? data.ofertas : []);
             });
+    };
+
+    useEffect(() => {
+        fetchOfertas();
     }, []);
 
     return (
@@ -59,7 +63,10 @@ export default function offersCompany() {
                 )}
             </div>
             {showModal && (
-                <ModalCreateOffer onClose={() => setShowModal(false)} />
+                <ModalCreateOffer
+                    onClose={() => setShowModal(false)}
+                    onOfferCreated={fetchOfertas}
+                />
             )}
         </div>
     );
