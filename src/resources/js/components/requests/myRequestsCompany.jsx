@@ -1,17 +1,20 @@
 import React, { useEffect, useState } from "react";
+import ModalEditRequest from "./modalEditRequest";
 
 export default function myRequestsCompany() {
     const [solicitudes, setSolicitudes] = useState([]);
     const [loading, setLoading] = useState(true);
+    const [showModal, setShowModal] = useState(false);
+    const [selectedSolicitud, setSelectedSolicitud] = useState(null);
 
-    useEffect(() => {
-        const token = localStorage.getItem("api_token");
-        const userStr = localStorage.getItem("user");
-        if (!token || !userStr) {
-            window.location.href = "/login";
-            return;
-        }
+    const token = localStorage.getItem("api_token");
+    const userStr = localStorage.getItem("user");
+    if (!token || !userStr) {
+        window.location.href = "/login";
+        return;
+    }
 
+    const fetchSolicitudes = () => {
         let url = "/api/solicitud/empresa";
 
         fetch(url, {
@@ -29,6 +32,10 @@ export default function myRequestsCompany() {
                 }
             })
             .finally(() => setLoading(false));
+    };
+
+    useEffect(() => {
+        fetchSolicitudes();
     }, []);
     return (
         <div className="requests-container">
@@ -83,6 +90,11 @@ export default function myRequestsCompany() {
                                         <button
                                             type="button"
                                             className="btn-update"
+                                            id="btnUpdate"
+                                            onClick={() => {
+                                                setSelectedSolicitud(s);
+                                                setShowModal(true);
+                                            }}
                                         >
                                             <img
                                                 src="/images/update.svg"
@@ -96,6 +108,13 @@ export default function myRequestsCompany() {
                     </table>
                 )}
             </div>
+            {showModal && selectedSolicitud && (
+                <ModalEditRequest
+                    solicitud={selectedSolicitud}
+                    onClose={() => setShowModal(false)}
+                    onRequestUpdated={fetchSolicitudes}
+                />
+            )}
         </div>
     );
 }
