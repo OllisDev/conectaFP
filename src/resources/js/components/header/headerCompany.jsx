@@ -7,21 +7,17 @@ export default function headerCompany() {
                 <span className="header-brand">ConectaFP</span>
             </div>
             <nav className="header-nav">
-                <a href="#">
+                <a href="/feed">
                     <img src="/images/home.svg" alt="Inicio" />
                     <span>Inicio</span>
                 </a>
-                <a href="#">
-                    <img src="/images/offers.svg" alt="Mis ofertas" />
+                <a href="/ofertas">
+                    <img src="/images/offers.svg" alt="Ofertas" />
                     <span>Mis ofertas</span>
                 </a>
-                <a href="#">
+                <a href="/solicitudes">
                     <img src="/images/requests.svg" alt="Solicitudes" />
                     <span>Solicitudes</span>
-                </a>
-                <a href="#">
-                    <img src="/images/tutorial.svg" alt="Mis prácticas" />
-                    <span>Mis prácticas</span>
                 </a>
             </nav>
             <div className="header-actions">
