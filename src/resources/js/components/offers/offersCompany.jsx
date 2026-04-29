@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from "react";
 import OfferCardCompany from "./offerCardCompany";
+import ModalCreateOffer from "./modalCreateOffer";
 
 export default function offersCompany() {
     const [ofertas, setOfertas] = useState([]);
     const [mensaje, setMensaje] = useState(null);
+    const [showModal, setShowModal] = useState(false);
 
     const token = localStorage.getItem("api_token");
     const userStr = localStorage.getItem("user");
@@ -25,15 +27,27 @@ export default function offersCompany() {
         })
             .then((res) => res.json())
             .then((data) => {
-                console.log("Respuesta de la API:", data);
                 setOfertas(data.ofertas);
             });
     }, []);
 
-    console.log("Ofertas en render:", ofertas);
     return (
         <div className="feed-container">
             <div className="card-container">
+                <div className="create-container">
+                    <button
+                        type="button"
+                        className="btn-create"
+                        id="btnCreate"
+                        onClick={() => setShowModal(true)}
+                    >
+                        <img
+                            src="/images/create.svg"
+                            alt="Crear oferta"
+                            className="img-create"
+                        />
+                    </button>
+                </div>
                 {mensaje ? (
                     <p className="no-results">{mensaje}</p>
                 ) : ofertas.length === 0 ? (
@@ -44,6 +58,9 @@ export default function offersCompany() {
                     ))
                 )}
             </div>
+            {showModal && (
+                <ModalCreateOffer onClose={() => setShowModal(false)} />
+            )}
         </div>
     );
 }
