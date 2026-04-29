@@ -11,7 +11,9 @@ class OfertaController extends Controller
     public function listOfferAPI()
     {
         try {
-            $ofertas = Oferta::with('empresa.usuario')->select('id', 'id_empresa', 'titulo', 'descripcion', 'requisitos', 'modalidad', 'fecha_publicacion', 'estado')->get();
+            $ofertas = Oferta::with('empresa.usuario')
+                ->select('id', 'id_empresa', 'titulo', 'descripcion', 'requisitos', 'modalidad', 'fecha_publicacion', 'estado')
+                ->where('eliminado', 0)->get();
 
             if ($ofertas->isEmpty()) {
                 $response = [
@@ -46,7 +48,10 @@ class OfertaController extends Controller
     public function listOfferByIdAPI($id)
     {
         try {
-            $oferta = Oferta::select('id', 'id_empresa', 'titulo', 'descripcion', 'requisitos', 'modalidad', 'fecha_publicacion', 'estado')->where('id', $id)->first();
+            $oferta = Oferta::select('id', 'id_empresa', 'titulo', 'descripcion', 'requisitos', 'modalidad', 'fecha_publicacion', 'estado')
+                ->where('id', $id)
+                ->where('eliminado', 0)
+                ->first();
 
             if (!is_numeric($id) || (int) $id <= 0) {
                 $response = [
@@ -160,7 +165,9 @@ class OfertaController extends Controller
                 ], 401);
             }
 
-            $ofertas = Oferta::where('id_empresa', $empresa->id)->get();
+            $ofertas = Oferta::where('id_empresa', $empresa->id)
+                ->where('eliminado', 0)
+                ->get();
 
             if ($ofertas->isEmpty()) {
                 $response = [
@@ -258,5 +265,57 @@ class OfertaController extends Controller
             ];
             return response()->json($response, 400);
         }
+    }
+
+    public function deleteOfferAPI($id)
+    {
+        try {
+            $user = Auth::user();
+            $empresa = $user->empresa;
+
+            if (!$empresa) {
+                return response()->json([
+                    'response' => 401,
+                    'success' => false,
+                    'status' => 'error',
+                    'message' => 'No autenticado o el usuario no es una empresa.'
+                ], 401);
+            }
+
+            $oferta = Oferta::where('id', $id)
+                ->where('id_empresa', $empresa->id)
+                ->first();
+
+            if (!$oferta) {
+                $response = [
+                    'response' => 404,
+                    'success' => false,
+                    'status' => 'error',
+                    'message' => 'Oferta no encontrada o no pertenece a tu empresa.'
+                ];
+                return response()->json($response, 404);
+            }
+
+            $oferta->eliminado = 1;
+            $oferta->save();
+
+            $response = [
+                'response' => 200,
+                'success' => true,
+                'status' => 'ok',
+                'message' => 'Oferta eliminada correctamente.'
+            ];
+            return response()->json($response, 200);
+
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            $response = [
+                'response' => 422,
+                'success' => false,
+                'status' => 'error',
+                'message' => 'Error de validación: ' . $e->getMessage()
+            ];
+            return response()->json($response, 422);
+        }
+
     }
 }
