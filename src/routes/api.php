@@ -69,15 +69,12 @@ Route::get('/oferta/filtrar', [OfertaController::class, 'filterOfferAPI'])->name
 Route::get('/oferta/{oferta}', [OfertaController::class, 'listOfferByIdAPI'])->name('offerAPI.listOfferById');
 
 
-
-
 // rutas para las solicitudes
 Route::middleware('auth:api')->get('/solicitud/profesor', [SolicitudController::class, 'listRequestByTeacherAPI'])->name('requestAPI.listRequestByTeacher');
 Route::middleware('auth:api')->get('/solicitud/alumno', [SolicitudController::class, 'listRequestByStudentAPI'])->name('requestAPI.listRequestByStudent');
 Route::middleware('auth:api')->get('/solicitud/empresa', [SolicitudController::class, 'listRequestByCompanyAPI'])->name('requestAPI.listRequestByCompany');
 Route::middleware('auth:api')->post('/solicitud/profesor/crear', [SolicitudController::class, 'requestAPI'])->name('requestAPI.request');
-Route::put('/solicitud/{solicitud}/actualizar', [SolicitudController::class, 'updateRequestAPI'])->name('requestAPI.updateRequest');
-Route::delete('/solicitud/{solicitud}', [SolicitudController::class, 'deleteRequestAPI'])->name('requestAPI.deleteRequest');
+Route::middleware('auth:api')->put('/solicitud/{solicitud}/actualizar', [SolicitudController::class, 'updateRequestAPI'])->name('requestAPI.updateRequest');
 
 // rutas para las tutorias
 Route::get('/tutoria/alumno/{id_alumno}', [TutoriaController::class, 'listTutorialByStudentAPI'])->name('tutorialAPI.listTutorialByStudent');

@@ -296,16 +296,27 @@ class SolicitudController extends Controller
     public function updateRequestAPI(Request $request, $id)
     {
         try {
-            $solicitud = Solicitud::find($id);
+            $user = Auth::user();
+            $empresa = $user->empresa;
 
-            if (!$solicitud) {
-                $response = [
+            if (!$empresa) {
+                return response()->json([
+                    'response' => 401,
+                    'success' => false,
+                    'status' => 'error',
+                    'message' => 'No autenticado o el usuario no es una empresa.'
+                ], 401);
+            }
+
+            $solicitud = Solicitud::with('oferta')->find($id);
+
+            if (!$solicitud || !$solicitud->oferta || $solicitud->oferta->eliminado != 0) {
+                return response()->json([
                     'response' => 404,
                     'success' => false,
                     'status' => 'error',
-                    'message' => 'La solicitud no existe.'
-                ];
-                return response()->json($response, 400);
+                    'message' => 'La solicitud no existe o la oferta está eliminada.'
+                ], 404);
             }
 
             $data = $request->validate([
@@ -333,42 +344,6 @@ class SolicitudController extends Controller
                 'message' => $e->errors()
             ];
             return response()->json($response, 400);
-        }
-    }
-
-    public function deleteRequestAPI($id)
-    {
-        try {
-            $solicitud = Solicitud::where('id', $id)->first();
-
-            if (!$solicitud) {
-                $response = [
-                    'response' => 404,
-                    'success' => false,
-                    'status' => 'error',
-                    'message' => 'No existe la solicitud.'
-                ];
-                return response()->json($response, 404);
-            }
-
-            $solicitud->delete();
-
-            $response = [
-                'response' => 200,
-                'success' => true,
-                'status' => 'ok',
-                'message' => 'La solicitud ha sido eliminado correctamente.'
-            ];
-            return response()->json($response, 200);
-
-        } catch (\Illuminate\Validation\ValidationException $e) {
-            $response = [
-                'response' => 422,
-                'success' => false,
-                'status' => 'error',
-                'message' => 'Error de validación: ' . $e->getMessage()
-            ];
-            return response()->json($response, 422);
         }
     }
 }
