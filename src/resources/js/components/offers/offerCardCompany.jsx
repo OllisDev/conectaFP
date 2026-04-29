@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 
-export default function OfferCardCompany({ oferta }) {
+export default function OfferCardCompany({ oferta, onDelete }) {
     const estadoClass =
         oferta.estado === "Abierta"
             ? "abierta"
@@ -8,6 +8,30 @@ export default function OfferCardCompany({ oferta }) {
               ? "cerrada"
               : "pausada";
 
+    const handleDelete = () => {
+        const token = localStorage.getItem("api_token");
+        let url = `/api/oferta/${oferta.id}/eliminar`;
+
+        fetch(url, {
+            method: "DELETE",
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${token}`,
+                Accept: "application/json",
+            },
+        })
+            .then((res) => res.json())
+            .then((data) => {
+                if (data.success) {
+                    alert("La oferta se ha eliminado correctamente.");
+                    if (onDelete) {
+                        onDelete(oferta.id);
+                    } else {
+                        alert("Error al eliminar la oferta");
+                    }
+                }
+            });
+    };
     return (
         <div className="offer-card">
             <div className="offer-card-header">
@@ -38,7 +62,12 @@ export default function OfferCardCompany({ oferta }) {
             </div>
 
             <div className="offer-card-actions">
-                <button type="button" id="btnRemove" className="btn-remove">
+                <button
+                    type="button"
+                    id="btnRemove"
+                    className="btn-remove"
+                    onClick={handleDelete}
+                >
                     <img
                         src="/images/bin.svg"
                         alt="Papelera"

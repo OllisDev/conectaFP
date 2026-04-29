@@ -35,6 +35,12 @@ export default function offersCompany() {
         fetchOfertas();
     }, []);
 
+    const handleDeleteOffer = (id) => {
+        setOfertas((prevOfertas) =>
+            prevOfertas.filter((oferta) => oferta.id !== id),
+        );
+    };
+
     return (
         <div className="feed-container">
             <div className="card-container">
@@ -58,7 +64,11 @@ export default function offersCompany() {
                     <p className="no-results">No hay ofertas disponibles.</p>
                 ) : (
                     ofertas.map((oferta) => (
-                        <OfferCardCompany key={oferta.id} oferta={oferta} />
+                        <OfferCardCompany
+                            key={oferta.id}
+                            oferta={oferta}
+                            onDelete={handleDeleteOffer}
+                        />
                     ))
                 )}
             </div>
