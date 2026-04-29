@@ -62,9 +62,11 @@ Route::post('grado/crear', [GradoController::class, 'createDegreeAPI'])->name('d
 
 // rutas para los ofertas de trabajo
 Route::get('/oferta', [OfertaController::class, 'listOfferAPI'])->name('offerAPI.listOffer');
-Route::get('/oferta/filtrar', [OfertaController::class, 'filterOfferAPI'])->name('offerAPI.filterOffer');
+Route::middleware('auth:api')->get('/oferta/empresa', [OfertaController::class, 'listOfferByCompanyAPI'])->name('offerAPI.listOfferByCompany');
 Route::get('/oferta/{oferta}', [OfertaController::class, 'listOfferByIdAPI'])->name('offerAPI.listOfferById');
+Route::get('/oferta/filtrar', [OfertaController::class, 'filterOfferAPI'])->name('offerAPI.filterOffer');
 Route::post('/oferta/crear', [OfertaController::class, 'createOfferAPI'])->name('offerAPI.createOffer');
+
 
 // rutas para las solicitudes
 Route::middleware('auth:api')->get('/solicitud/profesor', [SolicitudController::class, 'listRequestByTeacherAPI'])->name('requestAPI.listRequestByTeacher');

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Oferta;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class OfertaController extends Controller
 {
@@ -129,6 +130,52 @@ class OfertaController extends Controller
                 'success' => true,
                 'status' => 'ok',
                 'message' => 'Oferta',
+                'ofertas' => $ofertas
+            ];
+            return response()->json($response, 200);
+
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            $response = [
+                'response' => 422,
+                'success' => false,
+                'status' => 'error',
+                'message' => 'Error de validación: ' . $e->getMessage()
+            ];
+            return response()->json($response, 422);
+        }
+    }
+
+    public function listOfferByCompanyAPI()
+    {
+        try {
+            $user = Auth::user();
+            $empresa = $user->empresa;
+
+            if (!$empresa) {
+                return response()->json([
+                    'response' => 401,
+                    'success' => false,
+                    'status' => 'error',
+                    'message' => 'No autenticado o el usuario no es la empresa.'
+                ], 401);
+            }
+
+            $ofertas = Oferta::where('id_empresa', $empresa->id)->get();
+
+            if ($ofertas->isEmpty()) {
+                $response = [
+                    'response' => 404,
+                    'success' => false,
+                    'status' => 'error',
+                    'message' => 'No existen ofertas.'
+                ];
+                return response()->json($response, 404);
+            }
+
+            $response = [
+                'response' => 200,
+                'success' => true,
+                'status' => 'ok',
                 'ofertas' => $ofertas
             ];
             return response()->json($response, 200);
