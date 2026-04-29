@@ -18,10 +18,19 @@ class SolicitudController extends Controller
 
             $alumnosAsignados = Alumno::where('id_profesor', $idProfesor)->pluck('id')->toArray();
 
-            $solicitudes = Solicitud::with(['oferta.empresa.usuario', 'alumno.usuario'])
-                ->select('id', 'id_oferta', 'id_alumno', 'fecha_solicitud', 'estado')
+            $solicitudes = Solicitud::with([
+                'oferta' => function ($q) {
+                    $q->where('eliminado', 0);
+                },
+                'oferta.empresa.usuario',
+                'profesor.usuario'
+            ])
+                ->select('id', 'id_oferta', 'id_alumno', 'id_profesor', 'fecha_solicitud', 'estado')
                 ->where('id_profesor', $idProfesor)
-                ->whereIn('id_alumno', $alumnosAsignados)
+                ->where('id_alumno', $alumnosAsignados)
+                ->whereHas('oferta', function ($q) {
+                    $q->where('eliminado', 0);
+                })
                 ->get();
 
             if ($solicitudes->isEmpty()) {
@@ -81,11 +90,21 @@ class SolicitudController extends Controller
 
             $idProfesor = $alumno->id_profesor;
 
-            $solicitudes = Solicitud::with(['oferta.empresa.usuario', 'profesor.usuario'])
+            $solicitudes = Solicitud::with([
+                'oferta' => function ($q) {
+                    $q->where('eliminado', 0);
+                },
+                'oferta.empresa.usuario',
+                'profesor.usuario'
+            ])
                 ->select('id', 'id_oferta', 'id_alumno', 'id_profesor', 'fecha_solicitud', 'estado')
                 ->where('id_profesor', $idProfesor)
                 ->where('id_alumno', $idAlumno)
+                ->whereHas('oferta', function ($q) {
+                    $q->where('eliminado', 0);
+                })
                 ->get();
+
 
             if ($solicitudes->isEmpty()) {
                 $response = [

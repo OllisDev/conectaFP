@@ -98,6 +98,9 @@ class OfertaController extends Controller
 
             $query = Oferta::with(['empresa.usuario']);
 
+            $query = Oferta::with(['empresa.usuario'])
+                ->where('eliminado', 0);
+
             if ($request->filled('modalidad')) {
                 $query->where('modalidad', $request->modalidad);
             }
