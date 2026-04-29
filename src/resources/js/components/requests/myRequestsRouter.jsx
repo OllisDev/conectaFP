@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import MyRequestsStudent from "./myRequestsStudent";
 import MyRequestsTeacher from "./myRequestsTeacher";
+import MyRequestsCompany from "./myRequestsCompany";
 
 export default function myRequestsRouter() {
     const [rol, setRol] = useState(null);
@@ -17,5 +18,6 @@ export default function myRequestsRouter() {
 
     if (rol === "alumno") return <MyRequestsStudent />;
     if (rol === "profesor") return <MyRequestsTeacher />;
+    if (rol === "empresa") return <MyRequestsCompany />;
     return null;
 }

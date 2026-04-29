@@ -1,8 +1,6 @@
 import React from "react";
 
-export default function feedStudent() {
-    console.log("FeedStudent renderizado");
-    console.log("Token:", localStorage.getItem("api_token"));
+export default function feedCompany() {
     const token = localStorage.getItem("api_token");
     if (!token) {
         window.location.href = "/login";

@@ -15,7 +15,7 @@ export default function feedTeacher() {
                     alt="Proceso"
                     className="process-image"
                 ></img>
-                <span className="process-span">En proceso...</span>
+                <span className="process-span">En construcción...</span>
             </div>
         </div>
     );
