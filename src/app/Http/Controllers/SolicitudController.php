@@ -82,6 +82,10 @@ class SolicitudController extends Controller
                 'oferta' => function ($q) use ($empresa) {
                     $q->where('id_empresa', $empresa->id)->where('eliminado', 0);
                 },
+                'alumno' => function ($q) {
+                    $q->select('id', 'cv', 'id_usuario', 'id_centro');
+                },
+                'alumno.centroEducativo',
                 'oferta.empresa.usuario',
                 'alumno.usuario',
                 'profesor.usuario'

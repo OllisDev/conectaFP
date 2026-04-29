@@ -43,7 +43,10 @@ export default function myRequestsCompany() {
                         <thead>
                             <tr>
                                 <th>Título</th>
+                                <th>Alumno</th>
+                                <th>CV</th>
                                 <th>Profesor</th>
+                                <th>Centro educativo</th>
                                 <th>Fecha</th>
                                 <th>Estado</th>
                                 <th>Acciones</th>
@@ -53,7 +56,27 @@ export default function myRequestsCompany() {
                             {solicitudes.map((s, i) => (
                                 <tr key={i}>
                                     <td>{s.oferta?.titulo}</td>
+                                    <td>
+                                        {s.alumno?.usuario?.nombre}{" "}
+                                        {s.alumno?.usuario?.apellidos}{" "}
+                                    </td>
+                                    <td>
+                                        {s.alumno?.cv ? (
+                                            <a
+                                                href={`/storage/${s.alumno.cv}`}
+                                                target="_blank"
+                                                rel="noopener noreferrer"
+                                            >
+                                                Ver CV
+                                            </a>
+                                        ) : (
+                                            "No disponible"
+                                        )}
+                                    </td>
                                     <td>{s.profesor?.usuario?.nombre}</td>
+                                    <td>
+                                        {s.alumno?.centro_educativo?.nombre}
+                                    </td>
                                     <td>{s.fecha_solicitud}</td>
                                     <td>{s.estado}</td>
                                     <td>

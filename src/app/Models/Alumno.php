@@ -44,4 +44,9 @@ class Alumno extends Model
     {
         return $this->belongsTo(Grado::class, 'id_grado');
     }
+
+    public function centroEducativo()
+    {
+        return $this->belongsTo(CentroEducativo::class, 'id_centro');
+    }
 }
