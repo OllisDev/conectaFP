@@ -825,3 +825,34 @@ body {
     display: block;
     animation: fadeIn 0.2s;
 }
+
+.offer-card-actions {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    margin-top: 8px;
+}
+
+.btn-remove {
+    background: #ff0000;
+    border: none;
+    border-radius: 8px;
+    padding: 8px 12px;
+    cursor: pointer;
+    transition: background 0.2s, box-shadow 0.2s, transform 0.1s;
+    box-shadow: 0 1px 4px rgba(59, 130, 246, 0.08);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+
+.btn-remove:hover {
+    box-shadow: 0 2px 8px rgba(220, 38, 38, 0.15);
+    transform: translateY(-1px) scale(1.05);
+}
+
+.btn-remove-img {
+    height: 25px;
+    width: 25px;
+}

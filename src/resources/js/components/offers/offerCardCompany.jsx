@@ -36,6 +36,16 @@ export default function OfferCardCompany({ oferta }) {
                 <span className="offer-card-modalidad">{oferta.modalidad}</span>
                 <span>{oferta.fecha_publicacion}</span>
             </div>
+
+            <div className="offer-card-actions">
+                <button type="button" id="btnRemove" className="btn-remove">
+                    <img
+                        src="/images/bin.svg"
+                        alt="Papelera"
+                        className="btn-remove-img"
+                    ></img>
+                </button>
+            </div>
         </div>
     );
 }
