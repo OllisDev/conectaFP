@@ -454,9 +454,13 @@ img {
 .create-container {
     background: #fff;
     border-radius: 16px;
-    padding: 32px 36px;
-    max-width: 480px;
-    margin: 40px auto;
+    padding: 40px 48px;
+    max-width: 500px;
+    margin: 60px auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
 }
 
 .form-container {
@@ -546,4 +550,22 @@ input[type="datetime-local"]:focus {
 #btn-tutorial:hover {
     background: #1e3a5f;
     box-shadow: 0 2px 8px rgba(59, 130, 246, 0.15);
+}
+
+.success-box {
+    background: #d1fae5;
+    color: #065f46;
+    border: 1.5px solid #34d399;
+    border-radius: 8px;
+    padding: 10px 16px;
+    margin: 12px 0 0 0;
+    font-size: 1rem;
+    font-weight: 500;
+    text-align: center;
+    box-shadow: 0 2px 8px rgba(52, 211, 153, 0.08);
+    min-height: 28px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: opacity 0.2s;
 }

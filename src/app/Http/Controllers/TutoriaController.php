@@ -147,6 +147,7 @@ class TutoriaController extends Controller
                 'estado.in' => 'El estado debe ser "Activa", "Finalizada" o "Cancelada".',
             ]);
 
+
             $data['id_profesor'] = $idProfesor;
 
             $tutoria = Tutoria::create($data);

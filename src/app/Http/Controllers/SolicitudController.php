@@ -347,7 +347,7 @@ class SolicitudController extends Controller
         }
     }
 
-    public function listCommpanyAssignedToStudentByTeacherAPI()
+    public function listCommpanyAssignedToStudentByTeacherAPI($idAlumno)
     {
         try {
             $user = Auth::user();
@@ -364,6 +364,7 @@ class SolicitudController extends Controller
 
             $solicitudes = Solicitud::with(['empresa.usuario'])
                 ->where('id_profesor', $idProfesor)
+                ->where('id_alumno', $idAlumno)
                 ->where('eliminado', 0)
                 ->where('estado', 'aceptada')
                 ->get();
@@ -378,7 +379,14 @@ class SolicitudController extends Controller
                 return response()->json($response, 404);
             }
 
-            $empresas = $solicitudes->pluck('empresa')->unique('id')->values();
+            $empresas = [];
+            foreach ($solicitudes as $solicitud) {
+                if ($solicitud->empresa) {
+                    $empresaArr = $solicitud->empresa->toArray();
+                    $empresaArr['id_alumno'] = $solicitud->id_alumno; // Añade el id_alumno
+                    $empresas[] = $empresaArr;
+                }
+            }
 
             $response = [
                 'response' => 200,
