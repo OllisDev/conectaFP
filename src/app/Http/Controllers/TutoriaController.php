@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Tutoria;
 use App\Models\Valoracion;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class TutoriaController extends Controller
 {
@@ -107,9 +108,21 @@ class TutoriaController extends Controller
     public function createTutorialAPI(Request $request)
     {
         try {
+
+            $user = Auth::user();
+
+            if (!$user || !$user->profesor) {
+                return response()->json([
+                    'response' => 401,
+                    'success' => false,
+                    'status' => 'error',
+                    'message' => 'No autenticado o el usuario no es profesor.'
+                ], 401);
+            }
+            $idProfesor = $user->profesor->id;
+
             $data = $request->validate([
                 'id_alumno' => 'required|integer|min:1|exists:alumno,id',
-                'id_profesor' => 'required|integer|min:1|exists:profesor,id',
                 'id_empresa' => 'required|integer|min:1|exists:empresa,id',
                 'fecha_inicio' => 'required|date|date_format:Y-m-d H:i:s|after_or_equal:today',
                 'fecha_fin' => 'nullable|date|date_format:Y-m-d H:i:s|after:fecha_inicio',
@@ -119,10 +132,6 @@ class TutoriaController extends Controller
                 'id_alumno.integer' => 'El identificador del alumno debe ser un número entero.',
                 'id_alumno.min' => 'El identificador del alumno debe ser mayor que 0.',
                 'id_alumno.exists' => 'El alumno no existe.',
-                'id_profesor.required' => 'El profesor es obligatorio.',
-                'id_profesor.integer' => 'El identificador del profesor debe ser un número entero.',
-                'id_profesor.min' => 'El identificador del profesor debe ser mayor que 0.',
-                'id_profesor.exists' => 'El profesor no existe.',
                 'id_empresa.required' => 'La empresa es obligatoria.',
                 'id_empresa.integer' => 'El identificador de la empresa debe ser un número entero.',
                 'id_empresa.min' => 'El identificador de la empresa debe ser mayor que 0.',
@@ -137,6 +146,8 @@ class TutoriaController extends Controller
                 'estado.required' => 'El estado es obligatorio.',
                 'estado.in' => 'El estado debe ser "Activa", "Finalizada" o "Cancelada".',
             ]);
+
+            $data['id_profesor'] = $idProfesor;
 
             $tutoria = Tutoria::create($data);
 

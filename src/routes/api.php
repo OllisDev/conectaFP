@@ -79,6 +79,6 @@ Route::middleware('auth:api')->put('/solicitud/{solicitud}/actualizar', [Solicit
 // rutas para las tutorias
 Route::get('/tutoria/alumno/{id_alumno}', [TutoriaController::class, 'listTutorialByStudentAPI'])->name('tutorialAPI.listTutorialByStudent');
 Route::get('/tutoria/profesor/{id_profesor}', [TutoriaController::class, 'listTutorialByTeacherAPI'])->name('tutorialAPI.listTutorialByTeacher');
-Route::post('/tutoria/crear', [TutoriaController::class, 'createTutorialAPI'])->name('tutorialAPI.createTutorial');
+Route::middleware('auth:api')->post('/tutoria/crear', [TutoriaController::class, 'createTutorialAPI'])->name('tutorialAPI.createTutorial');
 Route::put('/tutoria/{tutoria}/actualizar', [TutoriaController::class, 'updateTutorialAPI'])->name('tutorialAPI.updateTutorial');
 Route::delete('/tutoria/{tutoria}/eliminar', [TutoriaController::class, 'deleteTutorialAPI'])->name('tutorialAPI.deleteTutorial');
