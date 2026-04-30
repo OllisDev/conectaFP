@@ -36,4 +36,9 @@ class Solicitud extends Model
     {
         return $this->belongsTo(Alumno::class, 'id_alumno');
     }
+
+    public function empresa()
+    {
+        return $this->belongsTo(Empresa::class, 'id_empresa');
+    }
 }

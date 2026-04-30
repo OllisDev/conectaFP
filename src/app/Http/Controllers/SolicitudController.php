@@ -346,4 +346,56 @@ class SolicitudController extends Controller
             return response()->json($response, 400);
         }
     }
+
+    public function listCommpanyAssignedToStudentByTeacherAPI()
+    {
+        try {
+            $user = Auth::user();
+
+            if (!$user || !$user->profesor) {
+                return response()->json([
+                    'response' => 401,
+                    'success' => false,
+                    'status' => 'error',
+                    'message' => 'No autenticado o el usuario no es profesor.'
+                ], 401);
+            }
+            $idProfesor = $user->profesor->id;
+
+            $solicitudes = Solicitud::with(['empresa.usuario'])
+                ->where('id_profesor', $idProfesor)
+                ->where('eliminado', 0)
+                ->where('estado', 'aceptada')
+                ->get();
+
+            if ($solicitudes->isEmpty()) {
+                $response = [
+                    'response' => 404,
+                    'success' => false,
+                    'status' => 'error',
+                    'message' => 'No se encontraron empresas asignadas a los alumnos.'
+                ];
+                return response()->json($response, 404);
+            }
+
+            $empresas = $solicitudes->pluck('empresa')->unique('id')->values();
+
+            $response = [
+                'response' => 200,
+                'success' => true,
+                'status' => 'ok',
+                'empresas' => $empresas
+            ];
+            return response()->json($response, 200);
+
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            $response = [
+                'response' => 422,
+                'success' => false,
+                'status' => 'error',
+                'message' => 'Error de validación: ' . $e->getMessage()
+            ];
+            return response()->json($response, 422);
+        }
+    }
 }
