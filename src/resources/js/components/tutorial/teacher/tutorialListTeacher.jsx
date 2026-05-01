@@ -7,16 +7,16 @@ export default function tutorialListTeacher() {
     const [tutorialEdit, setTutorialEdit] = useState(null);
 
     const fetchTutorias = () => {
-        const user = JSON.parse(localStorage.getItem("user"));
-        const id = user?.id;
-        if (!id) return;
+        const token = localStorage.getItem("api_token");
 
-        let url = `/api/tutoria/profesor/${id}`;
+        let url = "/api/tutoria/profesor";
 
         fetch(url, {
             method: "GET",
             headers: {
                 "Content-Type": "application/json",
+                Authorization: `Bearer ${token}`,
+                Accept: "application/json",
             },
         })
             .then((res) => res.json())
