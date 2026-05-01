@@ -3,7 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\Alumno;
+use App\Models\Profesor;
+use App\Models\Empresa;
 use App\Models\Solicitud;
+use App\Notifications\Notificacion;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -264,12 +267,36 @@ class SolicitudController extends Controller
 
             $response = DB::transaction(function () use ($data, $idProfesor) {
                 foreach ($data['alumnos'] as $idAlumno) {
-                    Solicitud::create([
+                    $solicitud = Solicitud::create([
                         'id_oferta' => $data['id_oferta'],
                         'id_alumno' => $idAlumno,
                         'id_empresa' => $data['id_empresa'],
                         'id_profesor' => $idProfesor
                     ]);
+
+                    $alumno = Alumno::find($idAlumno);
+                    if ($alumno && $alumno->usuario) {
+                        $alumno->usuario->notify(new Notificacion(
+                            'Tienes una nueva solicitud.',
+                            ['solicitud_id' => $solicitud->id]
+                        ));
+                    }
+
+                    $profesor = Profesor::find($idProfesor);
+                    if ($profesor && $profesor->usuario) {
+                        $profesor->usuario->notify(new Notificacion(
+                            'Has enviado una nueva solicitud.',
+                            ['solicitud_id' => $solicitud->id]
+                        ));
+                    }
+
+                    $empresa = Empresa::find($data['id_empresa']);
+                    if ($empresa && $empresa->usuario) {
+                        $empresa->usuario->notify(new Notificacion(
+                            'Tu empresa ha recibido una nueva solicitud.',
+                            ['solicitud_id' => $solicitud->id]
+                        ));
+                    }
                 }
                 return response()->json([
                     'response' => 201,
@@ -327,6 +354,29 @@ class SolicitudController extends Controller
             ]);
 
             $solicitud->update($data);
+
+            $alumno = $solicitud->alumno;
+            $profesor = $solicitud->profesor;
+            $empresa = $solicitud->oferta ? $solicitud->oferta->empresa : null;
+
+            if ($alumno && $alumno->usuario) {
+                $alumno->usuario->notify(new Notificacion(
+                    'El estado de tu solicitud ha cambiado a: ' . $data['estado'],
+                    ['solicitud_id' => $solicitud->id]
+                ));
+            }
+            if ($profesor && $profesor->usuario) {
+                $profesor->usuario->notify(new Notificacion(
+                    'El estado de una solicitud ha cambiado a: ' . $data['estado'],
+                    ['solicitud_id' => $solicitud->id]
+                ));
+            }
+            if ($empresa && $empresa->usuario) {
+                $empresa->usuario->notify(new Notificacion(
+                    'El estado de una solicitud de tu empresa ha cambiado a: ' . $data['estado'],
+                    ['solicitud_id' => $solicitud->id]
+                ));
+            }
 
             $response = [
                 'response' => 200,

@@ -9,6 +9,28 @@ use Illuminate\Support\Str;
 
 class UsuarioController extends Controller
 {
+
+    public function listNotificationAPi(Request $request)
+    {
+        try {
+            $response = [
+                'response' => 200,
+                'success' => true,
+                'message' => 'notificaciones',
+                'notificaciones' => $request->user()->notifications
+            ];
+            return response()->json($response, 200);
+
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            $response = [
+                'response' => 422,
+                'success' => false,
+                'status' => 'error',
+                'message' => 'Error de validación: ' . $e->getMessage()
+            ];
+            return response()->json($response, 422);
+        }
+    }
     public function listUserAPI()
     {
         try {

@@ -19,6 +19,7 @@ use App\Http\Controllers\UsuarioController;
 // -- RUTAS API CRUD --
 
 // rutas para la autenticación del usuario
+Route::middleware('auth:api')->get('/usuario/notificacion', [UsuarioController::class, 'listNotificationAPI'])->name('userAPI.listNotification');
 Route::get('/usuario', [UsuarioController::class, 'listUserAPI'])->name('userAPI.listUser');
 Route::get('/usuario/{usuario}', [UsuarioController::class, 'listUserByIdAPI'])->name('userAPI.listUserById');
 Route::post('/usuario/login', [UsuarioController::class, 'loginUserAPI'])->name('userAPI.loginUser');

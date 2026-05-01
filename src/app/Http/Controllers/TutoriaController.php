@@ -2,8 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Alumno;
+use App\Models\Empresa;
+use App\Models\Profesor;
 use App\Models\Tutoria;
-use App\Models\Valoracion;
+use App\Notifications\Notificacion;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -160,6 +163,15 @@ class TutoriaController extends Controller
             $tutoria = Tutoria::create($data);
 
             if ($tutoria) {
+                $alumno = Alumno::find($data['id_alumno']);
+
+                if ($alumno && $alumno->usuario) {
+                    $alumno->usuario->notify(new Notificacion(
+                        'Se te ha asignado una nueva tutoría.',
+                        ['tutoria_id' => $tutoria->id]
+                    ));
+                }
+
                 $response = [
                     'response' => 201,
                     'success' => true,
@@ -219,6 +231,15 @@ class TutoriaController extends Controller
 
             $tutoria->update($data);
 
+            $alumno = $tutoria->alumno;
+
+            if ($alumno && $alumno->usuario) {
+                $alumno->usuario->notify(new Notificacion(
+                    'Una tutoría ha sido actualizada.',
+                    ['tutoria_id' => $tutoria->id]
+                ));
+            }
+
             $response = [
                 'response' => 200,
                 'success' => true,
@@ -254,7 +275,16 @@ class TutoriaController extends Controller
                 return response()->json($response, 404);
             }
 
+            $alumno = $tutoria->alumno;
+
             $tutoria->delete();
+
+            if ($alumno && $alumno->usuario) {
+                $alumno->usuario->notify(new Notificacion(
+                    'Una tutoría ha sido eliminada.',
+                    ['tutoria_id' => $tutoria->id]
+                ));
+            }
 
             $response = [
                 'response' => 200,
