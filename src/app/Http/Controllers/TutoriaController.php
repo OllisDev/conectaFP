@@ -57,23 +57,26 @@ class TutoriaController extends Controller
         }
     }
 
-    public function listTutorialByTeacherAPI($id)
+    public function listTutorialByTeacherAPI()
     {
         try {
-            $tutorias = Tutoria::with(['alumno.usuario', 'empresa.usuario'])
-                ->select('id', 'id_alumno', 'id_profesor', 'id_empresa', 'fecha_inicio', 'fecha_fin', 'estado')
-                ->where('id_profesor', $id)
-                ->get();
 
-            if (!is_numeric($id) || (int) $id <= 0) {
-                $response = [
-                    'response' => 400,
+            $user = Auth::user();
+
+            if (!$user || !$user->profesor) {
+                return response()->json([
+                    'response' => 401,
                     'success' => false,
                     'status' => 'error',
-                    'message' => 'El ID proporcionado no es válido.'
-                ];
-                return response()->json($response, 400);
+                    'message' => 'No autenticado o el usuario no es profesor.'
+                ], 401);
             }
+
+            $idProfesor = $user->profesor->id;
+            $tutorias = Tutoria::with(['alumno.usuario', 'empresa.usuario'])
+                ->select('id', 'id_alumno', 'id_profesor', 'id_empresa', 'fecha_inicio', 'fecha_fin', 'estado')
+                ->where('id_profesor', $idProfesor)
+                ->get();
 
             if ($tutorias->isEmpty()) {
                 $response = [
@@ -83,6 +86,7 @@ class TutoriaController extends Controller
                     'message' => 'No existe ninguna tutoria que gestione ese profesor.'
                 ];
                 return response()->json($response, 404);
+
             } else {
                 $response = [
                     'response' => 200,
