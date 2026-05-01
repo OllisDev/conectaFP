@@ -78,7 +78,7 @@ Route::middleware('auth:api')->put('/solicitud/{solicitud}/actualizar', [Solicit
 Route::middleware('auth:api')->get('/solicitud/empresa/alumno/{id_alumno}/aceptado', [SolicitudController::class, 'listCommpanyAssignedToStudentByTeacherAPI'])->name('requestAPI.listCommpanyAssignedToStudentByTeacher');
 
 // rutas para las tutorias
-Route::get('/tutoria/alumno/{id_alumno}', [TutoriaController::class, 'listTutorialByStudentAPI'])->name('tutorialAPI.listTutorialByStudent');
+Route::middleware('auth:api')->get('/tutoria/alumno', [TutoriaController::class, 'listTutorialByStudentAPI'])->name('tutorialAPI.listTutorialByStudent');
 Route::middleware('auth:api')->get('/tutoria/profesor', [TutoriaController::class, 'listTutorialByTeacherAPI'])->name('tutorialAPI.listTutorialByTeacher');
 Route::middleware('auth:api')->post('/tutoria/crear', [TutoriaController::class, 'createTutorialAPI'])->name('tutorialAPI.createTutorial');
 Route::put('/tutoria/{tutoria}/actualizar', [TutoriaController::class, 'updateTutorialAPI'])->name('tutorialAPI.updateTutorial');

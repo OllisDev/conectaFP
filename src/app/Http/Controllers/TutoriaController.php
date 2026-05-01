@@ -9,23 +9,26 @@ use Illuminate\Support\Facades\Auth;
 
 class TutoriaController extends Controller
 {
-    public function listTutorialByStudentAPI($id)
+    public function listTutorialByStudentAPI()
     {
         try {
-            $tutorias = Tutoria::with(['profesor.usuario', 'empresa.usuario'])
-                ->select('id', 'id_alumno', 'id_profesor', 'id_empresa', 'fecha_inicio', 'fecha_fin', 'estado')
-                ->where('id_alumno', $id)
-                ->get();
+            $user = Auth::user();
 
-            if (!is_numeric($id) || (int) $id <= 0) {
-                $response = [
-                    'response' => 400,
+            if (!$user || !$user->alumno) {
+                return response()->json([
+                    'response' => 401,
                     'success' => false,
                     'status' => 'error',
-                    'message' => 'El ID proporcionado no es válido.'
-                ];
-                return response()->json($response, 400);
+                    'message' => 'No autenticado o el usuario no es un alumno.'
+                ], 401);
             }
+
+            $idAlumno = $user->alumno->id;
+
+            $tutorias = Tutoria::with(['profesor.usuario', 'empresa.usuario'])
+                ->select('id', 'id_alumno', 'id_profesor', 'id_empresa', 'fecha_inicio', 'fecha_fin', 'estado')
+                ->where('id_alumno', $idAlumno)
+                ->get();
 
             if ($tutorias->isEmpty()) {
                 $response = [
