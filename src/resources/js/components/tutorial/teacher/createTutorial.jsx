@@ -278,20 +278,21 @@ export default function createTutorial() {
                             <option value="Cancelada">Cancelada</option>
                         </select>
                     </div>
-                    {Object.keys(errors).length > 0 && (
-                        <div className="error-box">
-                            <p>{Object.values(errors)[0]}</p>
-                        </div>
-                    )}
-                    {success && (
-                        <div className="success-box">
-                            <p>{success}</p>
-                        </div>
-                    )}
+
                     <button type="submit" id="btn-tutorial">
                         Crear tutoría
                     </button>
                 </form>
+                {Object.keys(errors).length > 0 && (
+                    <div className="error-box">
+                        <p>{Object.values(errors)[0]}</p>
+                    </div>
+                )}
+                {success && (
+                    <div className="success-box">
+                        <p>{success}</p>
+                    </div>
+                )}
             </div>
         </div>
     );

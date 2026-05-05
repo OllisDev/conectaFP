@@ -207,12 +207,7 @@ export default function OfferCardTeacher({ oferta, isExpanded, onExpand }) {
                             </div>
                             {mensaje && (
                                 <div
-                                    style={{
-                                        color: mensaje.includes("correctamente")
-                                            ? "green"
-                                            : "red",
-                                        margin: "10px 0",
-                                    }}
+                                    className={`request-message ${mensaje.includes("correctamente") ? "success" : "error"}`}
                                 >
                                     {mensaje}
                                 </div>

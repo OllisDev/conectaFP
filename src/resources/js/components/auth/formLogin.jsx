@@ -88,7 +88,17 @@ export default function formLogin() {
                     setErrors({});
                     window.location.href = "/feed";
                 } else {
-                    setErrors(data.message);
+                    if (typeof data.message === "string") {
+                        setErrors({ general: data.message });
+                    } else if (
+                        typeof data.message === "object" &&
+                        data.message !== null
+                    ) {
+                        setErrors(data.message);
+                    } else {
+                        // Fallback
+                        setErrors({ general: "Error al iniciar sesión." });
+                    }
                 }
             })
             .catch((error) => {
@@ -130,7 +140,11 @@ export default function formLogin() {
             </p>
             {Object.keys(errors).length > 0 && (
                 <div className="error-box">
-                    <p>{Object.values(errors)[0]}</p>
+                    {Object.entries(errors).map(([key, value]) => (
+                        <p key={key}>
+                            {Array.isArray(value) ? value[0] : value}
+                        </p>
+                    ))}
                 </div>
             )}
         </div>

@@ -21,7 +21,7 @@ export default function modalCreateOffer({ onClose, onOfferCreated }) {
         const newErrors = {};
 
         if (!form.titulo.trim()) {
-            newErrors.titulo = "El título es obligatorio";
+            newErrors.titulo = "El título es obligatorio.";
         } else if (form.titulo.length < 2) {
             newErrors.titulo = "El título debe tener al menos 2 caracteres.";
         } else if (form.titulo.length > 255) {
