@@ -13,12 +13,14 @@ use Illuminate\Support\Facades\DB;
 
 class SolicitudController extends Controller
 {
+    // listar solicitudes que tiene el profesor logueado con el alumno
     public function listRequestByTeacherAPI()
     {
         try {
             $user = Auth::user();
             $idProfesor = $user->profesor->id;
 
+            // recuperar los alumnos asignados por el profesor logueado
             $alumnosAsignados = Alumno::where('id_profesor', $idProfesor)->pluck('id')->toArray();
 
             $solicitudes = Solicitud::with([
@@ -66,6 +68,7 @@ class SolicitudController extends Controller
         }
     }
 
+    // listar solicitudes que tiene la empresa logueada asignadas por el profesor
     public function listRequestByCompanyAPI()
     {
         try {
@@ -83,10 +86,10 @@ class SolicitudController extends Controller
 
             $solicitudes = Solicitud::with([
                 'oferta' => function ($q) use ($empresa) {
-                    $q->where('id_empresa', $empresa->id)->where('eliminado', 0);
+                    $q->where('id_empresa', $empresa->id)->where('eliminado', 0); // filtrar por los que no estan eliminados con el borrado logico
                 },
                 'alumno' => function ($q) {
-                    $q->select('id', 'cv', 'id_usuario', 'id_centro');
+                    $q->select('id', 'cv', 'id_usuario', 'id_centro'); // recuperar mediante la relación con alumno el nombre, el centro formativo y el CV
                 },
                 'alumno.centroEducativo',
                 'oferta.empresa.usuario',
@@ -127,6 +130,7 @@ class SolicitudController extends Controller
         }
     }
 
+    // listar solicitudes asignadas al alumno logueado
     public function listRequestByStudentAPI()
     {
         try {
@@ -199,6 +203,7 @@ class SolicitudController extends Controller
         }
     }
 
+    // crear solicitud por el profesor logueado
     public function requestAPI(Request $request)
     {
         try {
@@ -320,6 +325,7 @@ class SolicitudController extends Controller
         }
     }
 
+    // actualizar solicitud por la empresa logueada
     public function updateRequestAPI(Request $request, $id)
     {
         try {
@@ -397,6 +403,7 @@ class SolicitudController extends Controller
         }
     }
 
+    // listar empresas asignadas a los alumnos por el profesor logueado
     public function listCommpanyAssignedToStudentByTeacherAPI($idAlumno)
     {
         try {
@@ -429,11 +436,12 @@ class SolicitudController extends Controller
                 return response()->json($response, 404);
             }
 
+            // recuperar las empresas asignadas por el alumno
             $empresas = [];
             foreach ($solicitudes as $solicitud) {
                 if ($solicitud->empresa) {
                     $empresaArr = $solicitud->empresa->toArray();
-                    $empresaArr['id_alumno'] = $solicitud->id_alumno; // Añade el id_alumno
+                    $empresaArr['id_alumno'] = $solicitud->id_alumno;
                     $empresas[] = $empresaArr;
                 }
             }

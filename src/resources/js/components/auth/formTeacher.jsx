@@ -2,11 +2,11 @@ import { useEffect, useState } from "react";
 import React from "react";
 
 export default function formTeacher({ onBack }) {
-    const [centros, setCentros] = useState([]);
-    const [grados, setGrados] = useState([]);
-    const [departamentos, setDepartamentos] = useState([]);
-    const [errors, setErrors] = useState([]);
-    const [success, setSuccess] = useState("");
+    const [centros, setCentros] = useState([]); // lista de centros educativos disponibles
+    const [grados, setGrados] = useState([]); // lista de grados formativos disponibles
+    const [departamentos, setDepartamentos] = useState([]); // lista de departamentos dispobibles
+    const [errors, setErrors] = useState([]); // errores de validación
+    const [success, setSuccess] = useState(""); // mensaje de éxito
     const [form, setForm] = useState({
         nombre: "",
         apellidos: "",
@@ -19,6 +19,10 @@ export default function formTeacher({ onBack }) {
         dni: "",
     });
 
+    /**
+     * maneja cambios en todos los campos del formulario
+     * @param {Event} e
+     */
     const handleChange = (e) => {
         setForm((prev) => ({
             ...prev,
@@ -29,7 +33,9 @@ export default function formTeacher({ onBack }) {
 
     const validate = () => {
         const newErrors = {};
-        // validaciones para el campo "nombre"
+
+        // -- VALIDACIONES --
+
         if (!form.nombre) {
             newErrors.nombre = "El nombre es obligatorio.";
         } else if (form.nombre.length < 2) {
@@ -41,7 +47,6 @@ export default function formTeacher({ onBack }) {
                 "El nombre solo puede contener letras, espacios, guiones y apóstrofes.";
         }
 
-        // validaciones para el campo "apellidos"
         if (!form.apellidos) {
             newErrors.apellidos = "Los apellidos son obligatorios.";
         } else if (form.apellidos.length < 2) {
@@ -55,7 +60,6 @@ export default function formTeacher({ onBack }) {
                 "Los apellidos solo pueden contener letras, espacios, guiones y apóstrofes.";
         }
 
-        // validaciones para el campo "contraseña"
         if (!form.contrasena) {
             newErrors.contrasena = "La contraseña es obligatoria.";
         } else if (form.contrasena.length < 8) {
@@ -78,7 +82,6 @@ export default function formTeacher({ onBack }) {
                 "La contraseña debe contener al menos un símbolo.";
         }
 
-        // validaciones para el campo "email"
         if (!form.email) {
             newErrors.email = "El email es obligatorio.";
         } else if (form.email !== form.email.toLowerCase()) {
@@ -89,29 +92,24 @@ export default function formTeacher({ onBack }) {
             newErrors.email = "El email no puede superar los 100 caracteres.";
         }
 
-        // validaciones para el campo "telefono"
         if (!form.telefono) {
             newErrors.telefono = "El teléfono es obligatorio.";
         } else if (!/^[6-9][0-9]{8}$/.test(form.telefono)) {
             newErrors.telefono = "El teléfono no es válido.";
         }
 
-        // validaciones para el campo "centro educativo"
         if (!form.id_centro) {
             newErrors.id_centro = "El centro educativo es obligatorio.";
         }
 
-        // validaciones para el campo "grado"
         if (!form.id_grado) {
             newErrors.id_grado = "El grado es obligatorio.";
         }
 
-        // validaciones para el campo "departamento"
         if (!form.id_departamento) {
             newErrors.id_departamento = "El departamento es obligatorio.";
         }
 
-        // validaciones para el campo "dni"
         if (!form.dni) {
             newErrors.dni = "El DNI es obligatorio.";
         } else if (form.dni.length !== 9) {
@@ -125,6 +123,11 @@ export default function formTeacher({ onBack }) {
         return newErrors;
     };
 
+    /**
+     * validar DNI español
+     * @param {*} id
+     * @returns {boolean}
+     */
     const validateSpanishId = (id) => {
         const dniRegex = /^[0-9]{8}[A-Z]$/i;
         const nieRegex = /^[XYZ][0-9]{7}[A-Z]$/i;
@@ -146,6 +149,9 @@ export default function formTeacher({ onBack }) {
         return false;
     };
 
+    /**
+     * Procesa el envío del formulario de registro de estudiante
+     */
     const handleSubmit = () => {
         const validationErrors = validate();
         if (Object.keys(validationErrors).length > 0) {
@@ -179,6 +185,9 @@ export default function formTeacher({ onBack }) {
             });
     };
 
+    /**
+     * cargar datos necesarios para el formulario al montar el componente
+     */
     useEffect(() => {
         let url = "/api/centro";
 

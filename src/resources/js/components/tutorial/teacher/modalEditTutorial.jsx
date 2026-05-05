@@ -1,14 +1,24 @@
 import React, { useEffect, useState } from "react";
 
+/**
+ * modal para editar la tutoría seleccionada
+ * @param {Function} onClose - función para cerrar el modal
+ * @param {Object} tutoria - lista de tutorías disponibles
+ * @param {Function} onUpdate - función para actualizar la lista de tutorías
+ */
 export default function ModalEditTutorial({ onClose, tutoria, onUpdate }) {
-    const [updateTutorial, setupdateTutorial] = useState([]);
-    const [errors, setErrors] = useState({});
+    const [updateTutorial, setupdateTutorial] = useState([]); // estado para saber si la tutoría se ha actualizado
+    const [errors, setErrors] = useState({}); // errores de validación
     const [form, setForm] = useState({
         fecha_inicio: tutoria.fecha_inicio || "",
         fecha_fin: tutoria.fecha_fin || "",
         estado: tutoria.estado || "",
     });
 
+    /**
+     * maneja los cambios en los campos del formulario
+     * @param {Event} e
+     */
     const handleChange = (e) => {
         const { name, value } = e.target;
         setForm((prev) => ({
@@ -18,8 +28,14 @@ export default function ModalEditTutorial({ onClose, tutoria, onUpdate }) {
         setErrors({});
     };
 
+    /**
+     * valida todos los campos del formulario de la edición del tutorial
+     * @returns {Object}
+     */
     const validate = () => {
         const newErrors = {};
+
+        // -- VALIDACIONES --
 
         if (!form.fecha_inicio) {
             newErrors.fecha_inicio = "La fecha de inicio es obligatoria.";
@@ -45,12 +61,22 @@ export default function ModalEditTutorial({ onClose, tutoria, onUpdate }) {
         return newErrors;
     };
 
+    /**
+     * función para guardar el mismo formato de fecha en la base de datos
+     * @param {Date} dt
+     * @returns
+     */
     function formatDateTimeLocalToSQL(dt) {
         if (!dt) return "";
 
         return dt.replace("T", " ") + ":00";
     }
 
+    /**
+     * Procesa el envío del formulario de la edición de la tutoría
+     * @param {Event} e
+     * @returns
+     */
     const handleSubmit = (e) => {
         e.preventDefault();
         const validationErrors = validate();

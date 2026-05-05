@@ -159,11 +159,8 @@
     max-width: 350px;
     margin: 12px auto 0;
     padding: 4px 12px;
-    /* Menos padding vertical y horizontal */
     font-size: 0.97rem;
-    /* Un poco más pequeño si lo deseas */
     line-height: 1.2;
-    /* Reduce la altura de línea */
     justify-content: center;
     text-align: center;
     display: flex;

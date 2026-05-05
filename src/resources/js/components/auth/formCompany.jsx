@@ -2,9 +2,9 @@ import { useEffect, useState } from "react";
 import React from "react";
 
 export default function formCompany({ onBack }) {
-    const [sectores, setSectores] = useState([]);
-    const [errors, setErrors] = useState([]);
-    const [success, setSuccess] = useState("");
+    const [sectores, setSectores] = useState([]); // lista de sectores empresariales disponibles
+    const [errors, setErrors] = useState([]); // errores de validación
+    const [success, setSuccess] = useState(""); // mensaje de éxito
     const [form, setForm] = useState({
         nombre: "",
         contrasena: "",
@@ -17,6 +17,10 @@ export default function formCompany({ onBack }) {
         web: "",
     });
 
+    /**
+     * Maneja los cambios en los campos del formulario
+     * @param {Event} e
+     */
     const handleChange = (e) => {
         setForm((prev) => ({
             ...prev,
@@ -25,10 +29,15 @@ export default function formCompany({ onBack }) {
         setErrors({});
     };
 
+    /**
+     * Valida todos los campos del formulario de login
+     * @returns {Object}
+     */
     const validate = () => {
         const newErrors = {};
 
-        // validaciones para el campo "nombre"
+        // -- VALIDACIONES --
+
         if (!form.nombre) {
             newErrors.nombre = "El nombre es obligatorio.";
         } else if (form.nombre.length < 2) {
@@ -40,7 +49,6 @@ export default function formCompany({ onBack }) {
                 "El nombre solo puede contener letras, espacios, guiones y apóstrofes.";
         }
 
-        // validaciones para el campo "contraseña"
         if (!form.contrasena) {
             newErrors.contrasena = "La contraseña es obligatoria.";
         } else if (form.contrasena.length < 8) {
@@ -63,7 +71,6 @@ export default function formCompany({ onBack }) {
                 "La contraseña debe contener al menos un símbolo.";
         }
 
-        // validaciones para el campo "email"
         if (!form.email) {
             newErrors.email = "El email es obligatorio.";
         } else if (form.email !== form.email.toLowerCase()) {
@@ -74,14 +81,12 @@ export default function formCompany({ onBack }) {
             newErrors.email = "El formato del email no es válido.";
         }
 
-        // validaciones para el campo "telefono"
         if (!form.telefono) {
             newErrors.telefono = "El teléfono es obligatorio.";
         } else if (!/^[6-9][0-9]{8}$/.test(form.telefono)) {
             newErrors.telefono = "El teléfono no es válido.";
         }
 
-        // validaciomnes para el campo "sector"
         if (!form.id_sector) {
             newErrors.id_sector = "El sector es obligatorio.";
         } else if (
@@ -92,7 +97,6 @@ export default function formCompany({ onBack }) {
                 "El identificador del sector debe ser un número entero.";
         }
 
-        // validaciones para el campo "NIF"
         const NIFLetras = "TRWAGMYFPDXBNJZSQVHLCKE";
         if (!form.nif) {
             newErrors.nif = "El NIF es obligatorio.";
@@ -109,7 +113,6 @@ export default function formCompany({ onBack }) {
             }
         }
 
-        // validaciones para el campo "descripcion"
         if (form.descripcion) {
             if (form.descripcion.length < 10) {
                 newErrors.descripcion =
@@ -120,7 +123,6 @@ export default function formCompany({ onBack }) {
             }
         }
 
-        // validaciones para el campo "direccion"
         if (!form.direccion) {
             newErrors.direccion = "La dirección es obligatoria.";
         } else if (form.direccion.length > 255) {
@@ -128,7 +130,6 @@ export default function formCompany({ onBack }) {
                 "La dirección no puede superar los 255 caracteres.";
         }
 
-        // validaciones para el campo "web"
         if (form.web) {
             if (form.web.length > 100) {
                 newErrors.web = "La web no puede superar los 100 caracteres.";
@@ -143,6 +144,9 @@ export default function formCompany({ onBack }) {
         return newErrors;
     };
 
+    /**
+     * procesa el envío del formulario de registro de empresa
+     */
     const handleSubmit = () => {
         const validationErrors = validate();
         if (Object.keys(validationErrors).length > 0) {
@@ -176,6 +180,9 @@ export default function formCompany({ onBack }) {
             });
     };
 
+    /**
+     * cargar sectores disponibles desde la API al montar el componente
+     */
     useEffect(() => {
         let url = "/api/sector";
 

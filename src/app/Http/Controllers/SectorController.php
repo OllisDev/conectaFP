@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 
 class SectorController extends Controller
 {
+    // listar todos los sectores empresariales disponibles
     public function listSectorAPI()
     {
         try {
@@ -42,6 +43,7 @@ class SectorController extends Controller
         }
     }
 
+    // crear sector empresarial
     public function createSectorAPI(Request $request)
     {
         try {

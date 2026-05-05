@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 
 class GradoController extends Controller
 {
+    // listar todos los grados formativos disponibles
     public function listDegreeAPI()
     {
         try {
@@ -42,6 +43,7 @@ class GradoController extends Controller
         }
     }
 
+    // crear grado formativo
     public function createDegreeAPI(Request $request)
     {
         try {

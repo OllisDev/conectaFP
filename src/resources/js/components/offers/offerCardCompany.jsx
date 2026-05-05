@@ -1,5 +1,10 @@
 import React, { useState, useEffect } from "react";
 
+/**
+ *
+ * @param {Object} oferta - datos completos de la oferta de prácticas
+ * @param {boolean} onDelete - parámetro para saber si la oferta se ha eliminado y poder actualizar lista de ofertas de prácticas disponibles
+ */
 export default function OfferCardCompany({ oferta, onDelete }) {
     const estadoClass =
         oferta.estado === "Abierta"
@@ -7,7 +12,9 @@ export default function OfferCardCompany({ oferta, onDelete }) {
             : oferta.estado === "Cerrada"
               ? "cerrada"
               : "pausada";
-
+    /**
+     * elimina de la lista la oferta de prácticas
+     */
     const handleDelete = () => {
         const token = localStorage.getItem("api_token");
         let url = `/api/oferta/${oferta.id}/eliminar`;

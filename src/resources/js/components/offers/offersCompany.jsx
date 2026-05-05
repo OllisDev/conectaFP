@@ -3,9 +3,9 @@ import OfferCardCompany from "./offerCardCompany";
 import ModalCreateOffer from "./modalCreateOffer";
 
 export default function offersCompany() {
-    const [ofertas, setOfertas] = useState([]);
-    const [mensaje, setMensaje] = useState(null);
-    const [showModal, setShowModal] = useState(false);
+    const [ofertas, setOfertas] = useState([]); // lista de ofertas de prácticas disponibles
+    const [mensaje, setMensaje] = useState(null); // mensaje personalizado
+    const [showModal, setShowModal] = useState(false); // controlar la visibilidad del modal de creación
 
     const token = localStorage.getItem("api_token");
     const userStr = localStorage.getItem("user");
@@ -14,6 +14,9 @@ export default function offersCompany() {
         return;
     }
 
+    /**
+     * obtiene las ofertas de trabajo de la empresa actual desde la API
+     */
     const fetchOfertas = () => {
         let url = "/api/oferta/empresa";
 
@@ -27,14 +30,19 @@ export default function offersCompany() {
         })
             .then((res) => res.json())
             .then((data) => {
-                setOfertas(Array.isArray(data.ofertas) ? data.ofertas : []);
+                setOfertas(Array.isArray(data.ofertas) ? data.ofertas : []); // asegurar que las ofertas de prácticas siempre sean un array
             });
     };
 
+    // cargar las ofertas al montar el componente
     useEffect(() => {
         fetchOfertas();
     }, []);
 
+    /**
+     * maneja la eliminación de una oferta actualizando el estado local
+     * @param {number} id
+     */
     const handleDeleteOffer = (id) => {
         setOfertas((prevOfertas) =>
             prevOfertas.filter((oferta) => oferta.id !== id),

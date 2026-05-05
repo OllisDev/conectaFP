@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from "react";
 
 export default function formStudent({ onBack }) {
-    const [centros, setCentros] = useState([]);
-    const [grados, setGrados] = useState([]);
-    const [errors, setErrors] = useState([]);
-    const [success, setSuccess] = useState("");
+    const [centros, setCentros] = useState([]); // lista de centros educativos disponibles
+    const [grados, setGrados] = useState([]); // lista de grados formativos disponibles
+    const [errors, setErrors] = useState([]); // errores de validación
+    const [success, setSuccess] = useState(""); // mensaje de éxito
     const [form, setForm] = useState({
         nombre: "",
         apellidos: "",
@@ -19,21 +19,31 @@ export default function formStudent({ onBack }) {
         fecha_nacimiento: "",
         cv: null,
     });
-    const [profesores, setProfesores] = useState([]);
+    const [profesores, setProfesores] = useState([]); // lista de profesores del centro educativo seleccionado
 
+    /**
+     * maneja cambios en todos los campos del formulario
+     * @param {Event} e
+     */
     const handleChange = (e) => {
         const { id, value, files } = e.target;
         setForm((prev) => ({
             ...prev,
+            // si es un input de tipo archivo, toma el primer archivo, sino el valor
             [id]: files ? files[0] : value,
         }));
         setErrors({});
     };
 
+    /**
+     * valida todos los campos requeridos para un estudiante de FP
+     * @returns {Object}
+     */
     const validate = () => {
         const newErrors = {};
 
-        // validaciones para el campo "nombre"
+        // -- VALIDACIONES --
+
         if (!form.nombre) {
             newErrors.nombre = "El nombre es obligatorio.";
         } else if (form.nombre.length < 2) {
@@ -45,7 +55,6 @@ export default function formStudent({ onBack }) {
                 "El nombre solo puede contener letras, espacios, guiones y apóstrofes.";
         }
 
-        // validaciones para el campo "apellidos"
         if (!form.apellidos) {
             newErrors.apellidos = "Los apellidos son obligatorios.";
         } else if (form.apellidos.length < 2) {
@@ -59,7 +68,6 @@ export default function formStudent({ onBack }) {
                 "Los apellidos solo pueden contener letras, espacios, guiones y apóstrofes.";
         }
 
-        // validaciones para el campo "contraseña"
         if (!form.contrasena) {
             newErrors.contrasena = "La contraseña es obligatoria.";
         } else if (form.contrasena.length < 8) {
@@ -82,7 +90,6 @@ export default function formStudent({ onBack }) {
                 "La contraseña debe contener al menos un símbolo.";
         }
 
-        // validaciones para el campo "email"
         if (!form.email) {
             newErrors.email = "El email es obligatorio.";
         } else if (form.email !== form.email.toLowerCase()) {
@@ -93,14 +100,12 @@ export default function formStudent({ onBack }) {
             newErrors.email = "El email no puede superar los 100 caracteres.";
         }
 
-        // validaciones para el campo "telefono"
         if (!form.telefono) {
             newErrors.telefono = "El teléfono es obligatorio.";
         } else if (!/^[6-9][0-9]{8}$/.test(form.telefono)) {
             newErrors.telefono = "El teléfono no es válido.";
         }
 
-        // validaciones para el campo "centro educativo"
         if (!form.id_centro) {
             newErrors.id_centro = "El centro educativo es obligatorio.";
         }
@@ -109,12 +114,10 @@ export default function formStudent({ onBack }) {
             newErrors.id_profesor = "El profesor es obligatorio.";
         }
 
-        // validaciones para el campo "grado"
         if (!form.id_grado) {
             newErrors.id_grado = "El grado es obligatorio.";
         }
 
-        // validaciones para el campo "fecha de nacimiento"
         if (!form.fecha_nacimiento) {
             newErrors.fecha_nacimiento =
                 "La fecha de nacimiento es obligatoria.";
@@ -136,14 +139,12 @@ export default function formStudent({ onBack }) {
             }
         }
 
-        // validaciones para el campo "curso"
         if (!form.curso) {
             newErrors.curso = "El curso es obligatorio.";
         } else if (!["1º", "2º"].includes(form.curso)) {
             newErrors.curso = 'El curso debe ser "1º" o "2º".';
         }
 
-        // validaciones para el campo "dni"
         if (!form.dni) {
             newErrors.dni = "El DNI es obligatorio.";
         } else if (form.dni.length !== 9) {
@@ -154,7 +155,6 @@ export default function formStudent({ onBack }) {
             newErrors.dni = "DNI incorrecto.";
         }
 
-        // validaciones para el campo "cv"
         if (!form.cv) {
             newErrors.cv = "El CV es obligatorio.";
         } else if (form.cv.type !== "application/pdf") {
@@ -166,6 +166,11 @@ export default function formStudent({ onBack }) {
         return newErrors;
     };
 
+    /**
+     * validar DNI español
+     * @param {*} id
+     * @returns {boolean}
+     */
     const validateSpanishId = (id) => {
         const dniRegex = /^[0-9]{8}[A-Z]$/i;
         const nieRegex = /^[XYZ][0-9]{7}[A-Z]$/i;
@@ -187,6 +192,9 @@ export default function formStudent({ onBack }) {
         return false;
     };
 
+    /**
+     * Procesa el envío del formulario de registro de estudiante
+     */
     const handleSubmit = () => {
         console.log("cv:", form.cv);
         const validationErrors = validate();
@@ -221,6 +229,9 @@ export default function formStudent({ onBack }) {
             });
     };
 
+    /**
+     * cargar datos necesarios para el formulario al montar el componente
+     */
     useEffect(() => {
         let url = "/api/centro";
 
@@ -234,9 +245,11 @@ export default function formStudent({ onBack }) {
             .then((data) => setCentros(data.centros));
     }, []);
 
+    /**
+     * cargar profesores cuando se selecciona un centro educativo
+     */
     useEffect(() => {
         if (form.id_centro) {
-            // Llama a tu endpoint para obtener los profesores de ese centro
             fetch(`/api/profesor/centro/${form.id_centro}`, {
                 method: "GET",
                 headers: {
@@ -246,9 +259,9 @@ export default function formStudent({ onBack }) {
                 .then((res) => res.json())
                 .then((data) => setProfesores(data.profesores || []));
         } else {
-            setProfesores([]);
+            setProfesores([]); // limpiar profesores si no hay centro educativo
         }
-    }, [form.id_centro]);
+    }, [form.id_centro]); // se ejecuta cuando cambia el centro educativo seleccionado
 
     useEffect(() => {
         let url = "/api/grado";

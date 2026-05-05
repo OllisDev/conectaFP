@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Auth;
 
 class OfertaController extends Controller
 {
+    // listar todas las ofertas de prácticas
     public function listOfferAPI()
     {
         try {
@@ -47,6 +48,7 @@ class OfertaController extends Controller
         }
     }
 
+    // listar una oferta de prácticas por id
     public function listOfferByIdAPI($id)
     {
         try {
@@ -94,6 +96,7 @@ class OfertaController extends Controller
         }
     }
 
+    // filtrar ofertas por modalidad, sector, titulo y ofertas ya solicitadas
     public function filterOfferAPI(Request $request)
     {
         try {
@@ -155,6 +158,7 @@ class OfertaController extends Controller
         }
     }
 
+    // listar ofertas que tiene la empresa logueada
     public function listOfferByCompanyAPI()
     {
         try {
@@ -203,6 +207,7 @@ class OfertaController extends Controller
         }
     }
 
+    // crear ofertar por la empresa logueada
     public function createOfferAPI(Request $request)
     {
         $user = Auth::user();
@@ -272,6 +277,7 @@ class OfertaController extends Controller
         }
     }
 
+    // eliminar oferta por la empresa logueada
     public function deleteOfferAPI($id)
     {
         try {

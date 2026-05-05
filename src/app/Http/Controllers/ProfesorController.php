@@ -12,10 +12,13 @@ use Illuminate\Support\Str;
 
 class ProfesorController extends Controller
 {
+    // listar todos los profesores
     public function listTeacherAPI()
     {
         try {
-            $profesores = Profesor::with('usuario')->select('id', 'id_usuario', 'id_centro', 'id_grado', 'id_departamento', 'dni')->get();
+            $profesores = Profesor::with('usuario')
+                ->select('id', 'id_usuario', 'id_centro', 'id_grado', 'id_departamento', 'dni')
+                ->get();
 
             if ($profesores->isEmpty()) {
                 $response = [
@@ -47,10 +50,14 @@ class ProfesorController extends Controller
         }
     }
 
+    // listar profesores por su centro educativo
     public function listTeacherByCenterAPI($idCentro)
     {
         try {
-            $profesores = Profesor::with('usuario')->select('id', 'id_usuario', 'id_centro', 'id_grado', 'id_departamento', 'dni')->where('id_centro', $idCentro)->get();
+            $profesores = Profesor::with('usuario')
+                ->select('id', 'id_usuario', 'id_centro', 'id_grado', 'id_departamento', 'dni')
+                ->where('id_centro', $idCentro)
+                ->get();
 
             if (!is_numeric($idCentro) || (int) $idCentro <= 0) {
                 $response = [
@@ -91,6 +98,7 @@ class ProfesorController extends Controller
         }
     }
 
+    // listar profesor por su id
     public function listTeacherByIdAPI($id)
     {
         try {
@@ -135,6 +143,7 @@ class ProfesorController extends Controller
         }
     }
 
+    // registro de un profesor
     public function registerTeacherAPI(Request $request)
     {
         try {

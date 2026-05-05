@@ -17,6 +17,7 @@ export default function feedRouter() {
         if (user) setRol(JSON.parse(user).rol);
     }, [user]);
 
+    // -- RENDERIZADO DE LA FEED SEGÚN EL ROL --
     if (rol === "alumno") return <FeedStudent />;
     if (rol === "profesor") return <FeedTeacher />;
     if (rol === "empresa") return <FeedCompany />;

@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 
+// -- RUTAS USUARIO -- 
 Route::get('/login', function () {
     return view('login');
 })->name('login');

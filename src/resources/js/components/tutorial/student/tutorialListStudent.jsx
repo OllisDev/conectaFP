@@ -1,8 +1,11 @@
 import React, { useEffect, useState } from "react";
 
 export default function tutorialListStudent() {
-    const [tutorias, setTutorias] = useState([]);
+    const [tutorias, setTutorias] = useState([]); // lista de tutorias disponibles
 
+    /**
+     * listar todas las tutorias del alumno logueado
+     */
     const fetchTutorias = () => {
         const token = localStorage.getItem("api_token");
 
@@ -22,6 +25,9 @@ export default function tutorialListStudent() {
             });
     };
 
+    /**
+     * actualizar lista de tutorías cada 30 segundos sin que el alumno recarge la página
+     */
     useEffect(() => {
         fetchTutorias();
 
@@ -32,6 +38,10 @@ export default function tutorialListStudent() {
         return () => clearInterval(interval);
     }, []);
 
+    /**
+     * función para abrir en una nueva pestaña Google Calendar para guardar la fecha del evento de la tutoría
+     * @param {Object} tutoria
+     */
     function openGoogleCalendar(tutoria) {
         const formatGoogleDate = (fecha) => {
             if (!fecha) return "";

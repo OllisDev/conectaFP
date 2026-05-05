@@ -138,7 +138,6 @@ body {
     right: 0;
     top: 65px;
     background: #ffffff;
-    /* azul oscuro */
     border: 1.5px solid #0f62a1;
     border-radius: 12px;
     box-shadow: 0 4px 16px rgba(30, 58, 95, 0.18);
@@ -440,7 +439,7 @@ body {
     color: #1e3a5f;
 }
 
-/* Offer Card */
+
 .offer-card {
     background-color: #ffffff;
     border-radius: 16px;
@@ -714,7 +713,6 @@ body {
     cursor: pointer;
     transition: background 0.2s, transform 0.1s, box-shadow 0.2s;
     box-shadow: 0 2px 8px rgba(59, 130, 246, 0.15);
-    /* Esto es solo para el botón, no para el contenedor */
     margin-top: 12px;
     letter-spacing: 0.5px;
 }
@@ -751,14 +749,14 @@ body {
 
 .img-create {
     width: 25px;
-    /* Más pequeño */
+
     height: 25px;
-    /* Más pequeño */
+
     object-fit: contain;
     display: block;
 }
 
-/* Overlay para el modal */
+
 .modal-overlay {
     position: fixed;
     top: 0;
@@ -772,7 +770,7 @@ body {
     z-index: 9999;
 }
 
-/* Contenedor principal del modal */
+
 .modal-create-container {
     background: #fff;
     border-radius: 16px;
@@ -806,7 +804,7 @@ body {
     margin-bottom: 24px;
 }
 
-/* Formulario dentro del modal */
+
 .form-container form {
     display: flex;
     flex-direction: column;
@@ -851,7 +849,7 @@ body {
     resize: vertical;
 }
 
-/* Acciones del formulario */
+
 .form-actions {
     display: flex;
     justify-content: flex-end;
@@ -939,7 +937,7 @@ body {
     width: 25px;
 }
 
-/* Estilos para mensajes en formularios de solicitud */
+
 .request-message {
     margin: 12px 0;
     padding: 12px 16px;

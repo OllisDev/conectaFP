@@ -2,10 +2,10 @@ import React, { useEffect, useState } from "react";
 import OfferCardStudent from "./offerCardStudent";
 
 export default function offersStudent() {
-    const [sectores, setSectores] = useState([]);
-    const [ofertas, setOfertas] = useState([]);
+    const [sectores, setSectores] = useState([]); // lista de sectores empresariales dispobibles
+    const [ofertas, setOfertas] = useState([]); // lista de ofertas de prácticas disponibles
     const [solicitud, setSolicitud] = useState([]);
-    const [mensaje, setMensaje] = useState(null);
+    const [mensaje, setMensaje] = useState(null); // mensaje personalizado
 
     const token = localStorage.getItem("api_token");
     const userStr = localStorage.getItem("user");
@@ -14,6 +14,9 @@ export default function offersStudent() {
         return;
     }
 
+    /**
+     * cargar datos necesarios para montar el componente
+     */
     useEffect(() => {
         let url = "/api/sector";
 

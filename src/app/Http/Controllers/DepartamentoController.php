@@ -7,10 +7,12 @@ use Illuminate\Http\Request;
 
 class DepartamentoController extends Controller
 {
+    // listar todos los departamentos
     public function listDepartmentAPI()
     {
         try {
-            $departamentos = Departamento::select('id', 'nombre')->get();
+            $departamentos = Departamento::select('id', 'nombre')
+                ->get();
 
             if ($departamentos) {
                 $response = [
@@ -42,6 +44,7 @@ class DepartamentoController extends Controller
         }
     }
 
+    // crear departamentos
     public function createDepartmentAPI(Request $request)
     {
         try {

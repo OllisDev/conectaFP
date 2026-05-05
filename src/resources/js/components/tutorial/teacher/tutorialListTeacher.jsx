@@ -2,10 +2,13 @@ import React, { useEffect, useState } from "react";
 import ModalEdit from "./modalEditTutorial";
 
 export default function tutorialListTeacher() {
-    const [tutorias, setTutorias] = useState([]);
-    const [showModal, setShowModal] = useState(false);
-    const [tutorialEdit, setTutorialEdit] = useState(null);
+    const [tutorias, setTutorias] = useState([]); // lista de tutorías disponibles
+    const [showModal, setShowModal] = useState(false); // mostrar modal
+    const [tutorialEdit, setTutorialEdit] = useState(null); // estado para almacenar la tutoría que se esta editando
 
+    /**
+     * cargar las tutorias del profesor de la API
+     */
     const fetchTutorias = () => {
         const token = localStorage.getItem("api_token");
 
@@ -27,6 +30,9 @@ export default function tutorialListTeacher() {
             });
     };
 
+    /**
+     * actualizar lista de tutorías cada 30 segundos sin que el profesor tenga que recargar la página
+     */
     useEffect(() => {
         fetchTutorias();
 
@@ -37,11 +43,20 @@ export default function tutorialListTeacher() {
         return () => clearInterval(interval);
     }, []);
 
+    /**
+     * maneja el clic en el botón de editar tutoría
+     * abre el modal de edición con los datos de la tutoría seleccionada
+     * @param {Object} tutoria
+     */
     const handleEditClick = (tutoria) => {
         setTutorialEdit(tutoria);
         setShowModal(true);
     };
 
+    /**
+     * maneja la actualización de una tutoría después de editarla
+     * @param {Object} updatedTutoria
+     */
     const handleUpdate = (updatedTutoria) => {
         setTutorias((prev) =>
             prev.map((t) => (t.id === updatedTutoria.id ? updatedTutoria : t)),
@@ -51,6 +66,10 @@ export default function tutorialListTeacher() {
         fetchTutorias();
     };
 
+    /**
+     * maneja la eliminación de una tutoría
+     * @param {number} id
+     */
     const handleRemove = (id) => {
         let url = `/api/tutoria/${id}/eliminar`;
 

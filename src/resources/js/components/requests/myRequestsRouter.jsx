@@ -16,6 +16,8 @@ export default function myRequestsRouter() {
         setRol(JSON.parse(stored).rol);
     }, []);
 
+    // -- RENDERIZADO DE LA PÁGINA DE SOLICITUDES SEGÚN EL ROL --
+
     if (rol === "alumno") return <MyRequestsStudent />;
     if (rol === "profesor") return <MyRequestsTeacher />;
     if (rol === "empresa") return <MyRequestsCompany />;

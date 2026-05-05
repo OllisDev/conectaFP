@@ -284,7 +284,6 @@ img {
     width: 100vw;
     height: 100vh;
     background: rgba(15, 62, 161, 0.18);
-    /* azul semitransparente */
     display: flex;
     align-items: center;
     justify-content: center;

@@ -6,17 +6,25 @@ import FormCompany from "./components/auth/formCompany";
 
 export default function RegisterApp() {
     const [step, setStep] = useState(1); // estado en que paso estamos (1 => rol, 2 => formulario)
-    const [role, setRole] = useState(null); // estado para saber el rol elegido
+    const [role, setRole] = useState(null); // almacena el rol seleccionado por el usuario
 
+    /**
+     * Maneja la selección del rol y avanza al siguiente paso
+     * @param {string} selectedRole
+     */
     const handleSelectRole = (selectedRole) => {
         setRole(selectedRole.toLowerCase());
         setStep(2);
     };
 
+    /**
+     * Regresa al paso anterior
+     */
     const handleBack = () => {
         setStep(1);
     };
 
+    // paso 1 -> seleccion de rol
     if (step === 1) {
         return (
             <div id="role">
@@ -48,6 +56,7 @@ export default function RegisterApp() {
         );
     }
 
+    // paso 2 -> formulario específico según el rol elegido
     if (step === 2) {
         if (role === "alumno") {
             return <FormStudent onBack={handleBack} />;

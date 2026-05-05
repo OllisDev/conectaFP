@@ -12,10 +12,14 @@ use Illuminate\Support\Str;
 
 class AlumnoController extends Controller
 {
+
+    // listar todos los alumnos
     public function listStudentAPI()
     {
         try {
-            $alumnos = Alumno::with('usuario')->select('id', 'id_usuario', 'id_profesor', 'id_centro', 'id_grado', 'curso', 'dni', 'cv', 'disponibilidad')->get();
+            $alumnos = Alumno::with('usuario')
+                ->select('id', 'id_usuario', 'id_profesor', 'id_centro', 'id_grado', 'curso', 'dni', 'cv', 'disponibilidad')
+                ->get();
 
             if ($alumnos->isEmpty()) {
                 $response = [
@@ -47,10 +51,13 @@ class AlumnoController extends Controller
         }
     }
 
+    // listar un estudiante por su id
     public function listStudentByIdAPI($id)
     {
         try {
-            $alumno = Alumno::select('id', 'id_usuario', 'id_centro', 'id_grado', 'curso', 'dni', 'cv', 'disponibilidad')->where('id', $id)->first();
+            $alumno = Alumno::select('id', 'id_usuario', 'id_centro', 'id_grado', 'curso', 'dni', 'cv', 'disponibilidad')
+                ->where('id', $id)
+                ->first();
 
             if (!is_numeric($id) || (int) $id <= 0) {
                 $response = [
@@ -91,6 +98,7 @@ class AlumnoController extends Controller
         }
     }
 
+    // listar los alumnos asignados por el profesor logueado
     public function listStudentByTeacherAPI()
     {
         try {
@@ -141,6 +149,7 @@ class AlumnoController extends Controller
         }
     }
 
+    // Registro de un alumno
     public function registerStudentAPI(Request $request)
     {
         try {

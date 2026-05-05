@@ -3,12 +3,12 @@ import TutorialListTeacher from "./tutorialListTeacher";
 import CreateTutorial from "./createTutorial";
 
 export default function tutorialRouterTeacher() {
-    const [activeTab, setActiveTab] = useState("tutorias");
+    const [activeTab, setActiveTab] = useState("tutorias"); // estado para saber cual de las secciones está activa
     const token = localStorage.getItem("api_token");
     const userStr = localStorage.getItem("user");
     if (!token || !userStr) {
         window.location.href = "/login";
-        return null; // Evita renderizar el componente
+        return null;
     }
 
     return (

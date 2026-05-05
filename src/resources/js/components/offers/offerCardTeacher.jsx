@@ -1,6 +1,18 @@
 import React, { useState, useEffect } from "react";
 
+/**
+ * tarjeta de oferta expandible para profesores
+ * @param {Object} oferta - datos completos de la oferta de prácticas
+ * @param {boolean} isExpanded - estado de expansión de la tarjeta
+ * @param {Function} onExpand - función para manejar la expansión/colapso
+ */
 export default function OfferCardTeacher({ oferta, isExpanded, onExpand }) {
+    /**
+     * determina la clase CSS según el estado de la oferta
+     * - abierta: verde (abierta)
+     * - cerrada: rojo (cerrada)
+     * - pausada: amarillo (pausada)
+     */
     const estadoClass =
         oferta.estado === "Abierta"
             ? "abierta"
@@ -8,10 +20,14 @@ export default function OfferCardTeacher({ oferta, isExpanded, onExpand }) {
               ? "cerrada"
               : "pausada";
 
-    const [alumnosAsignados, setAlumnosAsignados] = useState([]);
-    const [alumnosSeleccionados, setAlumnosSeleccionados] = useState([]);
-    const [mensaje, setMensaje] = useState(null);
+    const [alumnosAsignados, setAlumnosAsignados] = useState([]); // lista de alumnos del profesor
+    const [alumnosSeleccionados, setAlumnosSeleccionados] = useState([]); // IDs de alumnos seleccionados
+    const [mensaje, setMensaje] = useState(null); // mensajes personalizados
 
+    /**
+     * carga la lista de alumnos asignados al profesor cuando se expande la tarjeta
+     * solo se ejecuta una vez por expansión para optimizar performance
+     */
     useEffect(() => {
         if (isExpanded) {
             const token = localStorage.getItem("api_token");
@@ -35,16 +51,24 @@ export default function OfferCardTeacher({ oferta, isExpanded, onExpand }) {
                     }
                 });
         }
-    }, [isExpanded]);
+    }, [isExpanded]); // solo se ejecuta cuando cambia isExpanded
 
+    /**
+     * maneja la selección/deselección de alumnos con checkboxes
+     * @param {number} id
+     */
     const handleCheckboxChange = (id) => {
         setAlumnosSeleccionados((prev) =>
             prev.includes(id) ? prev.filter((al) => al !== id) : [...prev, id],
         );
     };
 
+    /**
+     * envía solicitud de la oferta para todos los alumnos seleccionados
+     * valida que haya al menos un alumno seleccionado
+     */
     const handleSubmitRequest = () => {
-        setMensaje(null);
+        setMensaje(null); // limpiar mensajes anteriores
 
         if (alumnosSeleccionados.length === 0) {
             setMensaje("Debes de seleccionar al menos un alumno.");
@@ -84,6 +108,10 @@ export default function OfferCardTeacher({ oferta, isExpanded, onExpand }) {
             });
     };
 
+    /**
+     * maneja el cierre de la tarjeta expandida
+     * limpia mensajes y colapsa la tarjeta
+     */
     const handleClose = () => {
         setMensaje(null);
         onExpand();

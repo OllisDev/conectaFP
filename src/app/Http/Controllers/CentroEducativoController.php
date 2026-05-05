@@ -7,10 +7,13 @@ use Illuminate\Http\Request;
 
 class CentroEducativoController extends Controller
 {
+
+    // listar todos los centros educativos
     public function listSchoolAPI()
     {
         try {
-            $centros = CentroEducativo::select('id', 'nombre', 'localidad', 'provincia', 'codigo_centro')->get();
+            $centros = CentroEducativo::select('id', 'nombre', 'localidad', 'provincia', 'codigo_centro')
+                ->get();
 
             if ($centros) {
                 $response = [
@@ -42,6 +45,7 @@ class CentroEducativoController extends Controller
         }
     }
 
+    // crear centros educativos
     public function createSchoolAPI(Request $request)
     {
         try {

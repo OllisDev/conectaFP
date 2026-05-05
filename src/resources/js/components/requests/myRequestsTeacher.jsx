@@ -1,9 +1,12 @@
 import React, { useState, useEffect } from "react";
 
 export default function nyRequestTeacher() {
-    const [solicitudes, setSolicitudes] = useState([]);
-    const [loading, setLoading] = useState(true);
+    const [solicitudes, setSolicitudes] = useState([]); // lista de solicitudes disponibles
+    const [loading, setLoading] = useState(true); // estado de que esta cargando la lista de solicitudes
 
+    /**
+     * cargar lista de solicitudes deññ profesor logueado de la API
+     */
     useEffect(() => {
         const token = localStorage.getItem("api_token");
         const userStr = localStorage.getItem("user");

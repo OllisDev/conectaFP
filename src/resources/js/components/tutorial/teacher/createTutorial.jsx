@@ -2,10 +2,10 @@ import React, { useEffect, useState } from "react";
 import Select from "react-select";
 
 export default function createTutorial() {
-    const [alumnos, setAlumnos] = useState([]);
-    const [empresas, setEmpresas] = useState([]);
-    const [errors, setErrors] = useState([]);
-    const [success, setSuccess] = useState("");
+    const [alumnos, setAlumnos] = useState([]); // lista de alumnos disponibles
+    const [empresas, setEmpresas] = useState([]); // lista de empresas disponibles
+    const [errors, setErrors] = useState([]); // errores de validación
+    const [success, setSuccess] = useState(""); // mensaje de éxito
     const [form, setForm] = useState({
         id_alumno: "",
         id_empresa: "",
@@ -16,6 +16,10 @@ export default function createTutorial() {
 
     const token = localStorage.getItem("api_token");
 
+    /**
+     *  * maneja los cambios en los campos del formulario
+     * @param {Event} e
+     */
     const handleChange = (e) => {
         setForm((prev) => ({
             ...prev,
@@ -24,8 +28,14 @@ export default function createTutorial() {
         setErrors({});
     };
 
+    /**
+     * valida todos los campos del formulario de login
+     * @returns {Object}
+     */
     const validate = () => {
         const newErrors = {};
+
+        // -- VALIDACIONES --
 
         if (!form.id_alumno) {
             newErrors.id_alumno = "El alumno es obligatorio.";
@@ -71,6 +81,9 @@ export default function createTutorial() {
         return newErrors;
     };
 
+    /**
+     * cargar lista de alumnos asignados por el profesor logueado en la API
+     */
     useEffect(() => {
         let url = "/api/alumnos/profesor";
 
@@ -96,6 +109,9 @@ export default function createTutorial() {
             });
     }, []);
 
+    /**
+     * cargar empresas asignadas a los alumnos que tiene la soliciotud aceptata por el profesor logueado
+     */
     useEffect(() => {
         if (!form.id_alumno) {
             setEmpresas([]);
@@ -121,6 +137,9 @@ export default function createTutorial() {
             });
     }, [form.id_alumno, token]);
 
+    /**
+     * mapear los alumnos para que salgan en las opciones del autocomplete
+     */
     const alumnoOptions = (alumnos || []).map((alumno) => ({
         value: alumno.id,
         label: alumno.usuario
@@ -128,6 +147,9 @@ export default function createTutorial() {
             : `Alumno ${alumno.id}`,
     }));
 
+    /**
+     * mapear las empresa para que salgan en las opciones del autocomplete
+     */
     const empresaOptions = (empresas || []).map((empresa) => ({
         value: empresa.id,
         label: empresa.usuario
@@ -135,6 +157,11 @@ export default function createTutorial() {
             : `Empresa ${empresa.id}`,
     }));
 
+    /**
+     * función para formatear la salida del input date al formato que pide guardarse en la base de datos (AAAA-MM-DD HH:MM:SS)
+     * @param {Date} value
+     * @returns {Date}
+     */
     function formatDateTimeLocal(value) {
         if (!value) return "";
 
@@ -143,6 +170,10 @@ export default function createTutorial() {
         return `${date} ${time.length === 5 ? time + ":00" : time}`;
     }
 
+    /**
+     * maneja los cambios en los campos del formulario
+     * @param {Event} e
+     */
     const handleSubmit = (e) => {
         e.preventDefault();
         const validationErrors = validate();

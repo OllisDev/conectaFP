@@ -1,15 +1,25 @@
 import React, { useState } from "react";
 
+/**
+ *
+ * @param {Object} solicitud - datos completos de la solicitud
+ * @param {Function} onClose - función para cerrar el modal
+ * @param {boolean} onRequestUpdated - conocer si la solicitud se ha actualizado para actualizar la lista de solicitudes
+ */
 export default function modalEditRequest({
     solicitud,
     onClose,
     onRequestUpdated,
 }) {
-    const [errors, setErrors] = useState([]);
+    const [errors, setErrors] = useState([]); // errores de validación
     const [form, setForm] = useState({
         estado: "",
     });
 
+    /**
+     * maneja los cambios en los campos del formulario
+     * @param {Event} e
+     */
     const handleChange = (e) => {
         setForm((prev) => ({
             ...prev,
@@ -18,9 +28,14 @@ export default function modalEditRequest({
         setErrors({});
     };
 
+    /**
+     * valida todos los campos del formulario de la edición de la solicitud
+     * @returns {Object}
+     */
     const validate = () => {
         const newErrors = {};
 
+        // -- VALIDACIONES --
         if (!form.estado) {
             newErrors.estado = "El estado es obligatorio.";
         } else if (
@@ -35,6 +50,11 @@ export default function modalEditRequest({
         return newErrors;
     };
 
+    /**
+     * Procesa el envío del formulario de la edición de la solicitud
+     * @param {Event} e
+     * @returns
+     */
     const handleSubmit = (e) => {
         e.preventDefault();
         const validationErrors = validate();

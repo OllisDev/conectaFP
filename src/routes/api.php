@@ -23,8 +23,6 @@ Route::middleware('auth:api')->get('/usuario/notificacion', [UsuarioController::
 Route::get('/usuario', [UsuarioController::class, 'listUserAPI'])->name('userAPI.listUser');
 Route::get('/usuario/{usuario}', [UsuarioController::class, 'listUserByIdAPI'])->name('userAPI.listUserById');
 Route::post('/usuario/login', [UsuarioController::class, 'loginUserAPI'])->name('userAPI.loginUser');
-Route::put('/usuario/{usuario}', [UsuarioController::class, 'updateUserAPI'])->name('userAPI.updateUser');
-Route::delete('/usuario/{usuario}/eliminar', [UsuarioController::class, 'deleteUserAPI'])->name('userAPI.deleteUser');
 Route::post('/usuario/logout', [UsuarioController::class, 'logoutUserAPI'])->name('userAPI.logoutUser');
 
 // rutas para la autenticación del alumno

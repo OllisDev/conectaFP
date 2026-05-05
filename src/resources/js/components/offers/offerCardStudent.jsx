@@ -1,11 +1,21 @@
 import React, { useState, useEffect } from "react";
 
+/**
+ * tarjeta de oferta para alumnos
+ * @param {Object} oferta - datos completos de la oferta de prácticas
+ */
 export default function OfferCardStudent({
     oferta,
     yaSolicitada,
     solicitudId,
     idAlumno,
 }) {
+    /**
+     * determina la clase CSS según el estado de la oferta
+     * - abierta: verde (abierta)
+     * - cerrada: rojo (cerrada)
+     * - pausada: amarillo (pausada)
+     */
     const estadoClass =
         oferta.estado === "Abierta"
             ? "abierta"

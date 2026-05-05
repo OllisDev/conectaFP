@@ -3,12 +3,12 @@ import TutorialListStudent from "./tutorialListStudent";
 import { createRoot } from "react-dom/client";
 
 export default function tutorialStudentRouter() {
-    const [activeTab, setActiveTab] = useState("tutorias");
+    const [activeTab, setActiveTab] = useState("tutorias"); // estado para saber cual de las secciones está activa
     const token = localStorage.getItem("api_token");
     const userStr = localStorage.getItem("user");
     if (!token || !userStr) {
         window.location.href = "/login";
-        return null; // Evita renderizar el componente
+        return null;
     }
     return (
         <div className="tutorial-container">

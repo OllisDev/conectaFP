@@ -1,24 +1,33 @@
 import { useEffect, useState } from "react";
 
 export default function formLogin() {
-    const [errors, setErrors] = useState([]);
+    const [errors, setErrors] = useState([]); // almacena errores de validación
     const [form, setForm] = useState({
         email: "",
         contrasena: "",
     });
 
+    /**
+     * Maneja los cambios en los campos del formulario
+     * @param {Event} e
+     */
     const handleChange = (e) => {
         setForm((prev) => ({
             ...prev,
-            [e.target.id]: e.target.value,
+            [e.target.id]: e.target.value, // actualiza el campo específico
         }));
-        setErrors({});
+        setErrors({}); // limpiar errores
     };
 
+    /**
+     * Valida todos los campos del formulario de login
+     * @returns {Object}
+     */
     const validate = () => {
         const newErrors = {};
 
-        // validaciones para el campo "email"
+        // -- VALIDACIONES --
+
         if (!form.email) {
             newErrors.email = "El email es obligatorio.";
         } else if (form.email !== form.email.toLowerCase()) {
@@ -29,7 +38,6 @@ export default function formLogin() {
             newErrors.email = "El email no puede superar los 100 caracteres.";
         }
 
-        // validaciones para el campo "contraseña"
         if (!form.contrasena) {
             newErrors.contrasena = "La contraseña es obligatoria.";
         } else if (form.contrasena.length < 8) {
@@ -54,7 +62,9 @@ export default function formLogin() {
 
         return newErrors;
     };
-
+    /**
+     * Procesa el envío del formulario de login
+     */
     const handleSubmit = () => {
         const validationErrors = validate();
         if (Object.keys(validationErrors).length > 0) {

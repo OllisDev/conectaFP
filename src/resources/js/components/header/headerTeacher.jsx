@@ -1,11 +1,15 @@
 import React, { useEffect, useState, useRef } from "react";
 
 export default function headerTeacher() {
-    const [open, setOpen] = useState(false);
-    const menuRef = useRef();
-    const [notificaciones, setNotificaciones] = useState([]);
-    const [notifOpen, setNotifOpen] = useState(false);
+    const [open, setOpen] = useState(false); // control del menú de perfil
+    const menuRef = useRef(); // referencia para detectar clics fuera del menú
+    const [notificaciones, setNotificaciones] = useState([]); // lista de notificaciones del usuario
+    const [notifOpen, setNotifOpen] = useState(false); // control del dropdown de notificaciones
 
+    /**
+     * detecta clics fuera del menú para cerrarlo automáticamente
+     * nejora la intefaz al cerrar dropdowns al hacer clic en cualquier parte
+     */
     useEffect(() => {
         function handleClickOutside(e) {
             if (menuRef.current && !menuRef.current.contains(e.target)) {
@@ -18,6 +22,12 @@ export default function headerTeacher() {
         };
     }, []);
 
+    /**
+     * maneja el cierre de sesión del usuario
+     * 1. Llama a la API para invalidar el token
+     * 2. Limpia localStorage
+     * 3. Redirige al login
+     */
     const logout = () => {
         const token = localStorage.getItem("api_token");
         let url = "/api/usuario/logout";
@@ -34,6 +44,10 @@ export default function headerTeacher() {
         window.location.href = "/login";
     };
 
+    /**
+     * obtiene las notificaciones del usuario desde la API
+     * se ejecuta cuando el usuario abre el dropdown de notificaciones
+     */
     const fetchNotificaciones = () => {
         const token = localStorage.getItem("api_token");
 

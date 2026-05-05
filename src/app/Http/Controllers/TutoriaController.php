@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\Auth;
 
 class TutoriaController extends Controller
 {
+    // listar tutorias asginadas al alumno logueado
     public function listTutorialByStudentAPI()
     {
         try {
@@ -63,6 +64,7 @@ class TutoriaController extends Controller
         }
     }
 
+    // listar tutorias del profesor logueado
     public function listTutorialByTeacherAPI()
     {
         try {
@@ -115,6 +117,7 @@ class TutoriaController extends Controller
         }
     }
 
+    // crear tutoria por el profesor logueado
     public function createTutorialAPI(Request $request)
     {
         try {
@@ -200,6 +203,7 @@ class TutoriaController extends Controller
         }
     }
 
+    // actualizar tutoria por el profesor logueado
     public function updateTutorialAPI(Request $request, $id)
     {
         try {
@@ -260,6 +264,7 @@ class TutoriaController extends Controller
         }
     }
 
+    // eliminar tutoria por el profesor
     public function deleteTutorialAPI($id)
     {
         try {

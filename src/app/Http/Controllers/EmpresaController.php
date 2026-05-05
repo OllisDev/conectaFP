@@ -12,6 +12,7 @@ use Illuminate\Support\Str;
 
 class EmpresaController extends Controller
 {
+    // listar todas las empresas
     public function listCompanyAPI()
     {
         try {
@@ -47,6 +48,7 @@ class EmpresaController extends Controller
         }
     }
 
+    // listar una empresa por su id
     public function listCompanyByIdAPI($id)
     {
         try {
@@ -90,6 +92,7 @@ class EmpresaController extends Controller
         }
     }
 
+    // listar empresas que los alumnos tengan aceptada la solicitud
     public function listCompanyByAcceptedAPI($id_alumno)
     {
         try {
@@ -121,6 +124,7 @@ class EmpresaController extends Controller
                     'response' => 200,
                     'success' => true,
                     'status' => 'ok',
+                    'message' => 'Empresa',
                     'empresas' => $empresas
                 ];
                 return response()->json($response, 200);
@@ -137,6 +141,7 @@ class EmpresaController extends Controller
         }
     }
 
+    // registro de una empresa
     public function registerCompanyAPI(Request $request)
     {
         try {

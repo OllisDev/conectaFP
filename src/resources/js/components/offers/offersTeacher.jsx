@@ -2,11 +2,11 @@ import React, { useEffect, useState } from "react";
 import OfferCardTeacher from "./offerCardTeacher";
 
 export default function offersTeacher() {
-    const [sectores, setSectores] = useState([]);
-    const [ofertas, setOfertas] = useState([]);
+    const [sectores, setSectores] = useState([]); // lista de sectores empresariales disponibles
+    const [ofertas, setOfertas] = useState([]); // lista de ofertas de prácticas disponibles
     const [solicitud, setSolicitud] = useState([]);
-    const [mensaje, setMensaje] = useState(null);
-    const [expandedOfferId, setExpandedOfferId] = useState(null);
+    const [mensaje, setMensaje] = useState(null); // mensaje personalizado
+    const [expandedOfferId, setExpandedOfferId] = useState(null); // ID de la oferta para expandir el card de la oferta para poder solicitar
 
     const token = localStorage.getItem("api_token");
     const userStr = localStorage.getItem("user");
@@ -15,6 +15,9 @@ export default function offersTeacher() {
         return;
     }
 
+    /**
+     * cargar datos necesarios para montar el componente
+     */
     useEffect(() => {
         let url = "/api/sector";
 
@@ -54,6 +57,9 @@ export default function offersTeacher() {
             .then((data) => setOfertas(data.alumnos || []));
     }, []);
 
+    /**
+     * cargar ofertas filtradas por modalidad, sector, titulo y/o por solicitudes ya solicitadas
+     */
     const handleFiltros = () => {
         const params = new URLSearchParams();
         const modalidad = document.getElementById("modalidad").value;
@@ -109,6 +115,9 @@ export default function offersTeacher() {
             });
     };
 
+    /**
+     * limpiar filtros
+     */
     const handleLimpiar = () => {
         setMensaje(null);
         let url = "/api/oferta";

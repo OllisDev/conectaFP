@@ -2,10 +2,10 @@ import React, { useEffect, useState } from "react";
 import ModalEditRequest from "./modalEditRequest";
 
 export default function myRequestsCompany() {
-    const [solicitudes, setSolicitudes] = useState([]);
-    const [loading, setLoading] = useState(true);
-    const [showModal, setShowModal] = useState(false);
-    const [selectedSolicitud, setSelectedSolicitud] = useState(null);
+    const [solicitudes, setSolicitudes] = useState([]); // lista de solicitudes disponibles
+    const [loading, setLoading] = useState(true); // estado de que esta cargando la lista de solicitudes
+    const [showModal, setShowModal] = useState(false); // mostrar el modal
+    const [selectedSolicitud, setSelectedSolicitud] = useState(null); // solicitud seleccionada
 
     const token = localStorage.getItem("api_token");
     const userStr = localStorage.getItem("user");
@@ -14,6 +14,9 @@ export default function myRequestsCompany() {
         return;
     }
 
+    /**
+     * cargar lista de solicitudes de las empresa logueada de la API
+     */
     const fetchSolicitudes = () => {
         let url = "/api/solicitud/empresa";
 

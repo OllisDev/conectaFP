@@ -52,9 +52,6 @@ body {
     margin: 0;
 }
 
-/* ── Form containers ── */
-
-
 #form-student,
 #form-teacher,
 #form-company {
@@ -78,7 +75,7 @@ body {
     font-size: 1.6rem;
 }
 
-/* ── Field rows ── */
+
 .form {
     display: flex;
     flex-direction: column;
@@ -126,7 +123,6 @@ body {
     min-height: 90px;
 }
 
-/* ── Checkbox row ── */
 .form input[type="checkbox"] {
     width: 18px;
     height: 18px;
@@ -134,7 +130,6 @@ body {
     cursor: pointer;
 }
 
-/* ── Buttons ── */
 .btn-group {
     display: flex;
     justify-content: space-between;
@@ -176,7 +171,7 @@ body {
     transform: translateY(-2px);
 }
 
-/* ── Bottom login link ── */
+
 #form-student p,
 #form-teacher p,
 #form-company p {

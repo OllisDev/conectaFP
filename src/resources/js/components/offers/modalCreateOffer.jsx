@@ -1,7 +1,13 @@
 import React, { useState } from "react";
 
+/**
+ * modal para crear una nueva oferta de prácticas
+ * @param {Function} onClose -función para cerrar el modal
+ * @param {Function} onOfferCreated - función que se ejecuta cuando se crea exitosamente una oferta
+ * @returns
+ */
 export default function modalCreateOffer({ onClose, onOfferCreated }) {
-    const [errors, setErrors] = useState([]);
+    const [errors, setErrors] = useState([]); // errores de validación
     const [form, setForm] = useState({
         titulo: "",
         descripcion: "",
@@ -9,6 +15,10 @@ export default function modalCreateOffer({ onClose, onOfferCreated }) {
         modalidad: "",
     });
 
+    /**
+     * maneja los cambios en los campos del formulario
+     * @param {Event} e
+     */
     const handleChange = (e) => {
         setForm((prev) => ({
             ...prev,
@@ -17,8 +27,14 @@ export default function modalCreateOffer({ onClose, onOfferCreated }) {
         setErrors({});
     };
 
+    /**
+     * valida todos los campos del formulario de login
+     * @returns {Object}
+     */
     const validate = () => {
         const newErrors = {};
+
+        // -- VALIDACIONES --
 
         if (!form.titulo.trim()) {
             newErrors.titulo = "El título es obligatorio.";
@@ -60,6 +76,11 @@ export default function modalCreateOffer({ onClose, onOfferCreated }) {
         return newErrors;
     };
 
+    /**
+     * procesa el envío del formulario de login
+     * @param {Event} e
+     * @returns
+     */
     const handleSubmit = (e) => {
         e.preventDefault();
         const validationErrors = validate();
@@ -68,6 +89,7 @@ export default function modalCreateOffer({ onClose, onOfferCreated }) {
             return;
         }
 
+        // separar por comas y limpiar espacios
         let requisitosLimpios = form.requisitos
             .split(",")
             .map((req) => req.trim())
