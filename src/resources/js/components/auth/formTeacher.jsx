@@ -280,11 +280,20 @@ export default function formTeacher({ onBack }) {
                     <label htmlFor="id_centro">Centro educativo:</label>
                     <select id="id_centro" onChange={handleChange}>
                         <option value="">-- Selecciona un centro --</option>
-                        {centros.map((centro) => (
-                            <optgroup key={centro.id} label={centro.provincia}>
-                                <option key={centro.id} value={centro.id}>
-                                    {centro.nombre} - {centro.localidad}
-                                </option>
+                        {Object.entries(
+                            centros.reduce((acc, centro) => {
+                                if (!acc[centro.provincia])
+                                    acc[centro.provincia] = [];
+                                acc[centro.provincia].push(centro);
+                                return acc;
+                            }, {}),
+                        ).map(([provincia, items]) => (
+                            <optgroup key={provincia} label={provincia}>
+                                {items.map((centro) => (
+                                    <option key={centro.id} value={centro.id}>
+                                        {centro.nombre} - {centro.localidad}
+                                    </option>
+                                ))}
                             </optgroup>
                         ))}
                     </select>
