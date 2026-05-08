@@ -38,12 +38,13 @@ RUN cp .env.example .env || echo "APP_KEY=" > .env
 # Instalar dependencias de PHP
 RUN composer install --no-dev --optimize-autoloader --no-interaction --prefer-dist
 
-# Instalar dependencias de Node.js y hacer build
-RUN npm ci --only=production && \
+# Instalar dependencias de Node.js y hacer build (ignorando conflictos de peer deps)
+RUN npm install --legacy-peer-deps && \
     npm run build
 
-# Limpiar .env temporal
-RUN rm -f .env
+# Limpiar archivos temporales
+RUN rm -f .env && \
+    rm -rf node_modules
 
 # Configurar Nginx
 COPY ./docker/nginx/default.prod.conf /etc/nginx/sites-available/default
