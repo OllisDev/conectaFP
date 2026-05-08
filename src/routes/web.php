@@ -2,6 +2,11 @@
 
 use Illuminate\Support\Facades\Route;
 
+// Ruta raíz - redirigir al login o mostrar página principal
+Route::get('/', function () {
+    return redirect('/login');
+});
+
 // -- RUTAS USUARIO -- 
 Route::get('/login', function () {
     return view('login');
