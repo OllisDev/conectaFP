@@ -54,6 +54,11 @@ RUN rm -f .env && \
     rm -rf node_modules && \
     rm -rf bootstrap/cache/*.php
 
+# Configurar Nginx
+COPY ./docker/nginx/default.prod.conf /etc/nginx/sites-available/default
+RUN rm -f /etc/nginx/sites-enabled/default && \
+    ln -s /etc/nginx/sites-available/default /etc/nginx/sites-enabled/default
+
 # Crear directorios necesarios y establecer permisos
 RUN mkdir -p storage/framework/sessions \
     storage/framework/views \
