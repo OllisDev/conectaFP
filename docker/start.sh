@@ -2,7 +2,6 @@
 
 cd /var/www
 
-# Crear .env con las variables de entorno de Render
 cat > .env << EOF
 APP_NAME="${APP_NAME}"
 APP_ENV="${APP_ENV}"
