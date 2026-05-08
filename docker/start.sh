@@ -2,6 +2,13 @@
 
 cd /var/www
 
+# Crear directorios necesarios
+mkdir -p storage/framework/sessions
+mkdir -p storage/framework/views  
+mkdir -p storage/framework/cache
+mkdir -p storage/logs
+mkdir -p bootstrap/cache
+
 # Primero: Eliminar TODA la caché existente
 rm -rf bootstrap/cache/*.php
 rm -rf storage/framework/cache/*
@@ -22,20 +29,24 @@ DB_DATABASE="${DB_DATABASE}"
 DB_USERNAME="${DB_USERNAME}"
 DB_PASSWORD="${DB_PASSWORD}"
 
-SESSION_DRIVER=database
-CACHE_STORE=database
-QUEUE_CONNECTION=database
+SESSION_DRIVER=file
+CACHE_STORE=file
+QUEUE_CONNECTION=sync
 LOG_CHANNEL=stack
 LOG_LEVEL=error
 EOF
 
-# Tercero: Limpiar cachés con artisan (ahora con .env correcto)
+# Establecer permisos
+chown -R www-data:www-data storage bootstrap/cache
+chmod -R 775 storage bootstrap/cache
+
+# Tercero: Limpiar cachés con artisan
 php artisan config:clear
 php artisan route:clear
 php artisan view:clear
 php artisan cache:clear
 
-# Función para esperar a que PostgreSQL esté disponible
+# Función para esperar a PostgreSQL
 wait_for_db() {
     echo "Esperando a que la base de datos esté disponible..."
     max_attempts=30
@@ -62,7 +73,7 @@ wait_for_db
 echo "Ejecutando migraciones..."
 php artisan migrate --force
 
-# Cachear configuración para producción (AHORA con la config correcta)
+# Cachear configuración para producción
 php artisan config:cache
 php artisan route:cache
 php artisan view:cache
