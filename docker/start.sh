@@ -9,15 +9,16 @@ mkdir -p storage/framework/cache
 mkdir -p storage/logs
 mkdir -p bootstrap/cache
 
-# Establecer permisos PRIMERO (antes de cualquier comando artisan)
+# Establecer permisos INMEDIATAMENTE después de crear directorios
 chown -R www-data:www-data storage bootstrap/cache
-chmod -R 775 storage bootstrap/cache
+chmod -R 777 storage
+chmod -R 775 bootstrap/cache
 
 # Eliminar archivos de caché
-rm -rf bootstrap/cache/*.php
-rm -rf storage/framework/cache/*
-rm -rf storage/framework/views/*
-rm -rf storage/logs/*.log
+rm -rf bootstrap/cache/*.php 2>/dev/null || true
+rm -rf storage/framework/cache/* 2>/dev/null || true
+rm -rf storage/framework/views/* 2>/dev/null || true
+rm -rf storage/logs/*.log 2>/dev/null || true
 
 # Crear .env con las variables de entorno de Render
 cat > .env << EOF
