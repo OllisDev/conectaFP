@@ -1,0 +1,44 @@
+services:
+  - type: web
+    name: conectafp-web
+    runtime: docker
+    dockerfilePath: ./docker/apache/Dockerfile.prod
+    dockerContext: .
+    envVars:
+      - key: APP_NAME
+        value: ConectaFP
+      - key: APP_ENV
+        value: production
+      - key: APP_DEBUG
+        value: false
+      - key: APP_KEY
+        sync: false
+      - key: APP_URL
+        value: https://conectafp.onrender.com
+      - key: DB_CONNECTION
+        value: mysql
+      - key: DB_HOST
+        fromDatabase:
+          name: conectafp-db
+          property: host
+      - key: DB_PORT
+        fromDatabase:
+          name: conectafp-db
+          property: port
+      - key: DB_DATABASE
+        fromDatabase:
+          name: conectafp-db
+          property: database
+      - key: DB_USERNAME
+        fromDatabase:
+          name: conectafp-db
+          property: user
+      - key: DB_PASSWORD
+        fromDatabase:
+          name: conectafp-db
+          property: password
+
+databases:
+  - name: conectafp-db
+    databaseName: conecta_fp
+    user: conectafp_user

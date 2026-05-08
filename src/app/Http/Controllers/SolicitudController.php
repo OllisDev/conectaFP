@@ -28,7 +28,8 @@ class SolicitudController extends Controller
                     $q->where('eliminado', 0);
                 },
                 'oferta.empresa.usuario',
-                'profesor.usuario'
+                'profesor.usuario',
+                'alumno.usuario'
             ])
                 ->select('id', 'id_oferta', 'id_alumno', 'id_profesor', 'fecha_solicitud', 'estado')
                 ->where('id_profesor', $idProfesor)

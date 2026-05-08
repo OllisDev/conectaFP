@@ -5,7 +5,7 @@ export default function nyRequestTeacher() {
     const [loading, setLoading] = useState(true); // estado de que esta cargando la lista de solicitudes
 
     /**
-     * cargar lista de solicitudes deññ profesor logueado de la API
+     * cargar lista de solicitudes del profesor logueado de la API
      */
     useEffect(() => {
         const token = localStorage.getItem("api_token");
@@ -60,7 +60,10 @@ export default function nyRequestTeacher() {
                                     <td>
                                         {s.oferta?.empresa?.usuario?.nombre}
                                     </td>
-                                    <td>{s.alumno?.usuario?.nombre}</td>
+                                    <td>
+                                        {s.alumno?.usuario?.nombre}{" "}
+                                        {s.alumno?.usuario?.apellidos}
+                                    </td>
                                     <td>{s.fecha_solicitud}</td>
                                     <td>{s.estado}</td>
                                 </tr>
