@@ -11,15 +11,33 @@ class CentroEducativoSeeder extends Seeder
         $centros = [
             [
                 'nombre' => 'IES Miguel Catalán',
-                'direccion' => 'Calle Catedrático José Beltrán Martínez, 2, Zaragoza',
-                'telefono' => '976123456',
-                'email' => 'info@iesmiguelcatalan.es',
+                'localidad' => 'Zaragoza',
+                'provincia' => 'Zaragoza',
+                'codigo_centro' => '50008945',
             ],
             [
                 'nombre' => 'CIFP Los Enlaces',
-                'direccion' => 'Avda. María Zambrano, 4, Zaragoza',
-                'telefono' => '976234567',
-                'email' => 'contacto@losenlaces.es',
+                'localidad' => 'Zaragoza',
+                'provincia' => 'Zaragoza',
+                'codigo_centro' => '50011234',
+            ],
+            [
+                'nombre' => 'IES Virgen del Pilar',
+                'localidad' => 'Zaragoza',
+                'provincia' => 'Zaragoza',
+                'codigo_centro' => '50008956',
+            ],
+            [
+                'nombre' => 'IES Pablo Serrano',
+                'localidad' => 'Zaragoza',
+                'provincia' => 'Zaragoza',
+                'codigo_centro' => '50008967',
+            ],
+            [
+                'nombre' => 'CPIFP Montearagón',
+                'localidad' => 'Huesca',
+                'provincia' => 'Huesca',
+                'codigo_centro' => '22004567',
             ],
         ];
 
