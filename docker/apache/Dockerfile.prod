@@ -32,10 +32,18 @@ RUN curl -fsSL https://deb.nodesource.com/setup_20.x | bash - \
 COPY ./src /var/www
 WORKDIR /var/www
 
-# Instalar dependencias de PHP y Node.js
-RUN composer install --no-dev --optimize-autoloader && \
-    npm install && \
+# Crear .env desde .env.example para el build
+RUN cp .env.example .env || echo "APP_KEY=" > .env
+
+# Instalar dependencias de PHP
+RUN composer install --no-dev --optimize-autoloader --no-interaction --prefer-dist
+
+# Instalar dependencias de Node.js y hacer build
+RUN npm ci --only=production && \
     npm run build
+
+# Limpiar .env temporal
+RUN rm -f .env
 
 # Configurar Nginx
 COPY ./docker/nginx/default.prod.conf /etc/nginx/sites-available/default
