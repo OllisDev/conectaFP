@@ -20,7 +20,10 @@ class SectorSeeder extends Seeder
         ];
 
         foreach ($sectores as $sector) {
-            Sector::create($sector);
+            Sector::updateOrCreate(
+                ['nombre' => $sector['nombre']],
+                $sector
+            );
         }
     }
 }

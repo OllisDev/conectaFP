@@ -19,7 +19,10 @@ class DepartamentoSeeder extends Seeder
         ];
 
         foreach ($departamentos as $departamento) {
-            Departamento::create($departamento);
+            Departamento::updateOrCreate(
+                ['nombre' => $departamento['nombre']],
+                $departamento
+            );
         }
     }
 }

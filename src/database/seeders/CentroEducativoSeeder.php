@@ -10,39 +10,42 @@ class CentroEducativoSeeder extends Seeder
     {
         $centros = [
             [
+                'codigo_centro' => '50008945',
                 'nombre' => 'IES Miguel Catalán',
                 'localidad' => 'Zaragoza',
                 'provincia' => 'Zaragoza',
-                'codigo_centro' => '50008945',
             ],
             [
+                'codigo_centro' => '50011234',
                 'nombre' => 'CIFP Los Enlaces',
                 'localidad' => 'Zaragoza',
                 'provincia' => 'Zaragoza',
-                'codigo_centro' => '50011234',
             ],
             [
+                'codigo_centro' => '50008956',
                 'nombre' => 'IES Virgen del Pilar',
                 'localidad' => 'Zaragoza',
                 'provincia' => 'Zaragoza',
-                'codigo_centro' => '50008956',
             ],
             [
+                'codigo_centro' => '50008967',
                 'nombre' => 'IES Pablo Serrano',
                 'localidad' => 'Zaragoza',
                 'provincia' => 'Zaragoza',
-                'codigo_centro' => '50008967',
             ],
             [
+                'codigo_centro' => '22004567',
                 'nombre' => 'CPIFP Montearagón',
                 'localidad' => 'Huesca',
                 'provincia' => 'Huesca',
-                'codigo_centro' => '22004567',
             ],
         ];
 
         foreach ($centros as $centro) {
-            CentroEducativo::create($centro);
+            CentroEducativo::updateOrCreate(
+                ['codigo_centro' => $centro['codigo_centro']],
+                $centro
+            );
         }
     }
 }

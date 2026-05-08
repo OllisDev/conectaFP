@@ -10,45 +10,48 @@ class GradoSeeder extends Seeder
     {
         $grados = [
             [
+                'codigo_grado' => 'IFC303',
                 'nombre' => 'Desarrollo de Aplicaciones Web',
                 'tipo' => 'Grado superior',
                 'familia_profesional' => 'Informática y Comunicaciones',
-                'codigo_grado' => 'IFC303',
             ],
             [
+                'codigo_grado' => 'IFC302',
                 'nombre' => 'Desarrollo de Aplicaciones Multiplataforma',
                 'tipo' => 'Grado superior',
                 'familia_profesional' => 'Informática y Comunicaciones',
-                'codigo_grado' => 'IFC302',
             ],
             [
+                'codigo_grado' => 'IFC301',
                 'nombre' => 'Administración de Sistemas Informáticos en Red',
                 'tipo' => 'Grado superior',
                 'familia_profesional' => 'Informática y Comunicaciones',
-                'codigo_grado' => 'IFC301',
             ],
             [
+                'codigo_grado' => 'IFC202',
                 'nombre' => 'Sistemas Microinformáticos y Redes',
                 'tipo' => 'Grado medio',
                 'familia_profesional' => 'Informática y Comunicaciones',
-                'codigo_grado' => 'IFC202',
             ],
             [
+                'codigo_grado' => 'ADG301',
                 'nombre' => 'Administración y Finanzas',
                 'tipo' => 'Grado superior',
                 'familia_profesional' => 'Administración y Gestión',
-                'codigo_grado' => 'ADG301',
             ],
             [
+                'codigo_grado' => 'ADG201',
                 'nombre' => 'Gestión Administrativa',
                 'tipo' => 'Grado medio',
                 'familia_profesional' => 'Administración y Gestión',
-                'codigo_grado' => 'ADG201',
             ],
         ];
 
         foreach ($grados as $grado) {
-            Grado::create($grado);
+            Grado::updateOrCreate(
+                ['codigo_grado' => $grado['codigo_grado']],
+                $grado
+            );
         }
     }
 }

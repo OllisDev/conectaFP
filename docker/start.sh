@@ -71,21 +71,13 @@ wait_for_db
 echo "Ejecutando migraciones..."
 php artisan migrate --force
 
-# Ejecutar seeders solo si las tablas están vacías
-echo "Verificando datos iniciales..."
-
-# Verificar si ya hay datos
-SECTOR_COUNT=$(php artisan tinker --execute="echo \App\Models\Sector::count();")
-if [ "$SECTOR_COUNT" -eq "0" ]; then
-    echo "Poblando datos iniciales..."
-    php artisan db:seed --class=SectorSeeder --force
-    php artisan db:seed --class=GradoSeeder --force
-    php artisan db:seed --class=DepartamentoSeeder --force
-    php artisan db:seed --class=CentroEducativoSeeder --force
-    echo "✓ Datos iniciales creados"
-else
-    echo "✓ Datos iniciales ya existen"
-fi
+# Ejecutar seeders en cada deploy
+echo "Ejecutando seeders..."
+php artisan db:seed --class=SectorSeeder --force
+php artisan db:seed --class=GradoSeeder --force
+php artisan db:seed --class=DepartamentoSeeder --force
+php artisan db:seed --class=CentroEducativoSeeder --force
+echo "✓ Seeders ejecutados"
 
 # Cachear configuración para producción
 php artisan config:cache
