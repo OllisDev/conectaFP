@@ -424,7 +424,7 @@ class SolicitudController extends Controller
                 ->where('id_profesor', $idProfesor)
                 ->where('id_alumno', $idAlumno)
                 ->where('eliminado', 0)
-                ->where('estado', 'Aceptada')
+                ->where('estado', 'aceptada')
                 ->get();
 
             if ($solicitudes->isEmpty()) {

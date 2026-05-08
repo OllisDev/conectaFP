@@ -72,8 +72,8 @@ echo "Ejecutando migraciones..."
 php artisan migrate --force
 
 # Crear symlink para storage/app/public -> public/storage
-php artisan storage:link
-echo "✓ Storage link creado"
+# php artisan storage:link
+# echo "✓ Storage link creado"
 
 # Ejecutar seeders en cada deploy
 echo "Ejecutando seeders..."
