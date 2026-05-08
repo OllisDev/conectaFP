@@ -54,15 +54,15 @@ RUN rm -f .env && \
     rm -rf node_modules && \
     rm -rf bootstrap/cache/*.php
 
-# Configurar Nginx
-COPY ./docker/nginx/default.prod.conf /etc/nginx/sites-available/default
-RUN rm -f /etc/nginx/sites-enabled/default && \
-    ln -s /etc/nginx/sites-available/default /etc/nginx/sites-enabled/default
-
-# Permisos
-RUN chown -R www-data:www-data /var/www \
-    && chmod -R 755 /var/www/storage \
-    && chmod -R 755 /var/www/bootstrap/cache
+# Crear directorios necesarios y establecer permisos
+RUN mkdir -p storage/framework/sessions \
+    storage/framework/views \
+    storage/framework/cache \
+    storage/logs \
+    bootstrap/cache && \
+    chown -R www-data:www-data /var/www && \
+    chmod -R 775 /var/www/storage && \
+    chmod -R 775 /var/www/bootstrap/cache
 
 # Exponer puerto
 EXPOSE 8000
