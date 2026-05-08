@@ -2,23 +2,22 @@
 
 cd /var/www
 
-# Crear directorios necesarios
-mkdir -p storage/framework/sessions
-mkdir -p storage/framework/views  
-mkdir -p storage/framework/cache
-mkdir -p storage/logs
-mkdir -p bootstrap/cache
-
-# Establecer permisos INMEDIATAMENTE después de crear directorios
-chown -R www-data:www-data storage bootstrap/cache
-chmod -R 777 storage
-chmod -R 775 bootstrap/cache
-
-# Eliminar archivos de caché
-rm -rf bootstrap/cache/*.php 2>/dev/null || true
-rm -rf storage/framework/cache/* 2>/dev/null || true
-rm -rf storage/framework/views/* 2>/dev/null || true
-rm -rf storage/logs/*.log 2>/dev/null || true
+# Asegurar que somos root al inicio para cambiar permisos
+if [ "$(id -u)" = "0" ]; then
+    # Crear directorios
+    mkdir -p storage/framework/sessions storage/framework/views storage/framework/cache storage/logs bootstrap/cache
+    
+    # Establecer permisos como root
+    chown -R www-data:www-data storage bootstrap/cache
+    chmod -R 777 storage
+    chmod -R 775 bootstrap/cache
+    
+    # Limpiar archivos viejos
+    rm -rf bootstrap/cache/*.php 2>/dev/null || true
+    rm -rf storage/framework/cache/* 2>/dev/null || true
+    rm -rf storage/framework/views/* 2>/dev/null || true
+    rm -rf storage/logs/*.log 2>/dev/null || true
+fi
 
 # Crear .env con las variables de entorno de Render
 cat > .env << EOF
@@ -37,7 +36,7 @@ LOG_CHANNEL=stack
 LOG_LEVEL=error
 EOF
 
-# Limpiar cachés con artisan (ahora con permisos correctos)
+# Limpiar cachés con artisan
 php artisan config:clear || echo "Config clear failed, continuing..."
 php artisan route:clear || echo "Route clear failed, continuing..."
 php artisan view:clear || echo "View clear failed, continuing..."
