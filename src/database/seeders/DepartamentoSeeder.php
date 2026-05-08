@@ -8,6 +8,18 @@ class DepartamentoSeeder extends Seeder
 {
     public function run()
     {
-        Departamento::factory()->count(5)->create();
+        $departamentos = [
+            ['nombre' => 'Recursos Humanos'],
+            ['nombre' => 'Desarrollo de Software'],
+            ['nombre' => 'Sistemas y Redes'],
+            ['nombre' => 'Marketing Digital'],
+            ['nombre' => 'Administración'],
+            ['nombre' => 'Atención al Cliente'],
+            ['nombre' => 'Producción'],
+        ];
+
+        foreach ($departamentos as $departamento) {
+            Departamento::create($departamento);
+        }
     }
 }

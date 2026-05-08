@@ -8,6 +8,19 @@ class SectorSeeder extends Seeder
 {
     public function run()
     {
-        Sector::factory()->count(5)->create();
+        $sectores = [
+            ['nombre' => 'Tecnología e Informática'],
+            ['nombre' => 'Administración y Finanzas'],
+            ['nombre' => 'Comercio y Marketing'],
+            ['nombre' => 'Sanidad'],
+            ['nombre' => 'Hostelería y Turismo'],
+            ['nombre' => 'Electricidad y Electrónica'],
+            ['nombre' => 'Automoción'],
+            ['nombre' => 'Construcción'],
+        ];
+
+        foreach ($sectores as $sector) {
+            Sector::create($sector);
+        }
     }
 }
