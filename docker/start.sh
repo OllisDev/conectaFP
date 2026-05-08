@@ -2,6 +2,12 @@
 
 cd /var/www
 
+# Primero: Eliminar TODA la caché existente
+rm -rf bootstrap/cache/*.php
+rm -rf storage/framework/cache/*
+rm -rf storage/framework/views/*
+
+# Segundo: Crear .env con las variables de entorno de Render
 cat > .env << EOF
 APP_NAME="${APP_NAME}"
 APP_ENV="${APP_ENV}"
@@ -23,13 +29,13 @@ LOG_CHANNEL=stack
 LOG_LEVEL=error
 EOF
 
-# Limpiar cachés
+# Tercero: Limpiar cachés con artisan (ahora con .env correcto)
 php artisan config:clear
 php artisan route:clear
 php artisan view:clear
 php artisan cache:clear
 
-# Función para esperar a que MySQL esté disponible
+# Función para esperar a que PostgreSQL esté disponible
 wait_for_db() {
     echo "Esperando a que la base de datos esté disponible..."
     max_attempts=30
@@ -56,7 +62,7 @@ wait_for_db
 echo "Ejecutando migraciones..."
 php artisan migrate --force
 
-# Cachear configuración para producción
+# Cachear configuración para producción (AHORA con la config correcta)
 php artisan config:cache
 php artisan route:cache
 php artisan view:cache
