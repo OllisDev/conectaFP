@@ -71,6 +71,10 @@ wait_for_db
 echo "Ejecutando migraciones..."
 php artisan migrate --force
 
+# Crear symlink para storage/app/public -> public/storage
+php artisan storage:link
+echo "✓ Storage link creado"
+
 # Ejecutar seeders en cada deploy
 echo "Ejecutando seeders..."
 php artisan db:seed --class=SectorSeeder --force
