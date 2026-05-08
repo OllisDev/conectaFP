@@ -4,7 +4,7 @@ services:
     runtime: docker
     dockerfilePath: ./docker/apache/Dockerfile.prod
     dockerContext: .
-    plan: starter
+    plan: free
     envVars:
       - key: APP_NAME
         value: ConectaFP
@@ -43,4 +43,4 @@ databases:
   - name: conectafp-db
     databaseName: conecta_fp
     user: conectafp_user
-    plan: starter
+    plan: free
