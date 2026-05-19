@@ -33,7 +33,7 @@ class SolicitudController extends Controller
             ])
                 ->select('id', 'id_oferta', 'id_alumno', 'id_profesor', 'fecha_solicitud', 'estado')
                 ->where('id_profesor', $idProfesor)
-                ->where('id_alumno', $alumnosAsignados)
+                ->whereIn('id_alumno', $alumnosAsignados)
                 ->whereHas('oferta', function ($q) {
                     $q->where('eliminado', 0);
                 })
